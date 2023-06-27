@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+alias f='open -a Finder ./'                 # f:            Opens current directory in MacOS Finder
+trash () { command mv "$@" ~/.Trash ; }     # trash:        Moves a file to the MacOS trash
+ql () { qlmanage -p "$*" >& /dev/null; }    # ql:           Opens any file in MacOS Quicklook Preview
+
+#   cdf:  'Cd's to frontmost window of MacOS Finder
+#   ------------------------------------------------------
+    cdf () {
+        currFolderPath=$( /usr/bin/osascript <<EOT
+            tell application "Finder"
+                try
+            set currFolder to (folder of the front window as alias)
+                on error
+            set currFolder to (path to desktop folder as alias)
+                end try
+                POSIX path of currFolder
+            end tell
+EOT
+        )
+        echo "cd to \"$currFolderPath\""
+        cd "$currFolderPath" || return
+    }
+
+#   spotlight: Search for a file using MacOS Spotlight's metadata
+#   -----------------------------------------------------------
+    spotlight () { mdfind "kMDItemDisplayName == '$1'cd"; }
+
+#   ---------------------------------------
+#   7.  SYSTEMS OPERATIONS & INFORMATION
+#   ---------------------------------------
+ 
+alias mountReadWrite='/sbin/mount -uw /'    # mountReadWrite:   For use when booted into single-user
+
+#   cleanupDS:  Recursively delete .DS_Store files
+#   -------------------------------------------------------------------
+    alias cleanupDS="find . -type f -name '*.DS_Store' -ls -delete"
+ 
+#   finderShowHidden:   Show hidden files in Finder
+#   finderHideHidden:   Hide hidden files in Finder
+#   -------------------------------------------------------------------
+    alias finderShowHidden='defaults write com.apple.finder ShowAllFiles TRUE'
+    alias finderHideHidden='defaults write com.apple.finder ShowAllFiles FALSE'
+ 
+#   cleanupLS:  Clean up LaunchServices to remove duplicates in the "Open With" menu
+#   -----------------------------------------------------------------------------------
+    alias cleanupLS="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
+ 
+#    screensaverDesktop: Run a screensaver on the Desktop
+#   -----------------------------------------------------------------------------------
+    alias screensaverDesktop='/System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine -background'
+ 
+alias flushdns='dscacheutil -flushcache'            # flushDNS:     Flush out the DNS Cache
+
+# TODO: should use pf
+alias ipInfo0='ipconfig getpacket en0'              # ipInfo0:      Get info on connections for en0
+alias ipInfo1='ipconfig getpacket en1'              # ipInfo1:      Get info on connections for en1
+alias showBlocked='sudo ipfw list'                  # showBlocked:  All ipfw rules inc/ blocked IPs

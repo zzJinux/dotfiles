@@ -1,0 +1,9 @@
+_iife() {
+
+local DOTFILES=:PH_DOTFILES:
+local HOMEBREW_PREFIX=:PH_HOMEBREW_PREFIX:
+
+source "$DOTFILES/bash/logout"
+
+} && _iife
+unset _iife

@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+# TODO: terminal color adjustment
+
+function prompt_command {
+  local EXIT="$?"
+
+  #shellcheck disable=SC2034
+  {
+    GIT_PS1_SHOWDIRTYSTATE=1      # '*' unstaged, '+' staged
+    GIT_PS1_SHOWSTASHSTATE=1      # '$' Something is stashed
+    GIT_PS1_SHOWUNTRACKEDFILES=1  # '%' There are untracked files
+    GIT_PS1_SHOWUPSTREAM=auto     # '<' behind upstream, '>' ahead, '<>' diverged, '=' same
+    GIT_PS1_SHOWCOLORHINTS=1      
+  }
+
+  : "${ps0time:=}"
+  local datetime='\[\e[0;97;40m\]\D{%F}\[\e[0;39;40m\]T\[\e[0;93;40m\]\t\[\e[0m\]\D{%z}'
+
+  PS1='\[\e[5 q\e[0m\]'
+  # HACK: https://stackoverflow.com/a/66772796/3912693
+  #   TODO: fc -ln -1 hack
+  #shellcheck disable=SC2016
+  PS0='${showtime:+'"\[\e[0;97;40m\]▶ $datetime\n"'\[${PS1:$((ps0time=\D{%s}, 0)):0}\]''}'
+  [ "0${ps0time}" -gt 0 ] && PS1="\[\e[0;97;40m\]▶ $datetime \[\e[0;93;40m\]"'($((\D{%s}-ps0time))s)\[${PS1:$((ps0time=0)):0}\]\n'$PS1
+
+  if [ "$PROMPT_MODE" == full ]; then
+
+# |      SP [EXIT CODE] SP     |   [JOBS] SP   |         [USER@HOST]        | SP  [WORKDIR]  | [GIT_PS1]
+# |----------------------------|---------------|----------------------------|----------------|
+# | if non-zero; bWhite, Red   | bWhite, Black | if root;     bGreen, Red   |   Blue, Black  |
+# | if zero;   ; bWhite, Green |               | if non-root; bGreen, Black |                |
+# |          **Bold**          |               |           **Bold**         |                |
+# 
+# |        [CHAR]       |
+# |---------------------|
+# | if root;   ; bWhite | Reset cursor to blinking bar
+# | if non-root; bRed   |
+# |       **Bold**      |
+
+    if [ $EXIT != 0 ]; then
+      PS1+="\[\e[1;97;41m\]"
+      PS1+="$(printf ' %3s ' $EXIT)"
+    else
+      PS1+="\[\e[1;97;42m\]     "
+    fi
+
+    PS1+="\[\e[0;97;40m\] j:\j "
+    # PS1+="\[\e[0;93;40m\] \t \[\e[0;97;40m\]j:\j "
+
+    local PSCHAR='\$'
+    if [[ $(id -u) -eq 0 ]]; then
+      PS1+="\[\e[1;92;41m\]\u@\h"
+      PSCHAR="\[\e[1;91m\]$PSCHAR"
+    else
+      PS1+="\[\e[1;92;40m\]\u@\h"
+    fi
+    PS1+="\[\e[0;0;40m\] "'$(kube_ps1)'
+    PS1+="\[\e[0;94;40m\] \w\[\e[0m\]"
+
+    __git_ps1 "${PS1}\[\e[0m\]" "\[\e[0m\]"
+
+    PS1+="\n\[\e[97m\]${PSCHAR}\[\e[0m\] "
+  else
+    if [ $EXIT != 0 ]; then
+      PS1+="\[\e[1;97;41m\]"
+    else
+      PS1+="\[\e[1;97;42m\]"
+    fi
+    PS1+="$(printf '%3s' $EXIT)"
+
+    local PSCHAR='\$'
+    if [[ $(id -u) -eq 0 ]]; then
+      PSCHAR="\e[1;91m$PSCHAR"
+    fi
+    PS1+="\[\e[0;97m\] ${PSCHAR}\[\e[0m\] "
+  fi
+}
+
+PROMPT_MODE=${PROMPT_MODE:-full}
+function prmode {
+  PROMPT_MODE="$1"
+}
+
+PROMPT_COMMAND="prompt_command;${PROMPT_COMMAND}"

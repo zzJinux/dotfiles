@@ -1,0 +1,8 @@
+# Modified version from the output of `brew shellenv bash`
+export HOMEBREW_PREFIX="/opt/homebrew";
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+export HOMEBREW_REPOSITORY="/opt/homebrew";
+prepend_path '/opt/homebrew/bin:/opt/homebrew/sbin'
+if [[ ! $INFOPATH ==  */opt/homebrew/share/info* ]]; then
+  export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
+fi

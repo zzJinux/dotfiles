@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# Language
+export LANG='en_US.UTF-8'
+#export LC_ALL=$LANG
+#export LC_COLLATE=$LANG
+#export LC_CTYPE=$LANG
+#export LC_MESSAGES=$LANG
+#export LC_MONETARY=$LANG
+#export LC_NUMERIC=$LANG
+#export LC_TIME=$LANG
+
+export BLOCKSIZE=1k # Default blocksize for ls, df, du
+
+# Default programs
+export EDITOR
+if command -v nvim >/dev/null; then
+  EDITOR=$(command -v nvim)
+elif command -v vim >/dev/null; then
+  EDITOR=$(command -v vim)
+else
+  EDITOR=$(command -v vi)
+fi
+
+export PATH
+PATH="$HOME/bin:$PATH"
+PATH="$HOME/.local/bin:$PATH"
+# `go install` executables
+PATH="$HOME/go/bin:$PATH"
+# Ruby executables
+PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
+test -x /usr/libexec/java_home && { JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME; }
+
+# Rust
+test -r "$HOME/.cargo/env" && source "$HOME/.cargo/env"
+
+# Homebrew
+if [ -r "$HOMEBREW_PREFIX/bin/brew" ]; then
+  if [ -r "$DOTFILES/homebrew/shenv" ]; then
+    source "$DOTFILES/homebrew/shenv"
+  else
+    source <("$HOMEBREW_PREFIX/bin/brew" shellenv bash | tee "$DOTFILES/homebrew/.shenv")
+  fi
+fi
+
+# python (Xcode Command Line Tools)
+# PATH="$(python3 -c 'import os,sysconfig;print(sysconfig.get_path("scripts",f"{os.name}_user"))'):$PATH"
+
+test -r "$DOTFILES/bash/login__local" && source "$DOTFILES/bash/login__local"

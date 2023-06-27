@@ -1,0 +1,34 @@
+[core]
+  editor = nvim
+  autocrlf = input
+[init]
+  defaultBranch = master
+[alias]
+  lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+  lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+  lg = !"git lg1"
+
+  # https://stackoverflow.com/a/33548037/3912693
+  br-prrr = !"git fetch -p && git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == \"[gone]\" {sub(\"refs/heads/\", \"\", $1); print $1}' | xargs git branch -D"
+
+  # https://dev.to/committedsw/useful-git-alias-47in
+  cm = "!cm() { git commit -m \"$1\"; }; cm"
+  ca = commit --amend --no-edit
+  root = rev-parse --show-toplevel
+  wt = worktree
+  wtls = worktree list
+[color]
+  ui = auto
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = true
+[pack]
+  packsizelimit = 2g
+[filter "lfs"]
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+[include]
+  path = ~/.config/git/config__local

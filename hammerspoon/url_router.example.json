@@ -1,0 +1,39 @@
+{
+  "browsers": [
+    {
+      "name": "personal",
+      "cmd": [
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "--user-data-dir=/Users/kep/Library/Application Support/Google/Chrome",
+        "--profile-directory=Default"
+      ]
+    },
+    {
+      "name": "work",
+      "cmd": [
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "--user-data-dir=/Users/kep/Library/Application Support/Chrome Work",
+        "--profile-directory=Default"
+      ]
+    }
+  ],
+  "default": "personal",
+  "rules": [
+    {
+      "processor": "work",
+      "domains": [
+        "intranet.ai",
+        "intranet.cc",
+        "intranet.com"
+      ]
+    },
+    {
+      "processor": "picker",
+      "domains": [
+        "meet.google.com",
+        "drive.google.com",
+        "docs.google.com"
+      ]
+    }
+  ]
+}

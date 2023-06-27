@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+#shellcheck disable=SC2016
+
+if [ "${BASH_VERSINFO[0]}" -lt 5 ]; then
+  >&2 echo "WARNING: You are running the version less than 5. The startup scripts might result in unexpected behavior." >&2
+fi
+
+# We need to set $ENV so that if you use shell X as your login shell,
+# and then start "sh" as a non-login interactive shell the startup scripts will
+# correctly run.
+# https://pubs.opengroup.org/onlinepubs/9699919799/utilities/sh.html
+export ENV="$DOTFILES/bash/interactive"
+
+# We also need to set BASH_ENV, which is run for *non-interactive* shells.
+# (unlike $ENV, which is for interactive shells)
+export BASH_ENV="$DOTFILES/bash/shenv"
+
+umask 0077
+
+test -r "$DOTFILES/bash/shenv__local" && source "$DOTFILES/bash/shenv__local"
+
+path_sanity_report() {
+  local IFS=:
+  for e in $PATH; do
+    case $e in 
+      /*) : ;;
+      *) 2>&1 echo 'WARNING: $PATH contains a relative path: '"$e" ;;
+    esac
+  done
+}
+
+# Reference: https://heptapod.host/flowblok/shell-startup/-/blob/branch/default/.shell/env

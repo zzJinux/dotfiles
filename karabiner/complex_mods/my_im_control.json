@@ -1,0 +1,351 @@
+{
+  "title": "IM control",
+  "rules": [
+    {
+      "description": "right_command to left_option+space (buggy)",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "right_command",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "spacebar",
+              "modifiers": [
+                "left_option"
+              ]
+            },
+            {
+              "key_code": "vk_none"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "(VIM) ESC to Apple_EN",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "escape",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "select_input_source": {
+                "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+              }
+            },
+            {
+              "key_code": "escape"
+            }
+          ],
+          "to_after_key_up":[
+          ],
+          "conditions": [
+            {
+              "type": "input_source_unless",
+              "input_sources": [
+                {
+                  "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "(VIM) Ctrl+[ to Apple_EN",
+        "manipulators": [
+          {
+            "type": "basic",
+            "from": {
+              "key_code": "open_bracket",
+              "modifiers": {
+                "mandatory": [
+                  "left_control"
+                ]
+              }
+            },
+            "to": [
+              {
+                "select_input_source": {
+                  "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+                }
+              },
+            {
+              "key_code": "open_bracket",
+              "modifiers": ["left_control"]
+            }
+            ],
+            "conditions": [
+              {
+                "type": "input_source_unless",
+                "input_sources": [
+                  {
+                    "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+    },
+    {
+      "description": "(VIM) Ctrl+O to Apple_EN",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "o",
+            "modifiers": {
+              "mandatory": [
+                "left_control"
+              ]
+            }
+          },
+          "to": [
+            {
+              "select_input_source": {
+                "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+              }
+            },
+            {
+              "key_code": "o",
+              "modifiers": ["left_control"]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "input_source_unless",
+              "input_sources": [
+                {
+                  "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "F15 to Gureum_KO <-> Gureum_EN",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f15",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "select_input_source": {
+                "input_source_id": "^org\\.youknowone\\.inputmethod\\.Gureum\\.han2$"
+              }
+            }
+          ],
+          "conditions": [
+            {
+              "type": "input_source_if",
+              "input_sources": [
+                {
+                  "input_source_id": "^org\\.youknowone\\.inputmethod\\.Gureum\\.system$"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f15",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "select_input_source": {
+                "input_source_id": "^org\\.youknowone\\.inputmethod\\.Gureum\\.system$"
+              }
+            }
+          ],
+          "conditions": [
+            {
+              "type": "input_source_if",
+              "input_sources": [
+                {
+                  "input_source_id": "^org\\.youknowone\\.inputmethod\\.Gureum\\.han2$"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "F15 to Gureum_KO <-> Apple_EN",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f15",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "select_input_source": {
+                "input_source_id": "^org\\.youknowone\\.inputmethod\\.Gureum\\.han2$"
+              }
+            }
+          ],
+          "conditions": [
+            {
+              "type": "input_source_if",
+              "input_sources": [
+                {
+                  "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f15",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "select_input_source": {
+                "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+              }
+            }
+          ],
+          "conditions": [
+            {
+              "type": "input_source_if",
+              "input_sources": [
+                {
+                  "input_source_id": "^org\\.youknowone\\.inputmethod\\.Gureum\\.han2$"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "F15 to Apple_KO <-> Apple_EN",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f15",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "select_input_source": {
+                "input_source_id": "^com\\.apple\\.inputmethod\\.Korean\\.2SetKorean$"
+              }
+            }
+          ],
+          "conditions": [
+            {
+              "type": "input_source_if",
+              "input_sources": [
+                {
+                  "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f15",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "select_input_source": {
+                "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+              }
+            }
+          ],
+          "conditions": [
+            {
+              "type": "input_source_if",
+              "input_sources": [
+                {
+                  "input_source_id": "^com\\.apple\\.inputmethod\\.Korean\\.2SetKorean$"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "(archive) Fast input source switch (F15)",
+      "manipulators": [
+        {
+          "from": {
+            "key_code": "right_command",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "f15"
+            },
+            {
+              "key_code": "vk_none"
+            }
+          ],
+          "type": "basic"
+        }
+      ]
+    }
+  ]
+}

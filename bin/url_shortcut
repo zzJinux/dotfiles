@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+url=$(sed 's/\&/\&amp;/g; s/\"/\&quot;/g' <<<"$1")
+outf="$2.html"
+
+cat <<EOF >"$outf"
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Automatic redirect to $url</title>
+    <meta http-equiv=refresh content="0; url=$url" />
+  </head>
+  <body>
+    <h1>For older browsers, click Redirect</h1>
+    <p><a href="$url">Redirect</a></p>
+  </body>
+</html>
+EOF

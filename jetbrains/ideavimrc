@@ -1,0 +1,12 @@
+nmap <leader><C-d> <Action>(Debug)
+nmap <leader><C-h> <Action>(TypeHierarchy)
+nmap <leader><C-i> <Action>(ImplementMethods)
+nmap <leader><C-o> <Action>(OverrideMethods)
+nmap <leader><C-t> <Action>(Refactorings.QuickListPopupAction)
+nmap <leader><C-r> <Action>(Run)
+nmap <leader><C-v> <Action>(Vcs.QuickListPopupAction)
+if &ide =~? 'intellij idea'
+  "nothing
+elseif &ide =~? 'goland'
+  "nothing
+endif

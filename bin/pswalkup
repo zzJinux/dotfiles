@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+pid=${1?Please give a pid}
+sep=
+while
+  [ "$pid" -gt 0 ] &&
+    {
+      read -r ppid name args
+    } < <(ps eww -o ppid= -o args= -p "$pid")
+do
+  printf "$sep%$((3+${#pid}/2))d%$((4-${#pid}/2))s%s %s\n" "$pid" "" "$name" "$args"
+  sep=$'  |\n'
+  pid=$ppid
+done

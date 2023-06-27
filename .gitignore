@@ -1,0 +1,4 @@
+.vscode/
+*__local
+.staging
+.DS_store

@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+# If in a terminal
+if [ -t 0 ]; then
+  # other users shouldn't be able to message by default
+  mesg n
+
+  # max_colors=`tput colors 2>/dev/null`
+fi
+
+#   Add color to terminal
+#   (this is all commented out as I use Mac Terminal Profiles)
+#   from http://osxdaily.com/2012/02/21/add-color-to-the-terminal-in-mac-os-x/
+#   ------------------------------------------------------------
+#   export CLICOLOR=1
+#   export LSCOLORS=ExFxBxDxCxegedabagacad
+
+# ignorespace: lines which begin with a space (0x20) are not saved
+# ignoredups: lines matching the previous entry are not saved
+HISTCONTROL=ignorespace:ignoredups
+HISTSIZE=1000
+# TODO: HISTFILE=<reasonable terminal session identifier>
+HISTFILESIZE=1000
+# The history list is appended to the file named by the vaue of the
+# $HISTFILE Wwhen the shell exits, rather than overwriting the file
+shopt -s histappend
+
+# Checks the window size after each non-builtin command, and
+# if necessary, updates the values of $LINES and $COLUMNS
+shopt -s checkwinsize
+
+# ** : matches all files and 0+ [sub]directories
+# **/: matches 0+ [sub]directories
+# '**' is only mearingful in pathname expansion context
+shopt -s globstar
+
+shopt -s autocd cdable_vars cdspell
+
+# Fix the shortcut for searching backward in history is not working
+# https://stackoverflow.com/a/791800/3912693
+# https://stackoverflow.com/a/25391867/3912693
+# stty -ixon
+
+# ls color setup
+if [ -x /usr/bin/dircolors ]; then
+  if [ -r ~/.dircolors ]; then
+    eval "$(dircolors -b ~/.dircolors)"
+  else
+    eval "$(dircolors -b)"
+  fi
+fi
+
+export COLORTERM=1
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# https://docs.brew.sh/Shell-Completion
+if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+  source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+else
+  for comp in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
+    [[ -r "$comp" ]] && source "$comp"
+  done
+  unset comp
+fi
+
+# kube-ps1
+source "${HOMEBREW_PREFIX}/opt/kube-ps1/share/kube-ps1.sh"
+#shellcheck disable=SC2034
+KUBE_PS1_SYMBOL_ENABLE=false # https://github.com/jonmosco/kube-ps1#customization
+
+
+source "$DOTFILES/bash/color"
+source "$DOTFILES/bash/shcmd"
+[ -r "$DOTFILES/bash/shcmd_macos" ] && source "$DOTFILES/bash/shcmd_macos"
+[ -r "$DOTFILES/bash/shcmd__local" ] && source "$DOTFILES/bash/shcmd__local"
+source "$DOTFILES/bash/prompt"
