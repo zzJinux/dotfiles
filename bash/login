@@ -23,12 +23,12 @@ else
 fi
 
 export PATH
-PATH="$HOME/bin:$PATH"
-PATH="$HOME/.local/bin:$PATH"
+prepend_path "$HOME/bin"
+prepend_path "$HOME/.local/bin"
 # `go install` executables
-PATH="$HOME/go/bin:$PATH"
+prepend_path "$HOME/go/bin"
 # Ruby executables
-PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+prepend_path "$HOMEBREW_PREFIX/opt/ruby/bin"
 
 test -x /usr/libexec/java_home && { JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME; }
 

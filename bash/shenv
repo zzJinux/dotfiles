@@ -30,4 +30,12 @@ path_sanity_report() {
   done
 }
 
+append_path() {
+  PATH=${PATH:+$PATH:}$1
+}
+
+prepend_path() {
+  PATH=$1${PATH:+:$PATH}
+}
+
 # Reference: https://heptapod.host/flowblok/shell-startup/-/blob/branch/default/.shell/env
