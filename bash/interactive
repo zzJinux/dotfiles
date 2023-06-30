@@ -70,6 +70,12 @@ source "${HOMEBREW_PREFIX}/opt/kube-ps1/share/kube-ps1.sh"
 #shellcheck disable=SC2034
 KUBE_PS1_SYMBOL_ENABLE=false # https://github.com/jonmosco/kube-ps1#customization
 
+# fzf key bindings and completion
+if [[ ! "$PATH" == *$HOMEBREW_PREFIX/opt/fzf/bin* ]]; then
+  PATH="${PATH:+${PATH}:}${HOMEBREW_PREFIX}/opt/fzf/bin"
+fi
+source "$HOMEBREW_PREFIX/opt/fzf/shell/completion.bash" 2> /dev/null
+source "$HOMEBREW_PREFIX/opt/fzf/shell/key-bindings.bash"
 
 source "$DOTFILES/bash/color"
 source "$DOTFILES/bash/shcmd"
