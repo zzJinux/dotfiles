@@ -22,6 +22,8 @@ Plug 'myusuf3/numbers.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ryanoasis/vim-devicons'
 Plug 'chrisbra/Colorizer'
+" NOTE: Terminal.app does not support true color.
+Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 
 " colorschemes
 Plug 'morhetz/gruvbox'
@@ -73,6 +75,25 @@ augroup END
 
 if !has('gui_running')
 
+  " https://www.reddit.com/r/vim/comments/bb6o59
+  " enable true colors only if available
+  let colorterm=$COLORTERM
+  if colorterm =~# 'truecolor' || colorterm =~# '24bit'
+    set termguicolors
+    " also set escape characters for true colors, if needed
+    if &term =~# '^screen'
+      let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+      let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    endif
+  " if we're not in a GUI environment, we use 256 colors
+  " before commenting out, check if you've set a proper $TERM in your terminal
+  " settings or .bashrc - this is just a fallback solution!
+  "else
+  "  if !has('gui_running')
+  "    set t_Co=256
+  "  endif
+  endif
+
   let g:gruvbox_italic = 1
   colorscheme gruvbox
 
@@ -106,8 +127,6 @@ if !has('gui_running')
     endif
   endif
 endif
-
-
 
 " change the color of chars over the width of 80 into blue
 " (uncomment to enable it)
@@ -239,6 +258,8 @@ nmap ga <Plug>(LiveEasyAlign)
 let b:sleuth_automatic = 0
 
 
+" config:rrethy/vim-hexokinase
+let g:Hexokinase_highlighters = [ 'backgroundfull' ]
 
 
 " Automatics
