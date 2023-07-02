@@ -45,29 +45,29 @@ function prompt_command {
       PS1+="\[\e[1;97;42m\]     "
     fi
 
-    PS1+="\[\e[0;97;40m\] j:\j "
+    PS1+="\[\e[0m\e[97m\] j:\j "
     # PS1+="\[\e[0;93;40m\] \t \[\e[0;97;40m\]j:\j "
 
     local PSCHAR='\$'
     if [[ $(id -u) -eq 0 ]]; then
-      PS1+="\[\e[1;92;41m\]\u@\h"
-      PSCHAR="\[\e[1;91m\]$PSCHAR"
+      PS1+="\[\e[92;41m\]\u@\h"
+      PSCHAR="\[\e[91m\]$PSCHAR"
     else
-      PS1+="\[\e[1;92;40m\]\u@\h"
+      PS1+="\[\e[92m\]\u@\h"
     fi
-    PS1+="\[\e[0;0;40m\] "'$(kube_ps1)'
-    PS1+="\[\e[0;94;40m\] \w\[\e[0m\]"
+    PS1+="\[\e[0m\] "'$(kube_ps1)'
+    PS1+="\[\e[94m\] \w\[\e[0m\]"
 
     __git_ps1 "${PS1}\[\e[0m\]" "\[\e[0m\]"
 
     PS1+="\n\[\e[97m\]${PSCHAR}\[\e[0m\] "
   else
     if [ $EXIT != 0 ]; then
-      PS1+="\[\e[1;97;41m\]"
+      PS1+="\[\e[97;41m\]"
+      PS1+="$(printf '%3s' $EXIT)"
     else
-      PS1+="\[\e[1;97;42m\]"
+      PS1+="\[\e[1;97;42m\]   "
     fi
-    PS1+="$(printf '%3s' $EXIT)"
 
     local PSCHAR='\$'
     if [[ $(id -u) -eq 0 ]]; then
