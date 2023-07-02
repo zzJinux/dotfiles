@@ -48,7 +48,8 @@ _main() {
   else
     ohai "⚠️ $manconf already exists. Continue to append."
   fi
-  execute_sudo sh -c "cat >>$(quote "$manconf")" <"$MODULES_DIR/etc/man.d/man.conf"
+
+  execute_sudo sh -c "cat >>$(quote "$manconf")" < <(cat "$MODULES_DIR/etc/man.d/man.conf" | sed "s|:PH_HOMEBREW_PREFIX:|${HOMEBREW_PREFIX}|g")
   execute_sudo chmod 444 "$manconf"
 
   ohai 'Apply macOS defaults'
