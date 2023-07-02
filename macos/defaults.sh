@@ -16,6 +16,8 @@ sudo -v
 # Keep-alive: update existing `sudo` timestamp until this script has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+# To check current values:
+# cat macos/defaults.sh | grep '^defaults write' | awk '{ print $1, "read", $3, $4 }' | while IFS=$'\n' read -r a; do echo "$a"; printf '  '; eval "$a"; done
 
 ###############################################################################
 # General UI/UX                                                               #
