@@ -36,13 +36,7 @@ test -x /usr/libexec/java_home && { JAVA_HOME="$(/usr/libexec/java_home)" && exp
 test -r "$HOME/.cargo/env" && source "$HOME/.cargo/env"
 
 # Homebrew
-if [ -r "$HOMEBREW_PREFIX/bin/brew" ]; then
-  if [ -r "$DOTFILES/homebrew/shenv" ]; then
-    source "$DOTFILES/homebrew/shenv"
-  else
-    source <("$HOMEBREW_PREFIX/bin/brew" shellenv bash | tee "$DOTFILES/homebrew/.shenv")
-  fi
-fi
+source "$DOTFILES/homebrew/login"
 
 # python (Xcode Command Line Tools)
 # PATH="$(python3 -c 'import os,sysconfig;print(sysconfig.get_path("scripts",f"{os.name}_user"))'):$PATH"

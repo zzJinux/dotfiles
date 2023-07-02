@@ -20,8 +20,14 @@ _main() {
 
   have_sudo_access
 
-  source "$MODULES_DIR/homebrew/vars"
-  export HOMEBREW_PREFIX
+  # https://github.com/Homebrew/install/blob/master/install.sh
+  UNAME_MACHINE="$(/usr/bin/uname -m)"
+  if [[ "${UNAME_MACHINE}" == "arm64" ]]
+  then
+    HOMEBREW_PREFIX="/opt/homebrew"
+  else
+    HOMEBREW_PREFIX="/usr/local"
+  fi
 
   # Homebrew install
   # It will install Command Line Tools if not installed
@@ -31,6 +37,7 @@ _main() {
   else
     ohai 'Homebrew is already installed'
   fi
+  source <("$HOMEBREW_PREFIX/bin/brew" shellenv bash | grep '^export HOMEBREW' | tee "$MODULES_DIR/homebrew/vars__local")
   ohai 'Install Homebrew packages'
   "$HOMEBREW_PREFIX/bin/brew" bundle --verbose --file "$MODULES_DIR/homebrew/Brewfile"
 
