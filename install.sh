@@ -65,6 +65,8 @@ _main() {
   execute_sudo chsh -s "$homebrew_bash"
 
   ohai "Open a new terminal window to use the new shell."
+
+  ohai 'TODO: Install fonts'
 }
 
 if [ -t 1 ]; then

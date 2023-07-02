@@ -50,6 +50,7 @@ if [ -x /usr/bin/dircolors ]; then
   fi
 fi
 
+# colorize macOS ls output
 export COLORTERM=1
 
 # make less more friendly for non-text input files, see lesspipe(1)
