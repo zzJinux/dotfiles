@@ -16,8 +16,8 @@ colors() {
     for fgc in {30..37}; do
         # background colors
         for bgc in {40..47}; do
-            fgc=${fgc#37} # white
-            bgc=${bgc#40} # black
+            # fgc=${fgc#37} # white
+            # bgc=${bgc#40} # black
 
             vals="${fgc:+$fgc;}${bgc}"
             vals=${vals%%;}
