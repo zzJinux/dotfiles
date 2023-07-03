@@ -22,6 +22,7 @@ test -r "$DOTFILES/bash/shenv__local" && source "$DOTFILES/bash/shenv__local"
 
 path_sanity_report() {
   local IFS=:
+  local e
   for e in $PATH; do
     case $e in 
       /*) : ;;
