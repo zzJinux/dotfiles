@@ -34,7 +34,7 @@ shopt -s checkwinsize
 # '**' is only mearingful in pathname expansion context
 shopt -s globstar
 
-shopt -s autocd cdable_vars cdspell
+shopt -s autocd cdspell
 
 # Fix the shortcut for searching backward in history is not working
 # https://stackoverflow.com/a/791800/3912693
