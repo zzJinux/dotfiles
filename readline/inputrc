@@ -1,5 +1,10 @@
 set keymap vi-insert
 "\C-e": shell-expand-line
+Control-SPACE: complete
+TAB: menu-complete
+# shift tab
+"\e[Z": menu-complete-backward
+set show-all-if-ambiguous on
 
 set editing-mode vi
 set show-mode-in-prompt on
