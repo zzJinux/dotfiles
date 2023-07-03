@@ -12,15 +12,8 @@ export LANG='en_US.UTF-8'
 
 export BLOCKSIZE=1k # Default blocksize for ls, df, du
 
-# Default programs
-export EDITOR
-if command -v nvim >/dev/null; then
-  EDITOR=$(command -v nvim)
-elif command -v vim >/dev/null; then
-  EDITOR=$(command -v vim)
-else
-  EDITOR=$(command -v vi)
-fi
+# Homebrew
+source "$DOTFILES/homebrew/login"
 
 export PATH
 prepend_path "$HOME/bin"
@@ -35,8 +28,15 @@ test -x /usr/libexec/java_home && { JAVA_HOME="$(/usr/libexec/java_home)" && exp
 # Rust
 test -r "$HOME/.cargo/env" && source "$HOME/.cargo/env"
 
-# Homebrew
-source "$DOTFILES/homebrew/login"
+# Default programs
+export EDITOR
+if command -v nvim >/dev/null; then
+  EDITOR=$(command -v nvim)
+elif command -v vim >/dev/null; then
+  EDITOR=$(command -v vim)
+else
+  EDITOR=$(command -v vi)
+fi
 
 # python (Xcode Command Line Tools)
 # PATH="$(python3 -c 'import os,sysconfig;print(sysconfig.get_path("scripts",f"{os.name}_user"))'):$PATH"
