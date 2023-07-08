@@ -1,6 +1,7 @@
 https://vsupalov.com/multiple-kubectl-versions/
 
 kubectl
+  https://kubernetes.io/releases/
   https://kubernetes.io/docs/tasks/tools/#kubectl
   https://kubernetes.io/docs/reference/kubectl/
   https://kubernetes.io/releases/version-skew-policy/
@@ -12,3 +13,16 @@ helm
   https://helm.sh/docs/topics/version_skew/
   https://helm.sh/docs/helm/helm/
   https://helm.sh/docs/helm/helm_completion_bash/
+  
+  
+  exec kubectl-${HELM_VERSION} "$@"
+
+~/.kube/clusters/{cluster_name} 
+└ config
+└ env
+  KUBECTL_VERSION=a.b.c
+  HELM_VERSION=a.b.c
+└ kubectl-completion.bash
+└ helm-completion.bash
+
+TODO: copy context/namespace to new terminal tab

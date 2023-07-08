@@ -6,10 +6,6 @@ source "$complete_alias/complete_alias"
 unset -v complete_alias
 alias kl='kubectl'
 complete -F _complete_alias kl
-alias kx='kubectx'
-complete -F _complete_alias kx
-alias kn='kubens'
-complete -F _complete_alias kn
 alias dk='docker'
 complete -F _complete_alias dk
 alias os='openstack'

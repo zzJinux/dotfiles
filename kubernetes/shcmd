@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+kx() {
+  cluster=$1
+  namespace=${2:-}
+
+  if [ -z "$cluster" ]; then
+    echo "Usage: kx CLUSTER [NAMESPACE]"
+    return 1
+  fi
+
+  if ! [ -r ~/.kube/clusters/"$cluster"/config ]; then 
+    echo "Cluster $cluster not found"
+    return 1
+  fi
+
+  if [[ "${KUBECONFIG%%"${cluster}.kubeconfig"}" = "${KUBECONFIG}" ]]; then
+    local temp=$(mktemp)
+    cp ~/.kube/clusters/"$cluster"/config "$temp"
+    local session_config="$(dirname "$temp")/$(date +%s)-$$.${cluster}.kubeconfig"
+    mv "$temp" "$session_config" 
+    export KUBECONFIG="$session_config"
+  fi
+
+  if [ -r ~/.kube/clusters/"$cluster"/env ]; then
+    local line
+    while read -r line; do
+      export "$line"
+    done <~/.kube/clusters/"$cluster"/env
+  fi
+
+  local kubectl_comp=~/.kube/clusters/"$cluster"/kubectl-completion.bash
+  if ! [ -r "$kubectl_comp" ]; then
+    kubectl completion bash > "$kubectl_comp"
+  fi
+  source "$kubectl_comp"
+  local helm_comp=~/.kube/clusters/"$cluster"/helm-completion.bash
+  if ! [ -r "$helm_comp" ]; then
+    helm completion bash > "$helm_comp"
+  fi
+  source "$helm_comp"
+
+  if [ -n "$namespace" ]; then
+    kubectl config set-context --current --namespace="$namespace"
+  fi
+}
+
+kn () {
+  if [ -z "$1" ]; then
+    echo "Usage: kn NAMESPACE"
+    return 1
+  fi
+  kubectl config set-context --current --namespace="$1"
+}

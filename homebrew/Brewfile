@@ -33,7 +33,6 @@ brew "hugo"
 brew "jq"
 brew "krb5"
 brew "kube-ps1", args: ["ignore-dependencies"]
-brew "kubectx", args: ["ignore-dependencies"]
 brew "less"
 brew "make"
 brew "mandoc"

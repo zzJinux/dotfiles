@@ -72,6 +72,9 @@ source "${HOMEBREW_PREFIX}/opt/kube-ps1/share/kube-ps1.sh"
 #shellcheck disable=SC2034
 KUBE_PS1_SYMBOL_ENABLE=false # https://github.com/jonmosco/kube-ps1#customization
 
+# kubectl, helm
+source "$DOTFILES/kubernetes/shcmd"
+
 # fzf key bindings and completion
 append_path "$HOMEBREW_PREFIX/opt/fzf/bin"
 source "$HOMEBREW_PREFIX/opt/fzf/shell/completion.bash" 2> /dev/null
