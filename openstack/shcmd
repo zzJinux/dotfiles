@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+osc() {
+  export OS_CLOUD="$1"
+}
