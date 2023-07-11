@@ -18,9 +18,9 @@ fi
 # ignorespace: lines which begin with a space (0x20) are not saved
 # ignoredups: lines matching the previous entry are not saved
 HISTCONTROL=ignorespace:ignoredups
-HISTSIZE=1000
+HISTSIZE=10000
 # TODO: HISTFILE=<reasonable terminal session identifier>
-HISTFILESIZE=1000
+HISTFILESIZE=10000
 # The history list is appended to the file named by the vaue of the
 # $HISTFILE Wwhen the shell exits, rather than overwriting the file
 shopt -s histappend
