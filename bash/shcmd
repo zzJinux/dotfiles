@@ -20,7 +20,7 @@ alias utc='date -u +"%Y-%m-%dT%H:%M:%SZ" && date -u +%s' # compatible:macos,gnu
 alias py=python3
 
 # alias sudo='sudo '
-alias sudo='sudo'
+alias sudo='sudo' # https://github.com/cykerway/complete-alias/tree/master#faq
 complete -F _complete_alias sudo
 alias sudoal='sudo '
 
