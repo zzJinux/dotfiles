@@ -7,6 +7,6 @@ _fzf_complete_kx() {
     read -rd '' wordlist
     IFS=$'\n'
     COMPREPLY=( $(compgen -W "$wordlist" -- "$cur") )
-  fi < <(find ~/.kube/clusters -mindepth 1 -maxdepth 1 -type d -exec basename '{}' \;)
+  fi < <(find -L ~/.kube/clusters -mindepth 1 -maxdepth 1 -type d -exec basename '{}' \;)
 }
 complete -F _fzf_complete_kx kx
