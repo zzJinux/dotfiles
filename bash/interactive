@@ -36,6 +36,9 @@ shopt -s globstar
 
 shopt -s autocd cdspell
 
+# Why is this not the default?
+shopt -u sourcepath
+
 # Fix the shortcut for searching backward in history is not working
 # https://stackoverflow.com/a/791800/3912693
 # https://stackoverflow.com/a/25391867/3912693
