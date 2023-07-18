@@ -16,7 +16,20 @@ if command -v nvim &> /dev/null; then
   alias vi='nvim'
   alias nvimdiff='nvim -d'
 fi
-alias utc='date -u +"%Y-%m-%dT%H:%M:%SZ" && date -u +%s' # compatible:macos,gnu
+
+# compatible:macos
+utc() {
+  local e=$EPOCHSECONDS
+  date -r $e -u +"%Y-%m-%dT%H:%M:%SZ" && echo $e
+}
+# compatible:macos
+epoch() {
+  if [ "${1-}" = "" ]; then
+    echo "Usage: epoch <seconds since epoch>" >&2
+    return 1
+  fi
+  gdate -d @"$1" --iso-8601=seconds
+}
 alias py=python3
 
 # alias sudo='sudo '
