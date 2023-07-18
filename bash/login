@@ -28,6 +28,9 @@ test -x /usr/libexec/java_home && { JAVA_HOME="$(/usr/libexec/java_home)" && exp
 # Rust
 test -r "$HOME/.cargo/env" && source "$HOME/.cargo/env"
 
+# fzf
+append_path "$HOMEBREW_PREFIX/opt/fzf/bin"
+
 # Default programs
 export EDITOR
 if command -v nvim >/dev/null; then

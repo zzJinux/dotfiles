@@ -71,7 +71,6 @@ else
 fi
 
 # fzf key bindings and completion
-append_path "$HOMEBREW_PREFIX/opt/fzf/bin"
 source "$HOMEBREW_PREFIX/opt/fzf/shell/completion.bash" 2> /dev/null
 source "$HOMEBREW_PREFIX/opt/fzf/shell/key-bindings.bash"
 
