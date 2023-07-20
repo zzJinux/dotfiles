@@ -47,6 +47,12 @@ _main() {
   fi
   execute "$HOMEBREW_PREFIX/opt/nvim/bin/nvim" -c ':PlugInstall' -c ':qa!'
 
+  ohai 'Install tmux plugins'
+  if [ -e ~/.config/tmux/plugins/tpm ]; then
+    execute git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+    execute ~/.config/tmux/plugins/tpm/bin/install_plugins
+  fi
+
   ohai 'Tweak man.conf'
   manconf=/usr/local/etc/man.d/man.conf
   if ! [ -f "$manconf" ]; then

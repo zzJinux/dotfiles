@@ -84,3 +84,7 @@ for f in bash_profile bashrc bash_logout; do
     | sed "s|:PH_HOMEBREW_PREFIX:|${HOMEBREW_PREFIX}|g" \
     >".staging/.${f}"
 done
+
+ohai tmux
+execute mkdir -p "${staging_dir}"/.config/tmux
+execute cp "${MODULES_DIR}"/tmux/tmux.conf "${staging_dir}"/.config/tmux/tmux.conf
