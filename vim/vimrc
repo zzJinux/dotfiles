@@ -41,6 +41,9 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'tpope/vim-sleuth'
 
+" skynet
+Plug 'github/copilot.vim'
+
 call plug#end()
 
 " file encodings and EOLs
