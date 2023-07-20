@@ -1,14 +1,27 @@
-set keymap vi-insert
-"\C-e": shell-expand-line
+# https://superuser.com/a/1114109
+set editing-mode vi
+$if mode=vi
+  set show-mode-in-prompt on
+  set vi-cmd-mode-string "\1\e[2 q\2(c) "
+  set vi-ins-mode-string "\1\e[6 q\2(i) "
+
+  set keymap vi-command
+  "\C-a": beginning-of-line
+  # "\C-e": end-of-line
+  "\C-l": clear-screen
+
+  set keymap vi-insert
+  "\C-a": beginning-of-line
+  # "\C-e": end-of-line
+  "\C-e": shell-expand-line
+  "\C-l": clear-screen
+$endif
+
+# bash completion configs
 Control-SPACE: complete
 TAB: menu-complete
-# shift tab
+# \e[Z means shift tab
 "\e[Z": menu-complete-backward
+
 set show-all-if-ambiguous on
-
-set editing-mode vi
-set show-mode-in-prompt on
-set vi-cmd-mode-string "\1\e[2 q\2(c) "
-set vi-ins-mode-string "\1\e[6 q\2(i) "
-
 set completion-ignore-case on
