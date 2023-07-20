@@ -16,6 +16,8 @@ export ENV="$DOTFILES/bash/interactive"
 # (unlike $ENV, which is for interactive shells)
 export BASH_ENV="$DOTFILES/bash/shenv"
 
+declare -xgr SHELL_SESSION_ID="$EPOCHSECONDS-$$-$BASH_SUBSHELL-$BASHPID"
+
 umask 0077
 
 test -r "$DOTFILES/bash/shenv__local" && source "$DOTFILES/bash/shenv__local"

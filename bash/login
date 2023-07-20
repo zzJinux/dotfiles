@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+declare -xgr LOGIN_SHELL_SESSION_ID=$SHELL_SESSION_ID
+
 # Language
 export LANG='en_US.UTF-8'
 #export LC_ALL=$LANG
