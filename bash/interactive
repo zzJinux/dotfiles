@@ -84,6 +84,8 @@ source "$DOTFILES/kubernetes/shcmd"
 # openstack
 source "$DOTFILES/openstack/shcmd"
 
+eval "$(zoxide init bash)" # cache somewhere?
+
 source "$DOTFILES/bash/color"
 source "$DOTFILES/bash/shcmd"
 [ -r "$DOTFILES/bash/shcmd_macos" ] && source "$DOTFILES/bash/shcmd_macos"
