@@ -52,3 +52,8 @@ kn () {
   fi
   kubectl config set-context --current --namespace="$1"
 }
+
+kpf() {
+  source ~/.kube/portforwards/"$1"
+  portforward-forerver "$cluster" "$namespace" "$listen_addr" "$listen_port" "$target" "$target_port"
+}
