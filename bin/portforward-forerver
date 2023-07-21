@@ -19,7 +19,7 @@ while true; do
   ret=0
   exec {stdout}>&1 {stderr}>&2
   errmsg=$("${kpf[@]}" 2>&1 >&$stdout | tee /dev/fd/$stderr | tail -n 1; exit "${PIPESTATUS[0]}") || ret=$?
-  exec {stdout}>/dev/null {stderr}>/dev/null
+  exec {stdout}>&- {stderr}>&-
 
   if [ $ret -gt 1 ]; then
     >&2 echo "=> port-forward exited with unexpected code ${ret}"
