@@ -15,8 +15,6 @@ BASH_ENV=
 # 3. Run 'login'
 source "$DOTFILES/bash/login"
 
-path_sanity_report
-
 # 4. Run 'interactive' if this is an interactive shell.
 [[ $- == *i* ]] && source "$DOTFILES/bash/interactive"
 
