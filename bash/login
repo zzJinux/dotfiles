@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+append_path() {
+  PATH=${PATH:+$PATH:}$1
+}
+
+prepend_path() {
+  PATH=$1${PATH:+:$PATH}
+}
+
 declare -xgr LOGIN_SHELL_SESSION_ID=$SHELL_SESSION_ID
 
 # Language
@@ -47,3 +55,15 @@ fi
 # PATH="$(python3 -c 'import os,sysconfig;print(sysconfig.get_path("scripts",f"{os.name}_user"))'):$PATH"
 
 test -r "$DOTFILES/bash/login__local" && source "$DOTFILES/bash/login__local"
+
+path_sanity_report() {
+  local IFS=:
+  local e
+  for e in $PATH; do
+    case $e in 
+      /*) : ;;
+      *) 2>&1 echo 'WARNING: $PATH contains a relative path: '"$e" ;;
+    esac
+  done
+}
+path_sanity_report
