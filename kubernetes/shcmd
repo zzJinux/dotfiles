@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 kx() {
-  cluster=$1
-  namespace=${2:-}
+  local cluster=$1
+  local namespace=${2:-}
 
   if [ -z "$cluster" ]; then
     echo "Usage: kx CLUSTER [NAMESPACE]"
@@ -14,13 +14,10 @@ kx() {
     return 1
   fi
 
-  if [[ "${KUBECONFIG%%"${cluster}.kubeconfig"}" = "${KUBECONFIG}" ]]; then
-    local temp=$(mktemp)
-    cp ~/.kube/clusters/"$cluster"/config "$temp"
-    local session_config="$(dirname "$temp")/$(date +%s)-$$.${cluster}.kubeconfig"
-    mv "$temp" "$session_config" 
-    export KUBECONFIG="$session_config"
+  if [ "${KUBECONFIG-}" == "" ]; then
+    export KUBECONFIG="$TMPDIR/$SHELL_SESSION_ID.kubeconfig"
   fi
+  cp ~/.kube/clusters/"$cluster"/config "$KUBECONFIG"
 
   if [ -r ~/.kube/clusters/"$cluster"/env ]; then
     local line
@@ -54,6 +51,6 @@ kn () {
 }
 
 kpf() {
-  source ~/.kube/portforwards/"$1"
-  portforward-forerver "$cluster" "$namespace" "$listen_addr" "$listen_port" "$target" "$target_port"
+  eval "$(< ~/.kube/portforwards/"$1" sed 's/^/local /')"
+  echo portforward-forerver "$cluster" "$namespace" "$listen_addr" "$listen_port" "$target" "$target_port"
 }
