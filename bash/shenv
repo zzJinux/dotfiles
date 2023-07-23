@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-#shellcheck disable=SC2016
+# Prevent login non-interactive shells from sourcing it again.
+if shopt -q login_shell && [ -z "${1-}" ]; then
+  return
+fi
 
 if [ "${BASH_VERSINFO[0]}" -lt 5 ]; then
   >&2 echo "WARNING: You are running the version less than 5. The startup scripts might result in unexpected behavior." >&2
@@ -16,7 +19,10 @@ export ENV="$DOTFILES/bash/interactive"
 # (unlike $ENV, which is for interactive shells)
 export BASH_ENV="$DOTFILES/bash/shenv"
 
-declare -xgr SHELL_SESSION_ID="$EPOCHSECONDS-$$-$BASH_SUBSHELL-$BASHPID"
+# Only interactive shells are qualified to set $SHELL_SESSION_ID
+if [[ $- == *i* ]]; then
+  declare -xgr SHELL_SESSION_ID="$EPOCHSECONDS-$$-$BASH_SUBSHELL-$BASHPID"
+fi
 
 umask 0077
 

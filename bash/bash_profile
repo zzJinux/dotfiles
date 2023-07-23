@@ -3,19 +3,14 @@ _iife() {
 local DOTFILES=:PH_DOTFILES:
 local HOMEBREW_PREFIX=:PH_HOMEBREW_PREFIX:
 
-# 1. Ensure 'shenv' gets run first
-source "$DOTFILES/bash/shenv"
+# Ensure 'shenv' gets run first
+# The second argument is required to source in login shells.
+source "$DOTFILES/bash/shenv" .
 
-# 2. Prevent it from being run later, since we need to use $BASH_ENV for
-# non-login non-interactive shells.
-# We don't export it, as we may have a non-login non-interactive shell as
-# a child.
-BASH_ENV=
-
-# 3. Run 'login'
+# Run 'login'
 source "$DOTFILES/bash/login"
 
-# 4. Run 'interactive' if this is an interactive shell.
+# Run 'interactive' if this is an interactive shell.
 [[ $- == *i* ]] && source "$DOTFILES/bash/interactive"
 
 # Reference: https://heptapod.host/flowblok/shell-startup/-/blob/branch/default/.bash_profile
