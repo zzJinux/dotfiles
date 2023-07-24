@@ -31,6 +31,7 @@ brew "gum"
 brew "helm"
 brew "hugo"
 brew "jq"
+brew "jless"
 brew "krb5"
 brew "kube-ps1", args: ["ignore-dependencies"]
 brew "less"
