@@ -5,10 +5,6 @@ if shopt -q login_shell && [ -z "${1-}" ]; then
   return
 fi
 
-if [ "${BASH_VERSINFO[0]}" -lt 5 ]; then
-  >&2 echo "WARNING: You are running the version less than 5. The startup scripts might result in unexpected behavior." >&2
-fi
-
 # We need to set $ENV so that if you use shell X as your login shell,
 # and then start "sh" as a non-login interactive shell the startup scripts will
 # correctly run.

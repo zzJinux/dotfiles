@@ -1,3 +1,7 @@
+if [ "${BASH_VERSINFO[0]}" -lt 5 ]; then
+  >&2 echo "WARNING: You are running the version less than 5. The startup scripts might result in unexpected behavior."
+fi
+
 _iife() {
 
 local DOTFILES=:PH_DOTFILES:
