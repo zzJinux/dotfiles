@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 
-append_path() {
-  PATH=${PATH:+$PATH:}$1
-}
-
-prepend_path() {
-  PATH=$1${PATH:+:$PATH}
-}
-
 declare -xgr LOGIN_SHELL_SESSION_ID=$SHELL_SESSION_ID
 
 # Language
@@ -23,23 +15,56 @@ export LANG='en_US.UTF-8'
 export BLOCKSIZE=1k # Default blocksize for ls, df, du
 
 # Homebrew
-source "$DOTFILES/homebrew/login"
+source "$DOTFILES/homebrew/login__local"
 
-export PATH
-prepend_path "$HOME/bin"
-prepend_path "$HOME/.local/bin"
-# `go install` executables
-prepend_path "$HOME/go/bin"
-# Ruby executables
-prepend_path "$HOMEBREW_PREFIX/opt/ruby/bin"
+path_prepends=(
+  "$HOME/bin"
+  "$HOME/.local/bin"
+  # https://github.com/Homebrew/brew/blob/master/Library/Homebrew/cmd/shellenv.sh
+  "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin"
+)
 
-test -x /usr/libexec/java_home && { JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME; }
+path_appends=(
+  "$HOME/go/bin"
+  "$HOME/.cargo/bin"
+  "$HOMEBREW_PREFIX/opt/ruby/bin"
+  "$HOMEBREW_PREFIX/opt/fzf/bin"
+)
 
-# Rust
-test -r "$HOME/.cargo/env" && source "$HOME/.cargo/env"
+test -r "$DOTFILES/bash/login__local" && source "$DOTFILES/bash/login__local"
 
-# fzf
-append_path "$HOMEBREW_PREFIX/opt/fzf/bin"
+# python (Xcode Command Line Tools)
+# PATH="$(python3 -c 'import os,sysconfig;print(sysconfig.get_path("scripts",f"{os.name}_user"))'):$PATH"
+
+_df_path() {
+  local IFS=:
+  local path=( $PATH )
+  local dedup_path=()
+  local e
+
+  for e in "${path[@]}"; do
+    if [[ ! " ${path_prepends[*]} " =~ " $e " ]]; then
+      dedup_path+=( "$e" )
+    fi
+    if [[ ! " ${path_appends[*]} " =~ " $e " ]]; then
+      dedup_path+=( "$e" )
+    fi
+  done
+  path=( "${path_prepends[@]}" "${dedup_path[@]}" "${path_appends[@]}" )
+
+  for e in "${path[@]}"; do
+    case $e in 
+      /*) : ;;
+      *) 2>&1 echo 'WARNING: $PATH contains a relative path: '"$e" ;;
+    esac
+  done
+  export PATH="${path[*]}"
+} && _df_path; unset -f _df_path
+unset -v path_prepends path_appends
+
+if [[ ! $INFOPATH ==  *"$HOMEBREW_PREFIX"/share/info* ]]; then
+  export INFOPATH="$HOMEBREW_PREFIX/share/info:${INFOPATH:-}"
+fi
 
 # Default programs
 export EDITOR
@@ -51,19 +76,4 @@ else
   EDITOR=$(command -v vi)
 fi
 
-# python (Xcode Command Line Tools)
-# PATH="$(python3 -c 'import os,sysconfig;print(sysconfig.get_path("scripts",f"{os.name}_user"))'):$PATH"
-
-test -r "$DOTFILES/bash/login__local" && source "$DOTFILES/bash/login__local"
-
-path_sanity_report() {
-  local IFS=:
-  local e
-  for e in $PATH; do
-    case $e in 
-      /*) : ;;
-      *) 2>&1 echo 'WARNING: $PATH contains a relative path: '"$e" ;;
-    esac
-  done
-}
-path_sanity_report
+test -x /usr/libexec/java_home && { JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME; }
