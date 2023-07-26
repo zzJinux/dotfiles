@@ -42,11 +42,9 @@ _df_path() {
   local dedup_path=()
   local e
 
+  search=":${path_prepends[*]}:${path_appends[*]}:"
   for e in "${path[@]}"; do
-    if [[ ! " ${path_prepends[*]} " =~ " $e " ]]; then
-      dedup_path+=( "$e" )
-    fi
-    if [[ ! " ${path_appends[*]} " =~ " $e " ]]; then
+    if [[ ! $search =~ ":$e:" ]]; then
       dedup_path+=( "$e" )
     fi
   done
@@ -58,6 +56,7 @@ _df_path() {
       *) 2>&1 echo 'WARNING: $PATH contains a relative path: '"$e" ;;
     esac
   done
+  IFS=:
   export PATH="${path[*]}"
 } && _df_path; unset -f _df_path
 unset -v path_prepends path_appends
