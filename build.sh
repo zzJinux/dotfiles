@@ -75,7 +75,7 @@ execute cp "${MODULES_DIR}"/karabiner/complex_mods/* "${staging_dir}"/.config/ka
 ohai readline
 execute cp "${MODULES_DIR}"/readline/inputrc "${staging_dir}"/.inputrc
 
-source "$MODULES_DIR/homebrew/vars__local"
+source "$MODULES_DIR/homebrew/login__local"
 
 ohai bash
 for f in bash_profile bashrc bash_logout; do
