@@ -61,15 +61,8 @@ export CLICOLOR
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# https://docs.brew.sh/Shell-Completion
-if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
-  source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
-else
-  for comp in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
-    [[ -r "$comp" ]] && source "$comp"
-  done
-  unset comp
-fi
+# bash-completion@2
+[[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]] && . "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
 
 # fzf key bindings and completion
 source "$HOMEBREW_PREFIX/opt/fzf/shell/completion.bash" 2> /dev/null
