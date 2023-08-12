@@ -52,5 +52,5 @@ kn () {
 
 kpf() {
   eval "$(< ~/.kube/portforwards/"$1" sed 's/^/local /')"
-  portforward-forerver "$cluster" "$namespace" "$listen_addr" "$listen_port" "$target" "$target_port"
+  portforward-forever "$cluster" "$namespace" "$listen_addr" "$listen_port" "$target" "$target_port"
 }
