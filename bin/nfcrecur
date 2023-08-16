@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+import os, sys
+import unicodedata
+
+p = sys.argv[1]
+if p[0] != '/':
+    p = os.getcwd() + '/' + p
+
+for root, dirs, files in os.walk(p, topdown=False):
+    for name in dirs:
+        new_name = unicodedata.normalize('NFC', name)
+        os.rename(os.path.join(root, name), os.path.join(root, new_name))
+    for name in files:
+        new_name = unicodedata.normalize('NFC', name)
+        os.rename(os.path.join(root, name), os.path.join(root, new_name))
