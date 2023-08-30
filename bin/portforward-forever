@@ -29,7 +29,6 @@ while true; do
     exit 5
   else
     >&2 echo "=> port-forward exited with code ${ret}"
-    exit $ret
   fi
 
   >&2 echo "=> lost connection to pod, restarting port-forward"
