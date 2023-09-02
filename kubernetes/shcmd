@@ -43,8 +43,12 @@ kx() {
 }
 
 kn () {
-  if [ -z "$1" ]; then
+  if [ -z "${1-}" ]; then
     echo "Usage: kn NAMESPACE"
+    return 1
+  fi
+  if [ -z "${KUBECONFIG-}" ]; then
+    echo "Session KUBECONFIG not set: run kx first"
     return 1
   fi
   kubectl config set-context --current --namespace="$1"
