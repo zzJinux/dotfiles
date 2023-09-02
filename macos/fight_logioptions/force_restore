@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Logi Options+ app brings a weird side effect: it changes the "Swipe between pages" option to "off".
+# This script sets the "Swipe between pages" option back to "Swipe with two or three fingers".
+
+# Register this script to crontab!
+
+defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool true
+/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
