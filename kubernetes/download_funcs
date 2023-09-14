@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+download_kubectl() {
+  local os=$1
+  local arch=$2
+  local version=$3
+  curl -L -o kubectl-$version "https://dl.k8s.io/release/v${version}/bin/$os/$arch/kubectl"
+  chmod +x kubectl-$version
+}
+
+download_helm() {
+  local os=$1
+  local arch=$2
+  local version=$3
+  curl -LO https://get.helm.sh/helm-v${version}-${os}-${arch}.tar.gz
+  tar -xzf helm-v${version}-${os}-${arch}.tar.gz
+  mv ${os}-${arch}/helm helm-${version}
+  chmod +x helm-${version}
+}

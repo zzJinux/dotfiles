@@ -9,7 +9,10 @@ kx() {
     return 1
   fi
 
-  if ! [ -r ~/.kube/clusters/"$cluster"/config ]; then 
+  config_path=~/.kube/clusters/"$cluster"/config
+  env_path=~/.kube/clusters/"$cluster"/env
+
+  if ! [ -r "$config_path" ]; then 
     echo "Cluster $cluster not found"
     return 1
   fi
@@ -17,13 +20,15 @@ kx() {
   if [ "${KUBECONFIG-}" == "" ]; then
     export KUBECONFIG="$TMPDIR/$SHELL_SESSION_ID.kubeconfig"
   fi
-  cp ~/.kube/clusters/"$cluster"/config "$KUBECONFIG"
+  cp "$config_path" "$KUBECONFIG"
 
-  if [ -r ~/.kube/clusters/"$cluster"/env ]; then
+  if [ -r "$env_path" ]; then
     local line
     while read -r line; do
       export "$line"
-    done <~/.kube/clusters/"$cluster"/env
+    done <"$env_path"
+  else
+    echo "Warning: env file not found for cluster $cluster"
   fi
 
   local kubectl_comp=~/.kube/clusters/"$cluster"/kubectl-completion.bash
@@ -57,4 +62,10 @@ kn () {
 kpf() {
   eval "$(< ~/.kube/portforwards/"$1" sed 's/^/local /')"
   portforward-forever "$cluster" "$namespace" "$listen_addr" "$listen_port" "$target" "$target_port"
+}
+
+kjmp() {
+  eval "$(< ~/.kube/jumpremotes/"$1" sed 's/^/local /')"
+  REGISTRY_MIRROR_PREFIX=$REGISTRY_MIRROR_PREFIX kubejump \
+    "$cluster" "$namespace" "$local_addr" "$local_port" "$remote_host" "$remote_port"
 }

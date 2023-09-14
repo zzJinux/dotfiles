@@ -7,6 +7,9 @@ kubectl
   https://kubernetes.io/releases/version-skew-policy/
   https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG
 
+kube-apiserver is at 1.28
+kubelet is supported at 1.28, 1.27, 1.26, and 1.25
+
 helm
   https://helm.sh/docs/intro/install/
   https://github.com/helm/helm/releases

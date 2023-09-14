@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# https://github.com/kubernetes/kubernetes/issues/72597#issuecomment-693149447
+
+set -eu
+
+cluster=$1
+namespace=$2
+local_addr=$3
+local_port=$4
+remote_host=$5
+remote_port=$6
+
+target_port=$remote_port
+
+source ~/.kube/clusters/${cluster}/env
+kubectl_bin=~/.local/bin/kubectl-${KUBECTL_VERSION}
+export KUBECONFIG=~/.kube/clusters/${cluster}/config
+k=("${kubectl_bin}" -n "${namespace}")
+
+image_socat="alpine/socat:1.7.4.4"
+if [ -n "${REGISTRY_MIRROR_PREFIX-}" ]; then
+  image_socat="$REGISTRY_MIRROR_PREFIX/$image_socat"
+fi
+
+temp_pod_name=jump-server-$(</dev/urandom env LC_ALL=C tr -dc '0-9a-z' | head -c 5)
+
+function cleanup {
+  echo "" 
+  "${k[@]}" delete "pod/$temp_pod_name" --grace-period 1 --wait=false
+}
+trap cleanup EXIT
+
+"${k[@]}" create -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ${temp_pod_name}
+spec:
+  containers:
+  - name: socat
+    image: ${image_socat}
+    imagePullPolicy: IfNotPresent
+    args: ["-d", "-d", "tcp-listen:${target_port},fork,reuseaddr", "tcp-connect:${remote_host}:${remote_port}"]
+  restartPolicy: Never
+EOF
+"${k[@]}" wait --for=condition=Ready "pod/$temp_pod_name"
+"${k[@]}" port-forward --address "$local_addr" "pod/$temp_pod_name" "${local_port}:${target_port}"
