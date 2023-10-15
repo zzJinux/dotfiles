@@ -27,6 +27,7 @@ path_prepends=(
 path_appends=(
   "$HOME/go/bin"
   "$HOME/.cargo/bin"
+  "$HOME/.volta/bin"
   "$HOMEBREW_PREFIX/opt/ruby/bin"
   "$HOMEBREW_PREFIX/opt/fzf/bin"
 )
@@ -76,3 +77,5 @@ else
 fi
 
 test -x /usr/libexec/java_home && { JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME; }
+
+export VOLTA_HOME=~/.volta
