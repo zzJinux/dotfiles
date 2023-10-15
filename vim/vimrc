@@ -40,6 +40,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'tpope/vim-sleuth'
+Plug 'GutenYe/json5.vim'
 
 " skynet
 Plug 'github/copilot.vim'
