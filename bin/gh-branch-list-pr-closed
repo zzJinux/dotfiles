@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -eu
+
+branches=()
+while read -r branch; do
+  branch=${branch#refs/heads/}
+  branches+=("$branch")
+done < <(git ls-remote --heads origin | awk -F'[[:space:]]+' '{print $2}')
+
+settled=()
+jsontext=
+for branch in "${branches[@]}"; do
+  o=$(gh pr list --state closed --json 'title,number,headRefName,state' --head "$branch")
+  if [ "$(echo "$o" | jq 'length')" = 1 ]; then
+    settled+=("$branch")
+    jsontext+="$o"
+  fi
+done
+
+<<<"$jsontext" jq -s '[add|.[]|{number,title,headRefName,state}]|sort_by(.number)|reverse'
