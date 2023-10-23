@@ -1,0 +1,8 @@
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519
+
+Host 127.0.0.1,localhost
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
