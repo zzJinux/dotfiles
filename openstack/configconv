@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+
+import yaml
+
+class Field:
+    def __init__(self, name, under_auth):
+        self.name = name
+        self.under_auth = under_auth
+
+    def env_key(self):
+        return 'OS_' + self.name.upper()
+
+fields_l=[
+    Field('auth_type', False),
+    Field('auth_url', True),
+    Field('identity_api_version', True),
+    Field('domain_name', True),
+    Field('domain_id', True),
+    Field('project_domain_name', True),
+    Field('project_domain_id', True),
+    Field('project_name', True),
+    Field('project_id', True),
+    Field('user_domain_name', True),
+    Field('user_domain_id', True),
+    Field('user_id', True),
+    Field('username', True),
+    Field('password', True),
+    Field('application_credential_name', True),
+    Field('application_credential_id', True),
+    Field('application_credential_secret', True),
+    Field('token', True),
+    Field('trust_id', True),
+    Field('cert', True),
+    Field('key', True),
+    Field('cacert', True),
+    Field('region_name', False),
+    Field('interface', False),
+]
+
+fields={f.name: f for f in fields_l}
+
+def env_key(name):
+    return 'OS_' + name.upper()
+
+def from_env_entry(env):
+    if not env.startswith('OS_'):
+        raise Exception('Missing OS_ prefix: ' + env)
+    env = env[3:]
+    name, value = env.split('=', 1)
+    f = fields.get(name, None)
+    if f == None:
+        raise Exception('Unknown config field: ' + name)
+    elif f.under_auth:
+        return {'auth': {name: value}}
+    else:
+        return {name: value}
+
+def from_cloudconfig_to_env(cloud):
+    ents=[]
+    for k, v in cloud.items():
+        if k == 'auth':
+            for ak, av in v.items():
+                ents.append(env_key(ak) + '=' + av)
+        else:
+            ents.append(env_key(k) + '=' + v)
+    ents.append('')
+    return '\n'.join(ents)
+
+def read_cloudsconfig(f):
+    return yaml.safe_load(f)
+
+def write_env_from_cloudconfig(f, cloud):
+    f.write(from_cloudconfig_to_env(cloud))
+
+def write_envfiles_from_cloudsconfig(clouds):
+    for name, cloud in clouds.items():
+        with open(name + '.env', 'w') as f:
+            write_env_from_cloudconfig(f, cloud, name)
+
+def write_cloudconfig_from_envfile(f, envfile):
+    with open(envfile) as ef:
+        envs = ef.read().splitlines()
+    cloud = {}
+    for env in envs:
+        # TODO: handle comments
+        if env == '':
+            continue
+        cloud.update(from_env_entry(env))
+    with open(f.name, 'w') as cf:
+        yaml.dump(cloud, cf, default_flow_style=False)
+
+# TODO: command interface
+
+# This is temporary
+if __name__ == '__main__':
+    import sys
+    cloud_name = sys.argv[1]
+    clouds = read_cloudsconfig(sys.stdin)['clouds']
+    write_env_from_cloudconfig(sys.stdout, clouds[cloud_name])

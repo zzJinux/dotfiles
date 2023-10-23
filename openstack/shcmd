@@ -2,3 +2,19 @@
 osc() {
   export OS_CLOUD="$1"
 }
+
+osce() {
+  clouds_path=~/.config/openstack/clouds.yaml
+  secure_path=~/.config/openstack/secure.yaml
+  # TODO: extract ~/.dotfiles to a variable DOTFILES
+  configconv=~/.dotfiles/openstack/configconv
+  cloud_name="$1"
+
+  local IFS=$'\n'
+  local envs=( $(cat <(<"$clouds_path" "$configconv" "$cloud_name") <(<"$secure_path" "$configconv" "$cloud_name")) )
+  local env
+  for env in "${envs[@]}"; do
+    export "$env"
+  done
+  export OS_CLOUD_NAME="$cloud_name"
+}

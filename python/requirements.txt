@@ -1,0 +1,5 @@
+# Lists packages used by utility scripts that don't require a serious setup
+
+requests
+beautifulsoup4
+PyYAML

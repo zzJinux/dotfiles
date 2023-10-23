@@ -9,4 +9,4 @@ _fzf_complete_osc() {
     COMPREPLY=( $(compgen -W "$wordlist" -- "$cur") )
   fi < <(yq '.clouds|keys|.[]' ~/.config/openstack/clouds.yaml)
 }
-complete -F _fzf_complete_osc osc
+complete -F _fzf_complete_osc osc osce
