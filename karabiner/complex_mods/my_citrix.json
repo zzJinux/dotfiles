@@ -1,0 +1,53 @@
+{
+    "title": "My Citrix mods",
+    "rules": [
+        {
+            "description": "In Citrix, change left_command to Control via \"left_control\"",
+            "manipulators": [
+                {
+                    "from": {
+                        "key_code": "left_command",
+                        "modifiers": { "optional": [ "any" ] }
+                    },
+                    "to": {
+                        "key_code": "left_control"
+                    },
+                    "type": "basic",
+                    "conditions": [
+                        {
+                            "type": "frontmost_application_if",
+                            "bundle_identifiers": [
+                                "^com\\.citrix\\.XenAppViewer$",
+                                "^com\\.citrix\\.receiver\\.icaviewer\\.mac$"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "Not in Citrix, change right_option to fn",
+            "manipulators": [
+                {
+                    "from": {
+                        "key_code": "right_option",
+                        "modifiers": { "optional": [ "any" ] }
+                    },
+                    "to": {
+                        "key_code": "fn"
+                    },
+                    "type": "basic",
+                    "conditions": [
+                        {
+                            "type": "frontmost_application_unless",
+                            "bundle_identifiers": [
+                                "^com\\.citrix\\.XenAppViewer$",
+                                "^com\\.citrix\\.receiver\\.icaviewer\\.mac$"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
