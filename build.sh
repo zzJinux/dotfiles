@@ -63,7 +63,6 @@ execute cp "${MODULES_DIR}"/git/config "${MODULES_DIR}"/git/ignore "${staging_di
 ohai hammerspoon
 execute mkdir -p "${staging_dir}"/.hammerspoon
 execute cp "${MODULES_DIR}"/hammerspoon/init.lua "${staging_dir}"/.hammerspoon/
-execute cp "${MODULES_DIR}"/hammerspoon/url_router.json "${staging_dir}"/.hammerspoon/
 
 ohai jetbrains
 execute cp "${MODULES_DIR}"/jetbrains/ideavimrc "${staging_dir}"/.ideavimrc
