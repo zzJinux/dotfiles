@@ -73,3 +73,6 @@ fi
 test -x /usr/libexec/java_home && { JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME; }
 
 export VOLTA_HOME=~/.volta
+
+# 1password (See ~/.config/op/config)
+export OP_PLUGIN_ALIASES_SOURCED=1

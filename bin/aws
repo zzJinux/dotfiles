@@ -1,0 +1,8 @@
+#!/bin/sh
+echo hi
+if [ "${1-}" = '@FROM_PROXY' ]; then
+  shift
+  exec aws "$@"
+else
+  exec op plugin run -- aws '@FROM_PROXY' "$@"
+fi
