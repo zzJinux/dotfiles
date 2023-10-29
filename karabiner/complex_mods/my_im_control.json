@@ -346,6 +346,43 @@
           "type": "basic"
         }
       ]
+    },
+    {
+      "description": "Apple_EN on Spotlight search (Cmd+Space)",
+        "manipulators": [
+          {
+            "type": "basic",
+            "from": {
+              "key_code": "spacebar",
+              "modifiers": {
+                "mandatory": [
+                  "left_command"
+                ]
+              }
+            },
+            "to": [
+              {
+                "select_input_source": {
+                  "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+                }
+              },
+              {
+                "key_code": "spacebar",
+                "modifiers": ["left_command"]
+              }
+            ],
+            "conditions": [
+              {
+                "type": "input_source_unless",
+                "input_sources": [
+                  {
+                    "input_source_id": "^com\\.apple\\.keylayout\\.ABC$"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
     }
   ]
 }
