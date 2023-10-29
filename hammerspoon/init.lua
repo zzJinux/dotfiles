@@ -131,3 +131,7 @@ do
     setupURLRouter(config)
   end
 end
+
+if hs.fs.attributes(hs.configdir .. "/" .. "init_private.lua") then
+  require("init_private")
+end
