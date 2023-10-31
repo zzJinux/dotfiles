@@ -16,5 +16,5 @@ osce() {
   for env in "${envs[@]}"; do
     export "$env"
   done
-  export OS_CLOUD_NAME="$cloud_name"
+  # export OS_CLOUD_NAME="$cloud_name"
 }
