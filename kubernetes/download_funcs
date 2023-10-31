@@ -4,16 +4,40 @@ download_kubectl() {
   local os=$1
   local arch=$2
   local version=$3
-  curl -L -o kubectl-$version "https://dl.k8s.io/release/v${version}/bin/$os/$arch/kubectl"
-  chmod +x kubectl-$version
+  n=kubectl
+  if [[ "$os" == "windows" ]]; then
+    n+=.exe
+  fi
+  out=kubectl-${os}-${arch}-${version}
+  if [[ "$os" == "windows" ]]; then
+    out+=.exe
+  fi
+
+  curl -LO https://dl.k8s.io/v${version}/kubernetes-client-${os}-${arch}.tar.gz
+  tar -xzf kubernetes-client-${os}-${arch}.tar.gz
+  mv kubernetes/client/bin/${n} "$out"
+  rm kubernetes-client-${os}-${arch}.tar.gz
+  rm -rf kubernetes
+  chmod +x "$out"
 }
 
 download_helm() {
   local os=$1
   local arch=$2
   local version=$3
-  curl -LO https://get.helm.sh/helm-v${version}-${os}-${arch}.tar.gz
-  tar -xzf helm-v${version}-${os}-${arch}.tar.gz
-  mv ${os}-${arch}/helm helm-${version}
-  chmod +x helm-${version}
+  n=helm
+  if [[ "$os" == "windows" ]]; then
+    n+=.exe
+  fi
+  out=helm-${os}-${arch}-${version}
+  if [[ "$os" == "windows" ]]; then
+    out+=.exe
+  fi
+
+  curl -LO "https://get.helm.sh/helm-v${version}-${os}-${arch}.tar.gz"
+  tar -xzf "helm-v${version}-${os}-${arch}.tar.gz"
+  mv "${os}-${arch}/${n}" "$out"
+  rm "helm-v${version}-${os}-${arch}.tar.gz"
+  rm -rf "${os}-${arch}"
+  chmod +x "$out"
 }
