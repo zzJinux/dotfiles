@@ -1,5 +1,30 @@
 #!/usr/bin/env bash
 
+exportenv() {
+  while read -r line; do
+    line="${line%%#*}"
+    # trim leading and trailing whitespaces
+    line="${line#"${line%%[![:space:]]*}"}"  # Remove leading whitespace
+    line="${line%"${line##*[![:space:]]}"}"  # Remove trailing whitespace
+    if [ -z "$line" ]; then
+      continue
+    fi
+    export "$line"
+  done <"$1"
+}
+
+title() {
+   # Change the title of the current window or tab
+   # xterm control sequence, "Set Text Parameters"
+   echo -ne "\033]0;$*\007"
+}
+
+ssh() {
+  /usr/bin/ssh "$@"
+  # revert the window title after the ssh command
+  title "$USER@$HOST"
+}
+
 complete_alias="$DOTFILES/bash/complete-alias"
 
 source "$complete_alias/complete_alias"
@@ -46,7 +71,7 @@ alias egrep='egrep --color=auto'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias mkdir='mkdir -v'
-alias ls='ls --color=auto -F'
+alias ls='ls --color=always -F' # ad-hoc fix for TERM=iterm2
 alias l='ls -A'
 alias ll='ls -hl'
 alias la='ls -Ahl'
