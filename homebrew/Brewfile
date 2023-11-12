@@ -39,7 +39,7 @@ brew "kube-ps1", args: ["ignore-dependencies"]
 brew "less"
 brew "make"
 brew "mandoc"
-brew "ncurses", link: :force
+brew "ncurses"
 brew "neovim"
 brew "nmap"
 brew "pandoc"

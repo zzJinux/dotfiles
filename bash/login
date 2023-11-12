@@ -8,6 +8,12 @@ export LC_ALL=$LANG
 
 export BLOCKSIZE=1k # Default blocksize for ls, df, du
 
+# TERM
+if [ "$TERM_PROGRAM" = "vscode" ]; then
+  TERM=vscode
+  # TODO: use vscode for EDITOR?
+fi
+
 # Homebrew
 source "$DOTFILES/homebrew/login__local"
 
