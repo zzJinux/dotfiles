@@ -1,5 +1,5 @@
 # Lists packages used by utility scripts that don't require a serious setup
 
-requests
-beautifulsoup4
-PyYAML
+requests==2.31.0
+beautifulsoup4==4.12.2
+PyYAML==6.0.1
