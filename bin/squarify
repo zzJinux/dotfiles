@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -eu -o pipefail
+
+input="$1"
+output="output.png"
+
+# Get dimensions of the image
+dimensions=$(identify -format "%wx%h" <(cat "$input"))
+width=$(echo $dimensions | cut -d'x' -f1)
+height=$(echo $dimensions | cut -d'x' -f2)
+
+# Determine the larger dimension
+if [ $width -gt $height ]; then
+   square_size=$width
+else
+   square_size=$height
+fi
+
+# Resize and extend image to the square
+convert <(cat "$input") -resize ${square_size}x${square_size} -background none -gravity center -extent ${square_size}x${square_size} $output
+
