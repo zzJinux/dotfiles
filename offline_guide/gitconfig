@@ -1,0 +1,2 @@
+[url "file:///absolute/path/to/github.com"] 
+  insteadOf = https://github.com

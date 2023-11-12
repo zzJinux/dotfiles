@@ -1,0 +1,4 @@
+vimplug offline install
+  https://github.com/junegunn/vim-plug/issues/808
+  https://stackoverflow.com/questions/60057790
+  ... or you can just package `plugged` folder
