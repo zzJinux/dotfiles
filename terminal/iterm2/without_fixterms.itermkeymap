@@ -1,0 +1,11 @@
+{
+    "Key Mappings": {
+        "0x20-0x40000-0x31": {
+            "Version": 1,
+            "Action": 11,
+            "Text": "0x00",
+            "Label": ""
+        }
+    },
+    "Touch Bar Items": []
+}
