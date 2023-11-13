@@ -15,6 +15,7 @@ $if mode=vi
   # "\C-e": end-of-line
   "\C-e": shell-expand-line
   "\C-l": clear-screen
+  "\e[91;5u": vi-movement-mode
 $endif
 
 # bash completion configs
