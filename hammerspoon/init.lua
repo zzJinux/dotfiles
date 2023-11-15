@@ -103,10 +103,10 @@ function setupURLRouter(config)
       -- DO NOTHING
     else
       for _, rule in ipairs(rules) do
-	if rule:match(host) then
-	  procName = rule.processor
-	  break
-	end
+        if rule:match(host) then
+          procName = rule.processor
+          break
+        end
       end
     end
 
@@ -122,7 +122,7 @@ function setupURLRouter(config)
 end
 
 do
-  hs.console.printStyledtext("LOG LELVEL: "  .. tostring(logger.getLogLevel()))
+  hs.console.printStyledtext("LOG LELVEL: " .. tostring(logger.getLogLevel()))
 
   setupInputSourceChanger()
 
