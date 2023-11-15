@@ -21,6 +21,10 @@ local function setupInputSourceChanger()
   hs.hotkey.bind({}, 'F15', changeInput)
 end
 
+local function escape(s)
+  return (s:gsub('[%-%.%+%[%]%(%)%$%^%%%?%*]', '%%%1'))
+end
+
 local function Rule(domains, processor)
   local rule = {
     domains = domains,
@@ -29,7 +33,7 @@ local function Rule(domains, processor)
 
   function rule:match(host)
     for _, domain in ipairs(self.domains) do
-      if host == domain or string.match(host, '%.' .. domain .. '$') then
+      if host == domain or string.match(host, '%.' .. escape(domain) .. '$') then
         return true
       end
     end
