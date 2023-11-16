@@ -43,6 +43,11 @@ local function Rule(domains, processor)
   return rule
 end
 
+URLRouterPicky = false
+function ToggleURLRouterPicky()
+  URLRouterPicky = not URLRouterPicky
+end
+
 function setupURLRouter(config)
   local processors = {}
   local procNames = {}
@@ -105,6 +110,8 @@ function setupURLRouter(config)
 
     if host == nil then
       -- DO NOTHING
+    elseif URLRouterPicky then
+      procName = "picker"
     else
       for _, rule in ipairs(rules) do
         if rule:match(host) then
