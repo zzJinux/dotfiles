@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 osc() {
+  for k in $(awk 'BEGIN{for(v in ENVIRON) print v}' | grep '^OS_'); do
+    eval "export ${k}="
+  done
   export OS_CLOUD="$1"
 }
 
@@ -16,5 +19,6 @@ osce() {
   for env in "${envs[@]}"; do
     export "$env"
   done
+  export OS_CLOUD=
   # export OS_CLOUD_NAME="$cloud_name"
 }
