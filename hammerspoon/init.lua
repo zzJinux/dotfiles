@@ -34,10 +34,10 @@ local function Rule(domains, processor)
   function rule:match(host)
     for _, domain in ipairs(self.domains) do
       if host == domain or string.match(host, '%.' .. escape(domain) .. '$') then
-        return true
+        return domain
       end
     end
-    return false
+    return ''
   end
 
   return rule
@@ -113,10 +113,12 @@ function setupURLRouter(config)
     elseif URLRouterPicky then
       procName = "picker"
     else
+      maxlen = 0
       for _, rule in ipairs(rules) do
-        if rule:match(host) then
+        d = rule:match(host)
+        if #d > maxlen then
+          maxlen = #d
           procName = rule.processor
-          break
         end
       end
     end
