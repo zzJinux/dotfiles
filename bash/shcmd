@@ -35,6 +35,8 @@ alias dk='docker'
 complete -F _complete_alias dk
 alias os='openstack'
 complete -F _complete_alias os
+alias tf='terraform'
+complete -F _complete_alias tf
 
 
 if command -v nvim &> /dev/null; then

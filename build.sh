@@ -87,3 +87,8 @@ done
 ohai tmux
 execute mkdir -p "${staging_dir}"/.config/tmux
 execute cp "${MODULES_DIR}"/tmux/tmux.conf "${staging_dir}"/.config/tmux/tmux.conf
+
+ohai terraform
+execute mkdir -p "${staging_dir}"/.terraform.d/plugin-cache
+execute touch "${staging_dir}"/.terraform.d/plugin-cache/.placeholder
+execute cp "${MODULES_DIR}"/terraform/terraformrc "${staging_dir}"/.terraformrc
