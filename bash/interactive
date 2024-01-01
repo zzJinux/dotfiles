@@ -85,3 +85,8 @@ source "$DOTFILES/bash/shcmd"
 [ -r "$DOTFILES/bash/shcmd_macos" ] && source "$DOTFILES/bash/shcmd_macos"
 [ -r "$DOTFILES/bash/shcmd__local" ] && source "$DOTFILES/bash/shcmd__local"
 source "$DOTFILES/bash/prompt"
+
+# Workaround for https://github.com/jesseduffield/lazygit/issues/2962
+lazygit() {
+  TERM=xterm-256color command lazygit "$@"
+}
