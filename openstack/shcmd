@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 osc() {
+  local k
   for k in $(awk 'BEGIN{for(v in ENVIRON) print v}' | grep '^OS_'); do
     eval "export ${k}="
   done
@@ -7,11 +8,11 @@ osc() {
 }
 
 osce() {
-  clouds_path=~/.config/openstack/clouds.yaml
-  secure_path=~/.config/openstack/secure.yaml
+  local clouds_path=~/.config/openstack/clouds.yaml
+  local secure_path=~/.config/openstack/secure.yaml
   # TODO: extract ~/.dotfiles to a variable DOTFILES
-  configconv=~/.dotfiles/openstack/configconv
-  cloud_name="$1"
+  local configconv=~/.dotfiles/openstack/configconv
+  local cloud_name="$1"
 
   local IFS=$'\n'
   local envs=( $(cat <(<"$clouds_path" "$configconv" "$cloud_name") <(<"$secure_path" "$configconv" "$cloud_name")) )
@@ -21,4 +22,13 @@ osce() {
   done
   export OS_CLOUD=
   # export OS_CLOUD_NAME="$cloud_name"
+}
+
+ostok() {
+  local token
+  token=$(openstack token issue -c id -f value)
+  export OS_TOKEN="$token" AUTH_TOKEN="$token"
+  if [ "$1" = copy ]; then
+    pbcopy <<< "$token"
+  fi
 }
