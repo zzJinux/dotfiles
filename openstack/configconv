@@ -35,6 +35,7 @@ fields_l=[
     Field('cacert', True),
     Field('region_name', False),
     Field('interface', False),
+    Field('storage_url', False),
 ]
 
 fields={f.name: f for f in fields_l}
