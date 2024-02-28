@@ -77,6 +77,8 @@ KUBE_PS1_SYMBOL_ENABLE=false # https://github.com/jonmosco/kube-ps1#customizatio
 source "$DOTFILES/kubernetes/shcmd"
 # openstack
 source "$DOTFILES/openstack/shcmd"
+# aws
+source "$DOTFILES/aws/shcmd"
 
 eval "$(zoxide init bash)" # cache somewhere?
 

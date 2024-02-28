@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+awsp() {
+  export AWS_PROFILE="$1"
+}
