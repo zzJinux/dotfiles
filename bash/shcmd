@@ -80,7 +80,7 @@ epoch() {
   fi
   gdate -d @"$1" --iso-8601=seconds
 }
-# alias py=python3
+alias py=python3
 
 # alias sudo='sudo '
 alias sudo='sudo' # https://github.com/cykerway/complete-alias/tree/master#faq
