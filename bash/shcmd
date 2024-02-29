@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
 exportenv() {
+  if [ -z "$1" ]; then
+    echo "Usage: exportenv <file>"
+    echo "File format:"
+    echo "  VAR1=value1"
+    echo "  VAR2=value2"
+    return 1
+  fi
   while read -r line; do
     line="${line%%#*}"
     # trim leading and trailing whitespaces
@@ -11,6 +18,22 @@ exportenv() {
     fi
     export "$line"
   done <"$1"
+}
+
+resetenv() {
+  if [ -z "$1" ]; then
+    echo "Usage: resetenv <prefix>"
+    return 1
+  fi
+  local prefix="$1"
+  local name _
+
+  # List and obliterate environment variables with the given prefix
+  while IFS='=' read -r name _; do
+    if [[ $name == $prefix* ]]; then
+      unset "$name"
+    fi
+  done < <(env)
 }
 
 title() {
@@ -57,7 +80,7 @@ epoch() {
   fi
   gdate -d @"$1" --iso-8601=seconds
 }
-alias py=python3
+# alias py=python3
 
 # alias sudo='sudo '
 alias sudo='sudo' # https://github.com/cykerway/complete-alias/tree/master#faq
