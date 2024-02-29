@@ -32,7 +32,7 @@ osce() {
 ostok() {
   local token project_id
   read -d '' token project_id < <(openstack token issue -c id -c project_id -f value)
-  export OS_TOKEN="$token" AUTH_TOKEN="$token" OS_PROJECT_ID="$project_id" PROJECT_ID="$project_id"
+  export OS_TOKEN="$token" OS_AUTH_TOKEN="$token" OS_PROJECT_ID="$project_id" PROJECT_ID="$project_id"
   echo "Token: $token"
   echo "Project ID: $project_id"
   if [ "$1" = copy ]; then
