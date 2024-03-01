@@ -100,7 +100,6 @@ alias ls='ls --color=auto -F'
 alias l='ls -A'
 alias ll='ls -hl'
 alias la='ls -Ahl'
-alias less='less --mouse -FSRXc'
 
 cd() { builtin cd "$@" && ls; }; if ! complete -p cd >/dev/null 2>&1; then complete -d cd; fi
 alias ..='cd ../'

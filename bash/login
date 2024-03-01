@@ -76,6 +76,9 @@ else
   EDITOR=$(command -v vi)
 fi
 
+export LESS="--mouse -iR"
+export PAGER="$HOMEBREW_PREFIX/opt/less/bin/less --mouse -iR"
+
 test -x /usr/libexec/java_home && { JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME; }
 
 export VOLTA_HOME=~/.volta
