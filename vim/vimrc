@@ -29,6 +29,9 @@ Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 Plug 'morhetz/gruvbox'
 Plug 'rakr/vim-one'
 
+" navigation
+Plug 'justinmk/vim-sneak'
+
 " editing
 " Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-endwise'

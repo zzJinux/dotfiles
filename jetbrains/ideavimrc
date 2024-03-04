@@ -1,3 +1,6 @@
+" Enables builtin vim-sneak integration
+Plug 'justinmk/vim-sneak'
+
 nmap <leader><C-d> <Action>(Debug)
 nmap <leader><C-h> <Action>(TypeHierarchy)
 nmap <leader><C-i> <Action>(ImplementMethods)
