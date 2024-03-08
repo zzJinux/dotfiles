@@ -94,7 +94,19 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias cp='cp -iv'
-alias mv='mv -iv'
+zmv() {
+  if [[ $2 == */ ]]; then
+    echo "zmv: destination must not end with a slash" >&2
+    return 1
+  fi
+  if command mv -iv -- "$1" "$2"; then
+    zoxide remove "$1"
+    zoxide add "$2"
+    return
+  else
+    return
+  fi
+}
 alias mkdir='mkdir -v'
 alias ls='ls --color=auto -F'
 alias l='ls -A'
