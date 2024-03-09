@@ -1,2 +1,1 @@
-alias dk='docker'
-complete -F _complete_alias dk
+alias_and_comp dk docker

@@ -69,8 +69,7 @@ epoch() {
 alias py=python3
 
 # alias sudo='sudo '
-alias sudo='sudo' # https://github.com/cykerway/complete-alias/tree/master#faq
-complete -F _complete_alias sudo
+alias_and_comp sudo sudo # https://github.com/cykerway/complete-alias/tree/master#faq
 alias sudoal='sudo '
 
 # https://natelandau.com/my-mac-osx-bash_profile/

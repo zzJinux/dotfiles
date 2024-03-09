@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-alias kl='kubectl'
-complete -F _complete_alias kl
+alias_and_comp kl kubectl
 
 kx() {
   local cluster=$1

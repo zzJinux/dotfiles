@@ -28,7 +28,13 @@ shopt -u sourcepath
 # Defines _complete_alias function
 source "$DOTFILES/bash/complete-alias/complete_alias"
 
+alias_and_comp() {
+  alias "$1"="$2"
+  complete -F _complete_alias "$1"
+}
+
 # bash-completion@2
+# Maybe you don't need all pre-installed completions
 [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]] && . "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
 li=(
   zoxide

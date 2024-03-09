@@ -1,2 +1,1 @@
-alias tf='terraform'
-complete -F _complete_alias tf
+alias_and_comp tf terraform
