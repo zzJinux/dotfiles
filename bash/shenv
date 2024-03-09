@@ -15,13 +15,6 @@ export ENV= # TBD
 # (unlike $ENV, which is for interactive shells)
 export BASH_ENV="$DOTFILES/bash/shenv"
 
-# Only interactive shells are qualified to set $SHELL_SESSION_ID
-if [[ $- == *i* ]]; then
-  declare -xgr SHELL_SESSION_ID="$EPOCHSECONDS-$$"
-fi
-
-umask 0077
-
-test -r "$DOTFILES/bash/shenv__local" && source "$DOTFILES/bash/shenv__local"
+source "$DOTFILES/shell/env"
 
 # Reference: https://heptapod.host/flowblok/shell-startup/-/blob/branch/default/.shell/env

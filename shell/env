@@ -1,0 +1,6 @@
+# Only interactive shells are qualified to set $SHELL_SESSION_ID
+if [[ $- == *i* ]]; then
+  declare -xgr SHELL_SESSION_ID="$EPOCHSECONDS-$$"
+fi
+
+umask 0077
