@@ -29,7 +29,6 @@ path_appends=(
   "$HOME/.cargo/bin"
   "$HOME/.volta/bin"
   "$HOMEBREW_PREFIX/opt/ruby/bin"
-  "$HOMEBREW_PREFIX/opt/fzf/bin"
 )
 
 test -r "$DOTFILES/bash/login__local" && source "$DOTFILES/bash/login__local"
@@ -85,3 +84,11 @@ export VOLTA_HOME=~/.volta
 
 # 1password (See ~/.config/op/config)
 export OP_PLUGIN_ALIASES_SOURCED=1
+
+# pnpm
+export PNPM_HOME="/Users/kep/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
