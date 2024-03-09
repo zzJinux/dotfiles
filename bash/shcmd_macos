@@ -50,8 +50,3 @@ alias mountReadWrite='/sbin/mount -uw /'    # mountReadWrite:   For use when boo
     alias screensaverDesktop='/System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine -background'
  
 alias flushdns='dscacheutil -flushcache'            # flushDNS:     Flush out the DNS Cache
-
-# TODO: should use pf
-alias ipInfo0='ipconfig getpacket en0'              # ipInfo0:      Get info on connections for en0
-alias ipInfo1='ipconfig getpacket en1'              # ipInfo1:      Get info on connections for en1
-alias showBlocked='sudo ipfw list'                  # showBlocked:  All ipfw rules inc/ blocked IPs
