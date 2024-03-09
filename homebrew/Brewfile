@@ -4,58 +4,80 @@ tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "homebrew/services"
-brew "ack"
-brew "bash"
+
+# [macos]: macOS has own versions
+# [gnu]: GNU dialect
+
+# Interactive
+brew "bash" # [macos]
 brew "bash-completion@2"
-brew "bat"
-brew "bind"
-brew "cmake"
-brew "coreutils"
-brew "curl"
-brew "diffutils"
-brew "expect"
-brew "findutils"
+brew "zsh" # [macos]
+brew "tmux"
+brew "zoxide"
+brew "tree"
+brew "pstree"
+brew "neovim"
+brew "less" # [macos]
+brew "mandoc" # [macos]
+brew "tldr"
+brew "kube-ps1", args: ["ignore-dependencies"]
+brew "gum"
+brew "ncurses" # [macos,keg-only]
+brew "ptpython"
+
+# Searching
+brew "ack"
 brew "fzf"
-brew "gawk"
+brew "grep" # [macos]
+
+# Viewing
+brew "bat"
+
+# Data inspection/processing/formatting
+brew "awk" # [macos] nawk
+brew "gawk" # [macos] g-prefixed
+brew "gnu-sed" # [macos] g-prefixed
+brew "jq"
+brew "jless"
+brew "yq",
+brew "gomplate"
+brew "pandoc"
+brew "groff"
+
+# Network clients
+brew "bind" # [macos]
+brew "nmap"
+brew "curl" # [macos,keg-only]
+brew "wget"
+brew "websocat"
+brew "grpcurl"
+
+# Security tools
+brew "gnupg"
+brew "krb5" # [macos,keg-only]
+
+# Devtools
+brew "cmake"
+brew "make" # [macos]
 brew "gh"
-brew "git"
+brew "git" # [macos]
 brew "git-delete-merged-branches"
 brew "git-delta"
 brew "git-lfs"
-brew "gnu-sed"
-brew "gnu-tar"
-brew "gnupg"
-brew "gomplate"
-brew "grep"
-brew "groff"
-brew "grpcurl"
-brew "gum"
-brew "helm"
-brew "jq"
-brew "jless"
-brew "krb5"
-brew "kube-ps1", args: ["ignore-dependencies"]
 brew "jesseduffield/lazygit/lazygit"
-brew "less"
-brew "make"
-brew "mandoc"
-brew "ncurses"
-brew "neovim"
-brew "nmap"
-brew "pandoc"
-brew "pipx"
-brew "ptpython"
-brew "pstree"
+brew "helm"
+brew "tilt"
+brew "subversion"
+
+# Language tools
 brew "ruby"
 brew "shellcheck"
 brew "shfmt"
-brew "subversion"
-brew "tldr"
-brew "tilt"
-brew "tmux"
-brew "tree"
-brew "websocat"
-brew "wget"
-brew "yq"
-brew "zoxide"
-brew "zsh"
+
+# Etc
+brew "gnu-tar" # [macos] g-prefixed
+brew "expect" # [macos]
+brew "coreutils" # [macos] g-prefixed
+brew "diffutils" # [macos] g-prefixed
+brew "findutils" # [macos] g-prefixed
+brew "pipx"
