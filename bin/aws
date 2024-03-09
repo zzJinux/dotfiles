@@ -1,7 +1,0 @@
-#!/bin/sh
-if [ "${1-}" = '@FROM_PROXY' ]; then
-  shift
-  exec /opt/homebrew/bin/aws "$@" # I don't like the exact path is hardcoded here.
-else
-  exec op plugin run -- aws '@FROM_PROXY' "$@"
-fi
