@@ -78,7 +78,7 @@ execute cp "${MODULES_DIR}"/readline/inputrc "${staging_dir}"/.inputrc
 source "${MODULES_DIR}/homebrew/shlogin"
 
 ohai bash
-for f in bash_profile bashrc bash_logout; do
+for f in bash_profile bashrc bash_logout bashenv; do
   cat "${MODULES_DIR}"/"bash/${f}" \
     | sed "s|:PH_DOTFILES:|${dotf_path}|g" \
     | sed "s|:PH_HOMEBREW_PREFIX:|${HOMEBREW_PREFIX}|g" \

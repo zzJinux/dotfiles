@@ -1,0 +1,7 @@
+# This is NOT a part of the native bash execution flow.
+# It is only executed by non-login non-interactive shells.
+_iife() {
+local DOTFILES=:PH_DOTFILES:
+source "$DOTFILES/bash/shenv"
+} && _iife
+unset _iife

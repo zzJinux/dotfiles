@@ -13,7 +13,7 @@ export ENV= # TBD
 
 # We also need to set BASH_ENV, which is run for *non-interactive* shells.
 # (unlike $ENV, which is for interactive shells)
-export BASH_ENV="$DOTFILES/bash/shenv"
+export BASH_ENV=~/.bashenv
 
 source "$DOTFILES/shell/env"
 
