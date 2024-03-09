@@ -11,7 +11,7 @@ local DOTFILES=:PH_DOTFILES:
 source "$DOTFILES/bash/shenv" .
 
 # Run 'login'
-source "$DOTFILES/bash/login"
+source "$DOTFILES/bash/profile"
 
 # Run 'interactive' if this is an interactive shell.
 [[ $- == *i* ]] && source "$DOTFILES/bash/interactive"
