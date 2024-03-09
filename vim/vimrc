@@ -46,6 +46,10 @@ Plug 'tpope/vim-sleuth'
 Plug 'GutenYe/json5.vim'
 Plug 'hashivim/vim-terraform'
 
+" misc
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+
 " skynet
 Plug 'github/copilot.vim'
 
@@ -277,7 +281,7 @@ augroup myautocmds
 augroup END
 
 
-if (exists("g:neovide"))
+if exists("g:neovide")
   source ~/.gvimrc
 
   " https://github.com/neovide/neovide/issues/113
