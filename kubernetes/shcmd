@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+alias kl='kubectl'
+complete -F _complete_alias kl
 
 kx() {
   local cluster=$1
@@ -69,3 +71,8 @@ kjmp() {
   REGISTRY_MIRROR_PREFIX=$REGISTRY_MIRROR_PREFIX kubejump \
     "$cluster" "$namespace" "$local_addr" "$local_port" "$remote_host" "$remote_port"
 }
+
+# kube-ps1
+source "${HOMEBREW_PREFIX}/opt/kube-ps1/share/kube-ps1.sh"
+#shellcheck disable=SC2034
+KUBE_PS1_SYMBOL_ENABLE=false # https://github.com/jonmosco/kube-ps1#customization

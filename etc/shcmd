@@ -1,0 +1,35 @@
+# If in a terminal
+if [ -t 0 ]; then
+  # other users shouldn't be able to message by default
+  mesg n
+
+  # max_colors=`tput colors 2>/dev/null`
+fi
+
+# Fix the shortcut for searching backward in history is not working
+# https://stackoverflow.com/a/791800/3912693
+# https://stackoverflow.com/a/25391867/3912693
+# stty -ixon
+
+# ls color setup
+if [ -x /usr/bin/dircolors ]; then
+  if [ -r ~/.dircolors ]; then
+    eval "$(dircolors -b ~/.dircolors)"
+  else
+    eval "$(dircolors -b)"
+  fi
+fi
+
+# colorize macOS ls output
+export CLICOLOR
+: "${CLICOLOR=1}"
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+#   Add color to terminal
+#   (this is all commented out as I use Mac Terminal Profiles)
+#   from http://osxdaily.com/2012/02/21/add-color-to-the-terminal-in-mac-os-x/
+#   ------------------------------------------------------------
+#   export CLICOLOR=1
+#   export LSCOLORS=ExFxBxDxCxegedabagacad

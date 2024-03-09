@@ -1,0 +1,2 @@
+alias dk='docker'
+complete -F _complete_alias dk

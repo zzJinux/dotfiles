@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 alias f='open -a Finder ./'                 # f:            Opens current directory in MacOS Finder
 trash () { command mv "$@" ~/.Trash ; }     # trash:        Moves a file to the MacOS trash
 ql () { qlmanage -p "$*" >& /dev/null; }    # ql:           Opens any file in MacOS Quicklook Preview
@@ -6,6 +5,7 @@ ql () { qlmanage -p "$*" >& /dev/null; }    # ql:           Opens any file in Ma
 #   cdf:  'Cd's to frontmost window of MacOS Finder
 #   ------------------------------------------------------
     cdf () {
+        local currFolderPath
         currFolderPath=$( /usr/bin/osascript <<EOT
             tell application "Finder"
                 try

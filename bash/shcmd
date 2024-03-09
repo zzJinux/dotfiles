@@ -48,20 +48,6 @@ ssh() {
   title "$USER@$HOST"
 }
 
-complete_alias="$DOTFILES/bash/complete-alias"
-
-source "$complete_alias/complete_alias"
-unset -v complete_alias
-alias kl='kubectl'
-complete -F _complete_alias kl
-alias dk='docker'
-complete -F _complete_alias dk
-alias os='openstack'
-complete -F _complete_alias os
-alias tf='terraform'
-complete -F _complete_alias tf
-
-
 if command -v nvim &> /dev/null; then
   alias vi='nvim'
   alias nvimdiff='nvim -d'
