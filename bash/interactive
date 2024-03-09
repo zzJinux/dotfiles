@@ -30,8 +30,8 @@ source "$DOTFILES/bash/complete-alias/complete_alias"
 
 # bash-completion@2
 [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]] && . "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
-
 li=(
+  zoxide
   docker
   kubernetes
   terraform

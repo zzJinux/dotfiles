@@ -1,0 +1,5 @@
+if [ -n "$BASH" ]; then
+  eval "$(zoxide init bash)"
+elif [ -n "$ZSH_NAME" ]; then
+  eval "$(zoxide init zsh)"
+fi
