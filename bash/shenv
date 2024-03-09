@@ -9,7 +9,7 @@ fi
 # and then start "sh" as a non-login interactive shell the startup scripts will
 # correctly run.
 # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/sh.html
-export ENV="$DOTFILES/bash/interactive"
+export ENV= # TBD
 
 # We also need to set BASH_ENV, which is run for *non-interactive* shells.
 # (unlike $ENV, which is for interactive shells)
