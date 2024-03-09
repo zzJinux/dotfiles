@@ -19,6 +19,8 @@
   root = rev-parse --show-toplevel
   wt = worktree
   wtls = worktree list
+  cho = checkout
+  br = branch
 [color]
   ui = auto
   diff = auto
