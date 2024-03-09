@@ -7,3 +7,18 @@ if has("gui_macvim")
   map <S-F15> <Nop>
   map! <S-F15> <Nop>
 endif
+
+if exists("g:neovide")
+  set guifont=JetBrainsMono\ Nerd\ Font,Sarasa\ Mono\ K:h15
+
+  " https://github.com/neovide/neovide/issues/113
+  " https://github.com/neovide/neovide/issues/1263
+  " system clipboard
+  let g:neovide_input_use_logo = 1
+  vmap     <D-c> "+y
+  map      <D-v> "+p
+  noremap! <D-v> <C-R>+
+
+  " insert original character without triggering things like auto-pairs
+  imap <C-r> <D-v>
+endif
