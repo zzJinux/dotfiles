@@ -113,6 +113,14 @@ alias l='ls -A'
 alias ll='ls -hl'
 alias la='ls -Ahl'
 
+sugg() {
+  gh copilot suggest "$@"
+}
+
+expl() {
+  gh copilot explain "$@"
+}
+
 cd() { builtin cd "$@" && ls; }; if ! complete -p cd >/dev/null 2>&1; then complete -d cd; fi
 alias ..='cd ../'
 alias ..2='cd ../../'
