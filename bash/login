@@ -1,50 +1,38 @@
 #!/usr/bin/env bash
 
-declare -xgr LOGIN_SHELL_SESSION_ID=$SHELL_SESSION_ID
+# shellcheck disable=SC1091
 
 # Language
 export LANG='en_US.UTF-8'
 export LC_ALL=$LANG
 
-export BLOCKSIZE=1k # Default blocksize for ls, df, du
+path_prepends=("$HOME/bin" "$HOME/.local/bin")
+path_appends=()
 
-# TERM
-if [ "$TERM_PROGRAM" = "vscode" ]; then
-  TERM=vscode
-  # TODO: use vscode for EDITOR?
-fi
+source "$DOTFILES/homebrew/shlogin"
 
-# Homebrew
-source "$DOTFILES/homebrew/login__local"
-
-path_prepends=(
-  "$HOME/bin"
-  "$HOME/.local/bin"
-  # https://github.com/Homebrew/brew/blob/master/Library/Homebrew/cmd/shellenv.sh
-  "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin"
-)
-
-path_appends=(
-  "$HOME/go/bin"
-  "$HOME/.cargo/bin"
-  "$HOME/.volta/bin"
-  "$HOMEBREW_PREFIX/opt/ruby/bin"
-)
-
-test -r "$DOTFILES/bash/login__local" && source "$DOTFILES/bash/login__local"
+source "$DOTFILES/go/shlogin"
+source "$DOTFILES/rust/shlogin"
+source "$DOTFILES/java/shlogin"
+source "$DOTFILES/volta/shlogin"
+source "$DOTFILES/pnpm/shlogin"
+source "$DOTFILES/1password/shlogin"
+source "$DOTFILES/etc/shlogin"
+[ -r "$DOTFILES/local/shlogin" ] && source "$DOTFILES/local/shlogin"
 
 # python (Xcode Command Line Tools)
 # PATH="$(python3 -c 'import os,sysconfig;print(sysconfig.get_path("scripts",f"{os.name}_user"))'):$PATH"
 
 _df_path() {
   local IFS=:
+  # shellcheck disable=SC2206
   local path=( $PATH )
   local dedup_path=()
   local e
 
   search=":${path_prepends[*]}:${path_appends[*]}:"
   for e in "${path[@]}"; do
-    if [[ ! $search =~ ":$e:" ]]; then
+    if [[ ! $search = *":$e:"* ]]; then
       dedup_path+=( "$e" )
     fi
   done
@@ -60,35 +48,3 @@ _df_path() {
   export PATH="${path[*]}"
 } && _df_path; unset -f _df_path
 unset -v path_prepends path_appends
-
-if [[ ! $INFOPATH ==  *"$HOMEBREW_PREFIX"/share/info* ]]; then
-  export INFOPATH="$HOMEBREW_PREFIX/share/info:${INFOPATH:-}"
-fi
-
-# Default programs
-export EDITOR
-if command -v nvim >/dev/null; then
-  EDITOR=$(command -v nvim)
-elif command -v vim >/dev/null; then
-  EDITOR=$(command -v vim)
-else
-  EDITOR=$(command -v vi)
-fi
-
-export LESS="--mouse -iR"
-export PAGER="$HOMEBREW_PREFIX/opt/less/bin/less --mouse -iR"
-
-test -x /usr/libexec/java_home && { JAVA_HOME="$(/usr/libexec/java_home)" && export JAVA_HOME; }
-
-export VOLTA_HOME=~/.volta
-
-# 1password (See ~/.config/op/config)
-export OP_PLUGIN_ALIASES_SOURCED=1
-
-# pnpm
-export PNPM_HOME="/Users/kep/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end

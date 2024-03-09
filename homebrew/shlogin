@@ -1,0 +1,37 @@
+# shellcheck disable=SC1091,SC2030
+
+if ! [ -e "$DOTFILES/local/shlogin_homebrew" ]; then
+  (
+    OS="$(uname)"
+    if [[ "${OS}" == "Linux" ]]; then
+      : # HOMEBREW_ON_LINUX=1
+    elif [[ "${OS}" == "Darwin" ]]; then
+      HOMEBREW_ON_MACOS=1
+    else
+      abort "Homebrew is only supported on macOS and Linux."
+    fi
+
+    if [[ -n "${HOMEBREW_ON_MACOS-}" ]]; then
+      UNAME_MACHINE="$(/usr/bin/uname -m)"
+
+      if [[ "${UNAME_MACHINE}" == "arm64" ]]; then
+        HOMEBREW_PREFIX="/opt/homebrew"
+      else
+        HOMEBREW_PREFIX="/usr/local"
+      fi
+    else
+      HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
+    fi
+    "$HOMEBREW_PREFIX/bin/brew" shellenv | grep '^export HOMEBREW' >"$DOTFILES/local/shlogin_homebrew"
+  )
+fi
+source "$DOTFILES/local/shlogin_homebrew"
+
+path_prepends+=(
+  # https://github.com/Homebrew/brew/blob/master/Library/Homebrew/cmd/shellenv.sh
+  "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin"
+)
+
+if [[ ! $INFOPATH ==  *"$HOMEBREW_PREFIX"/share/info* ]]; then
+  export INFOPATH="$HOMEBREW_PREFIX/share/info:${INFOPATH:-}"
+fi

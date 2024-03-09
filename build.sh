@@ -27,6 +27,7 @@ abort() {
 
 : "${SCRIPTS_DIR:="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"}"
 : "${MODULES_DIR:="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"}"
+DOTFILES="$MODULES_DIR"
 
 staging_dir="${SCRIPTS_DIR}/.staging"
 
@@ -74,7 +75,7 @@ execute cp "${MODULES_DIR}"/karabiner/complex_mods/* "${staging_dir}"/.config/ka
 ohai readline
 execute cp "${MODULES_DIR}"/readline/inputrc "${staging_dir}"/.inputrc
 
-source "$MODULES_DIR/homebrew/login__local"
+source "${MODULES_DIR}/homebrew/shlogin"
 
 ohai bash
 for f in bash_profile bashrc bash_logout; do

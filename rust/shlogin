@@ -1,0 +1,3 @@
+path_appends+=(
+  "$HOME/.cargo/bin"
+)

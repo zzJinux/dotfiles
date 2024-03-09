@@ -1,0 +1,4 @@
+export PNPM_HOME=~/Library/pnpm
+path_prepends+=(
+  "$PNPM_HOME"
+)

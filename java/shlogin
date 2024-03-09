@@ -1,0 +1,11 @@
+# shellcheck disable=SC1091
+
+[ -x /usr/libexec/java_home ] || return
+if ! [ -e "$DOTFILES/local/shlogin_java" ]; then
+  JAVA_HOME="$(/usr/libexec/java_home)" && {
+    export JAVA_HOME
+    echo "export JAVA_HOME='${JAVA_HOME}'" >"$DOTFILES/local/shlogin_java" 
+  }
+else
+  source "$DOTFILES/local/shlogin_java"
+fi

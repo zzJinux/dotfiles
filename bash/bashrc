@@ -5,7 +5,6 @@ fi
 _iife() {
 
 local DOTFILES=:PH_DOTFILES:
-local HOMEBREW_PREFIX=:PH_HOMEBREW_PREFIX:
 
 # This file gets run in two cases:
 # 1. non-login interactive shell

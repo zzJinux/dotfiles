@@ -1,0 +1,21 @@
+declare -xgr LOGIN_SHELL_SESSION_ID=$SHELL_SESSION_ID
+
+export BLOCKSIZE=1k # Default blocksize for ls, df, du
+
+# TERM
+if [ "$TERM_PROGRAM" = "vscode" ]; then
+  TERM=vscode
+fi
+
+# Default programs
+export EDITOR
+if command -v nvim >/dev/null; then
+  EDITOR=$(command -v nvim)
+elif command -v vim >/dev/null; then
+  EDITOR=$(command -v vim)
+else
+  EDITOR=$(command -v vi)
+fi
+
+export LESS="--mouse -iR"
+export PAGER="$HOMEBREW_PREFIX/opt/less/bin/less --mouse -iR"

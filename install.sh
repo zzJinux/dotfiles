@@ -13,6 +13,7 @@ _main() {
 
   : "${SCRIPTS_DIR:="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"}"
   : "${MODULES_DIR:="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"}"
+  DOTFILES="$MODULES_DIR"
 
   ohai 'Install dotfiles in the home directory'
   execute "$SCRIPTS_DIR/build.sh"
@@ -20,14 +21,9 @@ _main() {
 
   have_sudo_access
 
-  # https://github.com/Homebrew/install/blob/master/install.sh
-  UNAME_MACHINE="$(/usr/bin/uname -m)"
-  if [[ "${UNAME_MACHINE}" == "arm64" ]]
-  then
-    HOMEBREW_PREFIX="/opt/homebrew"
-  else
-    HOMEBREW_PREFIX="/usr/local"
-  fi
+  source "$MODULES_DIR/homebrew/shlogin"
+
+  set_homebrew_prefix
 
   # Homebrew install
   # It will install Command Line Tools if not installed
@@ -37,7 +33,7 @@ _main() {
   else
     ohai 'Homebrew is already installed'
   fi
-  source <("$HOMEBREW_PREFIX/bin/brew" shellenv bash | grep '^export HOMEBREW' | tee "$MODULES_DIR/homebrew/vars__local")
+  source "$MODULES_DIR/homebrew/shlogin"
   ohai 'Install Homebrew packages'
   "$HOMEBREW_PREFIX/bin/brew" bundle --verbose --file "$MODULES_DIR/homebrew/Brewfile"
 
@@ -163,6 +159,33 @@ execute_sudo() {
 
 quote() {
   builtin printf %q "$1"
+}
+
+set_homebrew_prefix() {
+  if [[ -n "${HOMEBREW_PREFIX-}" ]]; then
+    return
+  fi
+
+  OS="$(uname)"
+  if [[ "${OS}" == "Linux" ]]; then
+    : # HOMEBREW_ON_LINUX=1
+  elif [[ "${OS}" == "Darwin" ]]; then
+    HOMEBREW_ON_MACOS=1
+  else
+    abort "Homebrew is only supported on macOS and Linux."
+  fi
+
+  if [[ -n "${HOMEBREW_ON_MACOS-}" ]]; then
+    UNAME_MACHINE="$(/usr/bin/uname -m)"
+
+    if [[ "${UNAME_MACHINE}" == "arm64" ]]; then
+      HOMEBREW_PREFIX="/opt/homebrew"
+    else
+      HOMEBREW_PREFIX="/usr/local"
+    fi
+  else
+    HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
+  fi
 }
 
 _main
