@@ -9,6 +9,7 @@ path_appends=()
 
 source "$DOTFILES/homebrew/shlogin"
 
+source "$DOTFILES/fzf/shlogin"
 source "$DOTFILES/go/shlogin"
 source "$DOTFILES/rust/shlogin"
 source "$DOTFILES/java/shlogin"

@@ -4,4 +4,7 @@
 if [ -n "$BASH" ]; then
   source "$HOMEBREW_PREFIX/opt/fzf/shell/completion.bash"
   source "$HOMEBREW_PREFIX/opt/fzf/shell/key-bindings.bash"
+elif [ -n "$ZSH_NAME" ]; then
+  source "$HOMEBREW_PREFIX/opt/fzf/shell/completion.zsh"
+  source "$HOMEBREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
 fi
