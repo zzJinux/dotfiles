@@ -4,6 +4,7 @@
 
 function prompt_command {
   local EXIT="$?"
+  builtin history -a;
 
   #shellcheck disable=SC2034
   {
@@ -82,4 +83,4 @@ function prmode {
   PROMPT_MODE="$1"
 }
 
-PROMPT_COMMAND="builtin history -a;prompt_command;${PROMPT_COMMAND}"
+PROMPT_COMMAND="prompt_command;${PROMPT_COMMAND}"
