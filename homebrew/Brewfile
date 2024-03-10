@@ -19,6 +19,7 @@ brew "pstree"
 brew "neovim"
 brew "less" # [macos]
 brew "mandoc" # [macos]
+brew "mac-db" # [macos]
 brew "tldr"
 brew "kube-ps1", args: ["ignore-dependencies"]
 brew "gum"
