@@ -1,1 +1,9 @@
-alias_and_comp tf terraform
+if [ -n "$BASH" ]; then
+  complete -C ~/.local/bin/terraform terraform
+  # https://github.com/cykerway/complete-alias/issues/30#issuecomment-1987155195
+  alias tf=terraform
+  complete -C ~/.local/bin/terraform tf
+elif [ -n "$ZSH_NAME" ]; then
+  complete -o nospace -C ~/.local/bin/terraform terraform
+  alias_and_comp tf terraform
+fi
