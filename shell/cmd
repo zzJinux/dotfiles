@@ -29,3 +29,226 @@ alias ..6='cd ../../../../../../; :'
 
 # if ! complete -p cd >/dev/null 2>&1; then complete -d cd; fi
 # }}}
+
+exportenv() {
+  if [ -z "$1" ]; then
+    echo "Usage: exportenv <file>"
+    echo "File format:"
+    echo "  VAR1=value1"
+    echo "  VAR2=value2"
+    return 1
+  fi
+  while read -r line; do
+    line="${line%%#*}"
+    # trim leading and trailing whitespaces
+    line="${line#"${line%%[![:space:]]*}"}" # Remove leading whitespace
+    line="${line%"${line##*[![:space:]]}"}" # Remove trailing whitespace
+    if [ -z "$line" ]; then
+      continue
+    fi
+    export "$line"
+  done <"$1"
+}
+
+resetenv() {
+  if [ -z "$1" ]; then
+    echo "Usage: resetenv <prefix>"
+    return 1
+  fi
+  local prefix="$1"
+  local name _
+
+  # List and obliterate environment variables with the given prefix
+  while IFS='=' read -r name _; do
+    if [[ $name == $prefix* ]]; then
+      unset "$name"
+    fi
+  done < <(env)
+}
+
+title() {
+  # Change the title of the current window or tab
+  # xterm control sequence, "Set Text Parameters"
+  echo -ne "\033]0;$*\007"
+}
+
+ssh() {
+  /usr/bin/ssh "$@"
+  # revert the window title after the ssh command
+  title "$USER@$HOST"
+}
+
+if command -v nvim &>/dev/null; then
+  alias vi='nvim'
+  alias nvimdiff='nvim -d'
+fi
+
+# TODO: make it universal
+utc() {
+  local e=$EPOCHSECONDS
+  date -r $e -u +"%Y-%m-%dT%H:%M:%SZ" && echo $e
+}
+
+# TODO: make it universal
+epoch() {
+  if [ "${1-}" = "" ]; then
+    echo "Usage: epoch <seconds since epoch>" >&2
+    return 1
+  fi
+  gdate -d @"$1" --iso-8601=seconds
+}
+alias py=python3
+
+# alias sudo='sudo '
+alias_and_comp sudo sudo # https://github.com/cykerway/complete-alias/tree/master#faq
+alias sudoal='sudo '
+
+# https://natelandau.com/my-mac-osx-bash_profile/
+
+# Sane defaults; compatible:macos,gnu
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias cp='cp -iv'
+zmv() {
+  if [[ $2 == */ ]]; then
+    echo "zmv: destination must not end with a slash" >&2
+    return 1
+  fi
+  if command mv -iv -- "$1" "$2"; then
+    zoxide remove "$1"
+    zoxide add "$2"
+    return
+  else
+    return
+  fi
+}
+alias mkdir='mkdir -v'
+alias ls='ls --color=auto -F'
+alias l='ls -A'
+alias ll='ls -hl'
+alias la='ls -Ahl'
+
+sugg() {
+  gh copilot suggest "$@"
+}
+
+expl() {
+  gh copilot explain "$@"
+}
+
+alias path='printf "${PATH//:/\n}"'              # path:         Echo all executable Paths
+alias fix_stty='stty sane'                       # fix_stty:     Restore terminal settings when screwed up
+alias cic='bind "set completion-ignore-case On"' # cic:          Make tab-completion case-insensitive
+alias cicno='bind "set completion-ignore-case Off"'
+
+#   mans:   Search manpage given in argument '1' for term given in argument '2' (case insensitive)
+#           displays paginated result with colored search terms and two lines surrounding each hit.             Example: mans mplayer codec
+#   --------------------------------------------------------------------
+mans() {
+  man "$1" | grep -iC2 --color=always "$2" | less
+}
+
+#   extract:  Extract most know archives with one command
+#   ---------------------------------------------------------
+extract() {
+  if [ -f "$1" ]; then
+    case "$1" in
+    *.tar.bz2) tar xjf "$1" ;;
+    *.tar.gz) tar xzf "$1" ;;
+    *.bz2) bunzip2 "$1" ;;
+    *.rar) unrar e "$1" ;;
+    *.gz) gunzip "$1" ;;
+    *.tar) tar xf "$1" ;;
+    *.tbz2) tar xjf "$1" ;;
+    *.tgz) tar xzf "$1" ;;
+    *.zip) unzip "$1" ;;
+    *.Z) uncompress "$1" ;;
+    *.7z) 7z x "$1" ;;
+    *) echo "${1@Q} cannot be extracted via extract()" ;;
+    esac
+  else
+    echo "${1@Q} is not a valid file"
+  fi
+}
+
+# https://stackoverflow.com/a/33891876
+filecount() {
+  printf '%s' "$(2>/dev/null ls -Ubd1 "$@" | wc -l)"
+}
+
+#   ---------------------------
+#   4.  SEARCHING
+#   ---------------------------
+
+alias qfind="find . -name "                       # qfind:    Quickly search for file
+ff() { /usr/bin/find . -name "$@"; }              # ff:       Find file under the current directory
+ffs() { /usr/bin/find . -name "$1"'*' "${@:2}"; } # ffs:      Find file whose name starts with a given string
+ffe() { /usr/bin/find . -name '*'"$1" "${@:2}"; } # ffe:      Find file whose name ends with a given string
+
+#   ---------------------------
+#   5.  PROCESS MANAGEMENT
+#   ---------------------------
+
+#   findPid: find out the pid of a specified process
+#   -----------------------------------------------------
+#       Note that the command name can be specified via a regex
+#       E.g. findPid '/d$/' finds pids of all processes with names ending in 'd'
+#       Without the 'sudo' it will only find processes of the current user
+#   -----------------------------------------------------
+findpid() { lsof -t -c "$@"; }
+
+#   memHogsTop, memHogsPs:  Find memory hogs
+#   -----------------------------------------------------
+alias memHogsTop='top -l 1 -o rsize | head -20'
+alias memHogsPs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
+
+#   cpuHogs:  Find CPU hogs
+#   -----------------------------------------------------
+alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
+
+#   topForever:  Continual 'top' listing (every 10 seconds)
+#   -----------------------------------------------------
+alias topForever='top -l 9999999 -s 10 -o cpu'
+
+#   ttop:  Recommended 'top' invocation to minimize resources
+#   ------------------------------------------------------------
+#       Taken from this macosxhints article
+#       http://www.macosxhints.com/article.php?story=20060816123853639
+#   ------------------------------------------------------------
+alias ttop="top -R -F -s 10 -o rsize"
+
+#   myps: List processes owned by my user:
+#   ------------------------------------------------------------
+my_ps() { ps "$@" -u "$USER" -o pid,%cpu,%mem,start,time,bsdtime,command; }
+
+#   ---------------------------
+#   6.  NETWORKING
+#   ---------------------------
+
+alias myip='curl ifconfig.me'                     # myip:         Public facing IP Address
+alias netCons='lsof -i'                           # netCons:      Show all open TCP/IP sockets
+alias lsock='sudo /usr/sbin/lsof -i -P'           # lsock:        Display open sockets
+alias lsockU='sudo /usr/sbin/lsof -nP | grep UDP' # lsockU:       Display only open UDP sockets
+alias lsockT='sudo /usr/sbin/lsof -nP | grep TCP' # lsockT:       Display only open TCP sockets
+alias openPorts='sudo lsof -i | grep LISTEN'      # openPorts:    All listening connections
+
+#   ii:  display useful host related informaton
+#   -------------------------------------------------------------------
+ii() {
+  echo -e "\nYou are logged on ${RED}$HOST"
+  echo -e "\nAdditionnal information:$NC "
+  uname -a
+  echo -e "\n${RED}Users logged on:$NC "
+  w -h
+  echo -e "\n${RED}Current date :$NC "
+  date
+  echo -e "\n${RED}Machine stats :$NC "
+  uptime
+  echo -e "\n${RED}Current network location :$NC "
+  scselect
+  echo -e "\n${RED}Public facing IP Address :$NC "
+  myip
+  #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
+  echo
+}
