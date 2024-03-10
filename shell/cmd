@@ -1,23 +1,46 @@
 # Navigation {{{
+
+if [ -n "$BASH" ]; then
+  _summarize_dirstack() {
+    if [ "${#DIRSTACK[@]}" -gt 4 ]; then
+      echo "${DIRSTACK[@]:0:2}" \(+$(( ${#DIRSTACK[@]} - 4 )) more\) "${DIRSTACK[@]: -2}"
+    else
+      echo "${DIRSTACK[@]}"
+    fi
+  }
+elif [ -n "$ZSH_NAME" ]; then
+  _summarize_dirstack() {
+    # shellcheck disable=SC2154
+    if [ "${#dirstack[@]}" -gt 4 ]; then
+      echo "${dirstack[@]:0:2}" \(+$(( ${#dirstack[@]} - 4 )) more\) "${dirstack[@]: -2}"
+    else
+      echo "${dirstack[@]}"
+    fi
+  }
+fi
+
 cd() {
   local _dummy OPTIND
   while getopts : _dummy; do :; done
   shift $((OPTIND - 1))
   if [ $# -eq 0 ]; then
-    builtin pushd -- ~ || return
+    builtin pushd -- ~ >/dev/null || return
   else
-    builtin pushd -- "$1" || return
+    builtin pushd -- "$1" >/dev/null || return
   fi
+  _summarize_dirstack
   ls
 }
 
 bd() {
-  builtin popd || return
+  builtin popd >/dev/null || return
+  _summarize_dirstack
 }
 
 # Exchange the top two entries on the directory stack
 xd() {
-  builtin pushd || return
+  builtin pushd >/dev/null || return
+  _summarize_dirstack
 }
 
 alias ..='cd ../; :'
