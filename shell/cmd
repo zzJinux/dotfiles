@@ -1,0 +1,31 @@
+# Navigation {{{
+cd() {
+  local _dummy OPTIND
+  while getopts : _dummy; do :; done
+  shift $((OPTIND - 1))
+  if [ $# -eq 0 ]; then
+    builtin pushd -- ~ || return
+  else
+    builtin pushd -- "$1" || return
+  fi
+  ls
+}
+
+bd() {
+  builtin popd || return
+}
+
+# Exchange the top two entries on the directory stack
+xd() {
+  builtin pushd || return
+}
+
+alias ..='cd ../; :'
+alias ..2='cd ../../; :'
+alias ..3='cd ../../../; :'
+alias ..4='cd ../../../../: :'
+alias ..5='cd ../../../../../; :'
+alias ..6='cd ../../../../../../; :'
+
+# if ! complete -p cd >/dev/null 2>&1; then complete -d cd; fi
+# }}}
