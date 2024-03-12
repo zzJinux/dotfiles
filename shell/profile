@@ -25,25 +25,25 @@ source "$DOTFILES/etc/shlogin"
 _df_path() {
   local IFS=:
   # shellcheck disable=SC2206
-  local path=( $PATH )
+  local lpath=( $PATH )
   local dedup_path=()
   local e
 
   search=":${path_prepends[*]}:${path_appends[*]}:"
-  for e in "${path[@]}"; do
+  for e in "${lpath[@]}"; do
     if [[ ! $search = *":$e:"* ]]; then
       dedup_path+=( "$e" )
     fi
   done
-  path=( "${path_prepends[@]}" "${dedup_path[@]}" "${path_appends[@]}" )
+  lpath=( "${path_prepends[@]}" "${dedup_path[@]}" "${path_appends[@]}" )
 
-  for e in "${path[@]}"; do
+  for e in "${lpath[@]}"; do
     case $e in 
       /*) : ;;
       *) 2>&1 echo 'WARNING: $PATH contains a relative path: '"$e" ;;
     esac
   done
   IFS=:
-  export PATH="${path[*]}"
+  export PATH="${lpath[*]}"
 } && _df_path; unset -f _df_path
 unset -v path_prepends path_appends
