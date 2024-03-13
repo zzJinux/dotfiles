@@ -65,6 +65,7 @@ brew "git" # [macos]
 brew "git-delete-merged-branches"
 brew "git-delta"
 brew "git-lfs"
+brew "hub"
 brew "jesseduffield/lazygit/lazygit"
 brew "helm"
 brew "tilt"
