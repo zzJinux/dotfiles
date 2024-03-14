@@ -144,10 +144,11 @@ unset key
 ZVM_TERM=xterm-256color
 # }}}
 
-# zsh-autosuggestions {{{
-# https://github.com/jeffreytse/zsh-vi-mode/issues/57#issuecomment-799364881
+# Resolve key binding conflicts {{{
 zvm_after_init() {
+  # https://github.com/jeffreytse/zsh-vi-mode/issues/57#issuecomment-799364881
   zvm_bindkey viins '^@' autosuggest-accept
+  zvm_bindkey viins '^R' fzf-history-widget
 }
 # }}}
 
