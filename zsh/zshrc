@@ -148,6 +148,7 @@ ZVM_TERM=xterm-256color
 zvm_after_init() {
   # https://github.com/jeffreytse/zsh-vi-mode/issues/57#issuecomment-799364881
   zvm_bindkey viins '^@' autosuggest-accept
+  # https://github.com/jeffreytse/zsh-vi-mode/issues/242
   zvm_bindkey viins '^R' fzf-history-widget
 }
 # }}}
