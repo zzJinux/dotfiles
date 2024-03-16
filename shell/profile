@@ -1,5 +1,11 @@
 # shellcheck disable=SC1091
 
+
+if [ -z "${XDG_DATA_DIRS}" ]; then
+  XDG_DATA_DIRS="/usr/local/share:/usr/share"
+fi
+export XDG_DATA_DIRS="$HOMEBREW_PREFIX/share:$XDG_DATA_DIRS"
+
 # Language
 export LANG='en_US.UTF-8'
 export LC_ALL=$LANG
