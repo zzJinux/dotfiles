@@ -4,6 +4,12 @@ if [ -n "$BASH" ]; then
   alias tf=terraform
   complete -C ~/.local/bin/terraform tf
 elif [ -n "$ZSH_NAME" ]; then
-  complete -o nospace -C ~/.local/bin/terraform terraform
+  # shellcheck disable=SC2188
+  if ! [ -e ~/.local/share/zsh/completions/_terraform ]; then
+    <<EOF >~/.local/share/zsh/completions/_terraform
+#compdef terraform
+complete -o nospace -C ~/.local/bin/terraform terraform
+EOF
+  fi
   alias tf=terraform
 fi

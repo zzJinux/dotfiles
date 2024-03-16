@@ -13,7 +13,7 @@ li=(
   zoxide
   docker
   kubernetes
-  # terraform
+  terraform
   # openstack
   # aws
   macos
