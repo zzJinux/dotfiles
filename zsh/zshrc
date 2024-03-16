@@ -156,6 +156,10 @@ zvm_after_init() {
 
 setopt INC_APPEND_HISTORY
 
+unalias run-help
+autoload -U run-help
+alias help=run-help
+
 # zimfw/completion calls compinit
 # autoload -Uz compinit && compinit
 autoload -Uz bashcompinit && bashcompinit
