@@ -30,7 +30,7 @@ create_symlink_safe() {
 : "${DOTFILES}"
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
-for f in zprofile zshrc zlogin zlogout zimrc p10k.sh; do
+for f in zprofile zshrc zlogin zlogout zimrc p10k.zsh; do
   create_symlink_safe "$SCRIPT_DIR/$f" "$HOME/.$f"
 done
 
