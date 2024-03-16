@@ -5,25 +5,47 @@ fi
 
 umask 0077
 
-cobra_complete() {
-  local cmd="$1" cmdabs sh compfile
+cmd_complete() {
+  local cmd="$1" cmdabs sh compfile target
+  shift
   if [ -n "$BASH" ]; then
     cmdabs=$(type -p "$cmd")
-    sh=bash
-    compfile=~/.local/share/bash-completion/completions/"$cmd"
+    target=bash
   elif [ -n "$ZSH_NAME" ]; then
     cmdabs=$(which "$cmd")
-    sh=zsh
+    target=zsh
+  fi
+  if [ -z "$cmdabs" ]; then
+    >&2 echo "-cmd_complete: $cmd is not installed"
+    return 1
+  fi
+
+  if [ -n "$BASH" ] || [ "${source-}" = bash ]; then
+    source=bash
+  else
+    source=zsh
+  fi
+  if [ -n "$BASH" ] || [ "${target-}" = bash ]; then
+    compfile=~/.local/share/bash-completion/completions/"$cmd"
+  else
     compfile=~/.local/share/zsh/completions/_"$cmd"
   fi
 
-  if [ -z "$cmdabs" ]; then
-    >&2 echo "-cobra_complete: $cmd is not installed"
-    return 1
+  if [ ! -e "$compfile" ] || [ "$cmdabs" -nt "$compfile" ]; then
+    rm -f "$compfile" && {
+      [ "$target" = zsh ] && [ "$source" = bash ] && echo '#compdef '"$cmd"
+      "$cmdabs" "$@" "$sh"
+    } > "$compfile"
   fi
-  if [ ! -e "$compfile" ] || [ "$cmd" -nt "$compfile" ]; then
-    rm -f "$compfile" && "$cmdabs" completion "$sh" > "$compfile"
-  fi
+}
+
+cmd_complete_bash() {
+  local source=bash
+  cmd_complete "$@"
+}
+
+cobra_complete() {
+  cmd_complete "$1" completion
 }
 
 # [zsh-only] The compspec header of $f must have all names.
