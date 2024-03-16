@@ -25,12 +25,19 @@ shopt -s autocd cdspell
 # Why is this not the default?
 shopt -u sourcepath
 
-# Defines _complete_alias function
-source "$DOTFILES/bash/complete-alias/complete_alias"
-
-alias_and_comp() {
-  alias "$1"="$2"
-  complete -F _complete_alias "$1"
+alias() {
+  local ret=0 r
+  for arg in "$@"; do
+    builtin alias "$arg"; r=$?
+    if [[ $r -ne 0 ]]; then
+      ret=$r
+    fi
+    if [[ $arg != [^-=]*=?* ]]; then
+      continue
+    fi
+    complete -F _complete_alias "${arg%%=*}"
+  done
+  return $ret
 }
 
 # bash-completion@2

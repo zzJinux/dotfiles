@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-alias_and_comp os openstack
+alias os=openstack
 
 _openstack_locate_config() {
   local cfg

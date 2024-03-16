@@ -5,5 +5,5 @@ if [ -n "$BASH" ]; then
   complete -C ~/.local/bin/terraform tf
 elif [ -n "$ZSH_NAME" ]; then
   complete -o nospace -C ~/.local/bin/terraform terraform
-  alias_and_comp tf terraform
+  alias tf=terraform
 fi
