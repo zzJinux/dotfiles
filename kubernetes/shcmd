@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
-alias kl=kubectl
+cobra_complete kubectl
+alias k=kubectl
 
-kx() {
+ktx() {
   local cluster=$1
   local namespace=${2:-}
+  local config_path env_path
 
   if [ -z "$cluster" ]; then
-    echo "Usage: kx CLUSTER [NAMESPACE]"
+    echo "Usage: ktx CLUSTER [NAMESPACE]"
     return 1
   fi
 
   config_path=~/.kube/clusters/"$cluster"/config
   env_path=~/.kube/clusters/"$cluster"/env
 
-  if ! [ -r "$config_path" ]; then 
+  if ! [ -r "$config_path" ]; then
     echo "Cluster $cluster not found"
     return 1
   fi
@@ -32,46 +34,56 @@ kx() {
     echo "Warning: env file not found for cluster $cluster"
   fi
 
-  local kubectl_comp=~/.kube/clusters/"$cluster"/kubectl-completion.bash
-  if ! [ -r "$kubectl_comp" ]; then
-    kubectl completion bash > "$kubectl_comp"
-  fi
-  source "$kubectl_comp"
-  local helm_comp=~/.kube/clusters/"$cluster"/helm-completion.bash
-  if ! [ -r "$helm_comp" ]; then
-    helm completion bash > "$helm_comp"
-  fi
-  source "$helm_comp"
-
   if [ -n "$namespace" ]; then
     kubectl config set-context --current --namespace="$namespace"
   fi
 }
 
-kn () {
+_fzf_complete_ktx() {
+  stdin_fzf_completer context 2 "$@" \
+    < <(find -L ~/.kube/clusters -mindepth 1 -maxdepth 1 -type d -exec basename '{}' \;)
+}
+
+kns() {
   if [ -z "${1-}" ]; then
-    echo "Usage: kn NAMESPACE"
+    echo "Usage: kns NAMESPACE"
     return 1
   fi
   if [ -z "${KUBECONFIG-}" ]; then
-    echo "Session KUBECONFIG not set: run kx first"
+    echo "Session KUBECONFIG not set: run ktx first"
     return 1
   fi
   kubectl config set-context --current --namespace="$1"
 }
 
+# TODO: namespaces completion
+
 kpf() {
-  eval "$(< ~/.kube/portforwards/"$1" sed 's/^/local /')"
+  eval "$(<~/.kube/portforwards/"$1" sed 's/^/local /')"
   portforward-forever "$cluster" "$namespace" "$listen_addr" "$listen_port" "$target" "$target_port"
 }
 
+_fzf_complete_kpf() {
+  stdin_fzf_completer target 2 "$@" \
+    < <(builtin cd ~/.kube/portforwards && find -L . -type f | cut -c3-)
+}
+
+
 kjmp() {
-  eval "$(< ~/.kube/jumpremotes/"$1" sed 's/^/local /')"
+  eval "$(<~/.kube/jumpremotes/"$1" sed 's/^/local /')"
   REGISTRY_MIRROR_PREFIX=$REGISTRY_MIRROR_PREFIX kubejump \
     "$cluster" "$namespace" "$local_addr" "$local_port" "$remote_host" "$remote_port"
 }
 
-# kube-ps1
-source "${HOMEBREW_PREFIX}/opt/kube-ps1/share/kube-ps1.sh"
-#shellcheck disable=SC2034
-KUBE_PS1_SYMBOL_ENABLE=false # https://github.com/jonmosco/kube-ps1#customization
+_fzf_complete_kjmp() {
+  stdin_fzf_completer target 2 "$@" \
+    < <(builtin cd ~/.kube/jumpremotes && find -L . -type f | cut -c3-)
+}
+
+staticfile_complete k8scmds "$DOTFILES/kubernetes/completion.bash" ktx kns kpf kjmp
+
+if [ -n "$BASH" ]; then
+  source "${HOMEBREW_PREFIX}/opt/kube-ps1/share/kube-ps1.sh"
+  #shellcheck disable=SC2034
+  KUBE_PS1_SYMBOL_ENABLE=false
+fi

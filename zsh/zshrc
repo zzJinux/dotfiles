@@ -12,7 +12,7 @@ autoload -Uz bashcompinit && bashcompinit
 li=(
   zoxide
   docker
-  # kubernetes
+  kubernetes
   # terraform
   # openstack
   # aws
@@ -180,9 +180,5 @@ setopt INC_APPEND_HISTORY
 unalias run-help
 autoload -U run-help
 alias help=run-help
-
-# zimfw/completion calls compinit
-# autoload -Uz compinit && compinit
-autoload -Uz bashcompinit && bashcompinit
 
 source "$DOTFILES/shell/cmd"

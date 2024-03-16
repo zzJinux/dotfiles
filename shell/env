@@ -25,3 +25,47 @@ cobra_complete() {
     rm -f "$compfile" && "$cmdabs" completion "$sh" > "$compfile"
   fi
 }
+
+# [zsh-only] The compspec header of $f must have all names.
+staticfile_complete() {
+  local tag="$1" f="$2"; shift 2
+  if [ -n "$ZSH_NAME" ] && [ -n "$tag" ]; then
+    compfile=~/.local/share/zsh/completions/_"$tag"
+    set -- "$tag"
+  fi
+
+  for cmd in "$@"; do
+    if [ -n "$BASH" ]; then
+      compfile=~/.local/share/bash-completion/completions/"$cmd"
+    elif [ -n "$ZSH_NAME" ]; then
+      compfile=~/.local/share/zsh/completions/_"$cmd"
+    fi
+    if [ ! -e "$compfile" ] || [ "$f" -nt "$compfile" ]; then
+      rm -f "$compfile" && cp "$f" "$compfile"
+    fi
+  done
+}
+
+stdin_completer() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  local IFS=''
+  read -rd '' wordlist
+  IFS=$'\n'
+  COMPREPLY=( $(compgen -W "$wordlist" -- "$cur") )
+}
+
+stdin_fzf_completer() {
+  local prompt="$1" req_nwords="$2"; shift 2
+  if [ -n "$BASH" ]; then
+    if _fzf_complete --multi --reverse "--prompt=$prompt> " -- "$@"; then
+      return
+    fi
+  elif [ -z "${COMP_POINT-}" ]; then
+    _fzf_complete --multi --reverse "--prompt=$prompt> " -- "$@"
+    return
+  fi
+
+  if [ "${#COMP_WORDS[@]}" = "$req_nwords" ]; then
+    stdin_completer "$@"
+  fi
+}
