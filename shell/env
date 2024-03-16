@@ -4,3 +4,24 @@ if [[ $- == *i* ]]; then
 fi
 
 umask 0077
+
+cobra_complete() {
+  local cmd="$1" cmdabs sh compfile
+  if [ -n "$BASH" ]; then
+    cmdabs=$(type -p "$cmd")
+    sh=bash
+    compfile=~/.local/share/bash-completion/completions/"$cmd"
+  elif [ -n "$ZSH_NAME" ]; then
+    cmdabs=$(which "$cmd")
+    sh=zsh
+    compfile=~/.local/share/zsh/completions/_"$cmd"
+  fi
+
+  if [ -z "$cmdabs" ]; then
+    >&2 echo "-cobra_complete: $cmd is not installed"
+    return 1
+  fi
+  if [ ! -e "$compfile" ] || [ "$cmd" -nt "$compfile" ]; then
+    rm -f "$compfile" && "$cmdabs" completion "$sh" > "$compfile"
+  fi
+}
