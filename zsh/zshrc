@@ -5,6 +5,27 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# zimfw/completion calls compinit
+# autoload -Uz compinit && compinit
+autoload -Uz bashcompinit && bashcompinit
+
+li=(
+  zoxide
+  docker
+  # kubernetes
+  # terraform
+  # openstack
+  # aws
+  macos
+  git
+  # fzf
+  etc
+  local
+)
+for b in "${li[@]}"; do
+  source "$DOTFILES/$b/shcmd"
+done; unset li
+
 fpath=(~/.local/share/zsh/completions $fpath)
 
 # Start configuration added by Zim install {{{
@@ -163,22 +184,5 @@ alias help=run-help
 # zimfw/completion calls compinit
 # autoload -Uz compinit && compinit
 autoload -Uz bashcompinit && bashcompinit
-
-li=(
-  zoxide
-  # docker
-  # kubernetes
-  # terraform
-  # openstack
-  # aws
-  macos
-  git
-  # fzf
-  etc
-  local
-)
-for b in "${li[@]}"; do
-  source "$DOTFILES/$b/shcmd"
-done; unset li
 
 source "$DOTFILES/shell/cmd"
