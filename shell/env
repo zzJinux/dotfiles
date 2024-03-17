@@ -34,12 +34,12 @@ cmd_complete() {
   if [ ! -e "$compfile" ] || [ "$cmdabs" -nt "$compfile" ]; then
     rm -f "$compfile" && {
       [ "$target" = zsh ] && [ "$source" = bash ] && echo '#compdef '"$cmd"
-
-      local IFS=':'
-      # shellcheck disable=SC2206
-      local external_deps=($external_deps)
-      printf 'source %q\n' "${external_deps[@]}"
-
+      [ "$target" = bash ] && [ -n "$bash_external_deps" ] && {
+        local IFS=':'
+        # shellcheck disable=SC2206
+        local bash_external_deps=($bash_external_deps)
+        printf 'source %q\n' "${bash_external_deps[@]}"
+      }
       "$cmdabs" "$@" "$source"
     } > "$compfile"
   fi

@@ -14,7 +14,7 @@ li=(
   docker
   kubernetes
   terraform
-  # openstack
+  openstack
   # aws
   macos
   git
@@ -41,6 +41,9 @@ zvm_after_init() {
   zvm_bindkey viins '^R' fzf-history-widget
 }
 # }}}
+
+ZSH_BASH_COMPLETIONS_FALLBACK_LOAD_NATIVE_COMPLETIONS=false
+ZSH_BASH_COMPLETIONS_FALLBACK_REPLACE_ALL=true
 
 # Start configuration added by Zim install {{{
 #
