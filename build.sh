@@ -42,6 +42,7 @@ abort() {
 : "${SCRIPTS_DIR:="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"}"
 : "${MODULES_DIR:="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"}"
 DOTFILES="$MODULES_DIR"
+export DOTFILES
 
 staging_dir="${SCRIPTS_DIR}/.staging"
 
@@ -107,3 +108,7 @@ ohai terraform
 execute mkdir -p "${staging_dir}"/.terraform.d/plugin-cache
 execute touch "${staging_dir}"/.terraform.d/plugin-cache/.placeholder
 execute cp "${MODULES_DIR}"/terraform/terraformrc "${staging_dir}"/.terraformrc
+
+ohai macos
+ohai macos:aerospace
+execute "${MODULES_DIR}"/macos/aerospace/_build.sh
