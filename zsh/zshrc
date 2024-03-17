@@ -15,7 +15,7 @@ li=(
   kubernetes
   terraform
   openstack
-  # aws
+  aws
   macos
   git
   fzf
