@@ -35,6 +35,12 @@ defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 # Disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
+# Dragging windows from anywhere (Command+Control and drag)
+defaults write -g NSWindowShouldDragOnGesture -bool true
+
+# Disable window opening animations
+defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
+
 
 ###############################################################################
 # Dock, Dashboard, and hot corners                                            #
