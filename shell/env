@@ -6,42 +6,43 @@ fi
 umask 0077
 
 cmd_complete() {
-  local cmd="$1" cmdabs sh compfile target
+  local cmd="$1" cmdabs
+  local source="$source" target="$target"
+  local compfile
   shift
+
   if [ -n "$BASH" ]; then
     cmdabs=$(type -p "$cmd")
-    target=bash
+    source="${source:-bash}"
+    target="${target:-bash}"
   elif [ -n "$ZSH_NAME" ]; then
     cmdabs=$(which "$cmd")
-    target=zsh
+    source="${source:-zsh}"
+    target="${target:-zsh}"
   fi
   if [ -z "$cmdabs" ]; then
     >&2 echo "-cmd_complete: $cmd is not installed"
     return 1
   fi
 
-  if [ -n "$BASH" ] || [ "${source-}" = bash ]; then
-    source=bash
-  else
-    source=zsh
-  fi
-  if [ -n "$BASH" ] || [ "${target-}" = bash ]; then
+  if [ "${target-}" = bash ]; then
     compfile=~/.local/share/bash-completion/completions/"$cmd"
-  else
+  elif [ "${target-}" = zsh ]; then
     compfile=~/.local/share/zsh/completions/_"$cmd"
   fi
 
   if [ ! -e "$compfile" ] || [ "$cmdabs" -nt "$compfile" ]; then
     rm -f "$compfile" && {
       [ "$target" = zsh ] && [ "$source" = bash ] && echo '#compdef '"$cmd"
-      "$cmdabs" "$@" "$sh"
+
+      local IFS=':'
+      # shellcheck disable=SC2206
+      local external_deps=($external_deps)
+      printf 'source %q\n' "${external_deps[@]}"
+
+      "$cmdabs" "$@" "$source"
     } > "$compfile"
   fi
-}
-
-cmd_complete_bash() {
-  local source=bash
-  cmd_complete "$@"
 }
 
 cobra_complete() {

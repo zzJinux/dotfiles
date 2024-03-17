@@ -1,1 +1,1 @@
-. $DOTFILES/bash/complete-alias/complete_alias
+. :PH_DOTFILES:/bash/complete-alias/complete_alias
