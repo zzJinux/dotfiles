@@ -25,6 +25,7 @@ zmodule utility
 
 zmodule romkatv/powerlevel10k --use degit
 zmodule jeffreytse/zsh-vi-mode --use degit
+# zsh-vi-mode sets the keymap to viins.
 
 #
 # Completion
