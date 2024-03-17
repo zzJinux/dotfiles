@@ -1,3 +1,5 @@
+export MANPAGER='nvim +Man!'
+
 # Navigation {{{
 
 if [ -n "$BASH" ]; then
