@@ -21,7 +21,6 @@ source "$DOTFILES/rust/shlogin"
 source "$DOTFILES/java/shlogin"
 source "$DOTFILES/volta/shlogin"
 source "$DOTFILES/pnpm/shlogin"
-source "$DOTFILES/1password/shlogin"
 source "$DOTFILES/etc/shlogin"
 [ -r "$DOTFILES/local/shlogin" ] && source "$DOTFILES/local/shlogin"
 

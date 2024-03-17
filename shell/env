@@ -5,6 +5,8 @@ fi
 
 umask 0077
 
+source "$DOTFILES/1password/shenv"
+
 cmd_complete() {
   local cmd="$1" cmdabs
   local source="$source" target="$target"

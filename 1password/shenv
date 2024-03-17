@@ -1,2 +1,2 @@
 # 1password (See ~/.config/op/config)
-export OP_PLUGIN_ALIASES_SOURCED=1
+# export OP_PLUGIN_ALIASES_SOURCED=1
