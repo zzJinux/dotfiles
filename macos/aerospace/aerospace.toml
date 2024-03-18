@@ -197,8 +197,6 @@ alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-semicolon = 'mode service'
-alt-shift-slash = 'mode layout'
-alt-shift-quote = 'mode resize'
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -207,25 +205,19 @@ r = ['flatten-workspace-tree', 'mode main'] # reset layout
 #s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
 backspace = ['close-all-windows-but-current', 'mode main']
-esc = ['reload-config', 'mode main']
-
 # 'join' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
-[mode.layout.binding]
 alt-shift-h = ['join-with left', 'mode main']
 alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
-shift-5 = 'split horizontal'
-shift-quote = 'split vertial'
+# shift-5 = 'split horizontal'
+# shift-quote = 'split vertical'
 5 = 'layout v_accordion'
 quote = 'layout h_accordion'
 alt-f = 'fullscreen'
-esc = 'mode main'
-
-[mode.resize.binding]
 h = 'resize width -50'
 j = 'resize height +50'
 k = 'resize height -50'
 l = 'resize width +50'
-esc = 'mode main'
+esc = ['reload-config', 'mode main']
