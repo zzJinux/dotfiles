@@ -84,3 +84,8 @@ brew "diffutils" # [macos] g-prefixed
 brew "findutils" # [macos] g-prefixed
 brew "pipx"
 cask "nikitabobko/tap/aerospace"
+
+# Fonts
+cask "font-jetbrains-mono"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-meslo-lg-nerd-font"
