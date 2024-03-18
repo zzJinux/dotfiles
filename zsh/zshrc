@@ -19,7 +19,6 @@ li=(
   macos
   git
   fzf
-  etc
   local
 )
 for b in "${li[@]}"; do
@@ -187,4 +186,4 @@ unalias run-help
 autoload -U run-help
 alias help=run-help
 
-source "$DOTFILES/shell/cmd"
+source "$DOTFILES/shell/interactive"

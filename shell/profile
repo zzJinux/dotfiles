@@ -21,7 +21,6 @@ source "$DOTFILES/rust/shlogin"
 source "$DOTFILES/java/shlogin"
 source "$DOTFILES/volta/shlogin"
 source "$DOTFILES/pnpm/shlogin"
-source "$DOTFILES/etc/shlogin"
 [ -r "$DOTFILES/local/shlogin" ] && source "$DOTFILES/local/shlogin"
 
 # python (Xcode Command Line Tools)
@@ -52,3 +51,28 @@ _df_path() {
   export PATH="${lpath[*]}"
 } && _df_path; unset -f _df_path
 unset -v path_prepends path_appends
+
+declare -xgr LOGIN_SHELL_SESSION_ID=$SHELL_SESSION_ID
+
+export BLOCKSIZE=1k # Default blocksize for ls, df, du
+
+# TERM
+if [ "$TERM_PROGRAM" = "vscode" ]; then
+  TERM=vscode
+fi
+
+# Default programs
+export EDITOR
+if command -v nvim >/dev/null; then
+  EDITOR=$(command -v nvim)
+elif command -v vim >/dev/null; then
+  EDITOR=$(command -v vim)
+else
+  EDITOR=$(command -v vi)
+fi
+
+export LESS="--mouse -iR"
+export PAGER="$HOMEBREW_PREFIX/opt/less/bin/less --mouse -iR"
+if nvim=$(command -v nvim); then
+  export MANPAGER="$nvim +Man!"
+fi

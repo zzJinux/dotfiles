@@ -33,3 +33,5 @@ export CLICOLOR
 #   ------------------------------------------------------------
 #   export CLICOLOR=1
 #   export LSCOLORS=ExFxBxDxCxegedabagacad
+
+source "$DOTFILES/shell/cmd"

@@ -53,7 +53,6 @@ li=(
   macos
   git
   fzf
-  etc
   local
 )
 for b in "${li[@]}"; do
@@ -61,5 +60,5 @@ for b in "${li[@]}"; do
 done; unset li
 
 # source "$DOTFILES/bash/color"
-source "$DOTFILES/shell/cmd"
+source "$DOTFILES/shell/interactive"
 source "$DOTFILES/bash/prompt"
