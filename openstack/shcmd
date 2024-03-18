@@ -71,7 +71,7 @@ osce() {
   export OS_IDENTITY_API_VERSION=3
   export OS_OS_AUTH_VERSION=3
   export OS_CLOUD=
-  # export OS_CLOUD_NAME="$cloud_name"
+  export OS_CLOUD_ENV="$cloud_name"
 }
 
 _fzf_complete_osc() {

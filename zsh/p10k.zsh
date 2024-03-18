@@ -1682,8 +1682,9 @@
   # typeset -g POWERLEVEL9K_EXAMPLE_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
   function prompt_openstack() {
-    if [[ -n $OS_CLOUD ]]; then
-      p10k segment -t "$OS_CLOUD" -i '󰅟' -f yellow
+    local cloud=${OS_CLOUD_ENV:-$OS_CLOUD}
+    if [[ -n $cloud ]]; then
+      p10k segment -t "$cloud" -i '󰅟' -f yellow
     fi
   }
 
