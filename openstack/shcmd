@@ -74,6 +74,17 @@ osce() {
   # export OS_CLOUD_NAME="$cloud_name"
 }
 
+_fzf_complete_osc() {
+  local cfg
+  cfg=$(_openstack_locate_config)
+  if [ -z "$cfg" ]; then
+    return 1
+  fi
+
+  echo asdfasdf
+  stdin_fzf_completer cloud 2 "$@" < <(yq '.clouds|keys|.[]' "$cfg")
+}
+
 ostok() {
   local token project_id
   read -d '' token project_id < <(openstack token issue -c id -c project_id -f value)
@@ -96,3 +107,5 @@ osreset() {
     fi
   done < <(env)
 }
+
+staticfile_complete openstackcmds "$DOTFILES/openstack/completion.bash" osc osce
