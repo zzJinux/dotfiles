@@ -20,7 +20,7 @@ ktx() {
     return 1
   fi
 
-  if [ "${KUBECONFIG-}" == "" ]; then
+  if [ "${KUBECONFIG-}" = "" ]; then
     export KUBECONFIG="$TMPDIR/$SHELL_SESSION_ID.kubeconfig"
   fi
   cp "$config_path" "$KUBECONFIG"
