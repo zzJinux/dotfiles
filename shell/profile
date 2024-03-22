@@ -20,7 +20,6 @@ source "$DOTFILES/go/shlogin"
 source "$DOTFILES/rust/shlogin"
 source "$DOTFILES/java/shlogin"
 source "$DOTFILES/volta/shlogin"
-source "$DOTFILES/pnpm/shlogin"
 [ -r "$DOTFILES/local/shlogin" ] && source "$DOTFILES/local/shlogin"
 
 # python (Xcode Command Line Tools)
@@ -28,8 +27,13 @@ source "$DOTFILES/pnpm/shlogin"
 
 _df_path() {
   local IFS=:
-  # shellcheck disable=SC2206
-  local lpath=( $PATH )
+  if [[ -n "$ZSH_NAME" ]]; then
+    # shellcheck disable=SC2191
+    local lpath=( $=PATH )
+  else 
+    # shellcheck disable=SC2206
+    local lpath=( $PATH )
+  fi
   local dedup_path=()
   local e
 
