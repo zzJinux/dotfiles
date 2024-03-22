@@ -1,5 +1,7 @@
 # Navigation {{{
 
+DIRFORWARD=()
+
 if [ -n "$BASH" ]; then
   _summarize_dirstack() {
     if [ "${#DIRSTACK[@]}" -gt 4 ]; then
@@ -19,6 +21,7 @@ elif [ -n "$ZSH_NAME" ]; then
   }
 fi
 
+# To move back and forth between directories in the stack, "cd -"
 cd() {
   local _dummy OPTIND
   while getopts : _dummy; do :; done
@@ -28,19 +31,24 @@ cd() {
   else
     builtin pushd -- "$1" >/dev/null || return
   fi
-  _summarize_dirstack
-  ls
+  DIRFORWARD=()
+  # _summarize_dirstack
 }
 
 bd() {
   builtin popd >/dev/null || return
-  _summarize_dirstack
+  DIRFORWARD=("$OLDPWD" "${DIRFORWARD[@]}")
+  # _summarize_dirstack
 }
 
-# Exchange the top two entries on the directory stack
-xd() {
-  builtin pushd >/dev/null || return
-  _summarize_dirstack
+fd() {
+  if [ "${#DIRFORWARD[@]}" -eq 0 ]; then
+    echo "No forward directory" >&2
+    return 1
+  fi
+  builtin pushd -- "${DIRFORWARD[0]}" >/dev/null || return
+  DIRFORWARD=("${DIRFORWARD[@]:1}")
+  # _summarize_dirstack
 }
 
 alias ..='cd ../; :'
