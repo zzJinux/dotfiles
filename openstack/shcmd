@@ -37,6 +37,10 @@ _openstack_find_cloud() {
 }
 
 osc() {
+  if [ -z "${1:-}" ]; then
+    echo "${OS_CLOUD:-<unset>}"
+    return
+  fi
   if ! _openstack_find_cloud >/dev/null "$1"; then
     return 1
   fi

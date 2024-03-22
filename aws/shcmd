@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 awsp() {
+  if [ -z "${1:-}" ]; then
+    echo "${AWS_PROFILE:-<unset>}"
+    return
+  fi
   export AWS_PROFILE="$1"
 }
 
