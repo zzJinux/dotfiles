@@ -10,7 +10,6 @@ fi
 autoload -Uz bashcompinit && bashcompinit
 
 li=(
-  zoxide
   docker
   kubernetes
   terraform
@@ -186,4 +185,5 @@ unalias run-help
 autoload -U run-help
 alias help=run-help
 
+source "$DOTFILES/zoxide/shcmd"
 source "$DOTFILES/shell/interactive"
