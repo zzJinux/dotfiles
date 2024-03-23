@@ -164,6 +164,24 @@ alias l='ls -A'
 alias ll='ls -hl'
 alias la='ls -Ahl'
 
+swp() {
+  if [ $# -ne 2 ]; then
+    echo "Usage: swp <file1> <file2>" >&2
+    return 1
+  fi
+  if [ ! -e "$1" ]; then
+    echo "swp: $1: No such file or directory" >&2
+    return 1
+  fi
+  if [ ! -e "$2" ]; then
+    echo "swp: $2: No such file or directory" >&2
+    return 1
+  fi
+  local tmpfile
+  tmpfile=$(mktemp)
+  mv "$1" "$tmpfile" && mv "$2" "$1" && mv "$tmpfile" "$2"
+}
+
 sugg() {
   gh copilot suggest "$@"
 }
