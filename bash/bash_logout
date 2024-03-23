@@ -1,8 +1,1 @@
-_iife() {
-
-local DOTFILES=:PH_DOTFILES:
-
-source "$DOTFILES/bash/logout"
-
-} && _iife
-unset _iife
+source "$DOTFILES/shell/logout"

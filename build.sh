@@ -93,12 +93,7 @@ execute cp "${MODULES_DIR}"/readline/inputrc "${staging_dir}"/.inputrc
 source "${MODULES_DIR}/homebrew/shlogin"
 
 ohai bash
-for f in bash_profile bashrc bash_logout bashenv bash_completion; do
-  cat "${MODULES_DIR}"/"bash/${f}" \
-    | sed "s|:PH_DOTFILES:|${dotf_path}|g" \
-    | sed "s|:PH_HOMEBREW_PREFIX:|${HOMEBREW_PREFIX}|g" \
-    >".staging/.${f}"
-done
+source "${MODULES_DIR}/bash/_sync.sh"
 
 ohai tmux
 execute mkdir -p "${staging_dir}"/.config/tmux

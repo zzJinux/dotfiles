@@ -1,7 +1,23 @@
 # This is NOT a part of the native bash execution flow.
 # It is only executed by non-login non-interactive shells.
-_iife() {
-local DOTFILES=:PH_DOTFILES:
-source "$DOTFILES/bash/shenv"
-} && _iife
-unset _iife
+
+DOTFILES=:PH_DOTFILES:
+
+# Prevent login non-interactive shells from sourcing it again.
+if shopt -q login_shell && [ -z "${1-}" ]; then
+  return
+fi
+
+# We need to set $ENV so that if you use shell X as your login shell,
+# and then start "sh" as a non-login interactive shell the startup scripts will
+# correctly run.
+# https://pubs.opengroup.org/onlinepubs/9699919799/utilities/sh.html
+export ENV= # TBD
+
+# We also need to set BASH_ENV, which is run for *non-interactive* shells.
+# (unlike $ENV, which is for interactive shells)
+export BASH_ENV=~/.bashenv
+
+source "$DOTFILES/shell/env"
+
+# Reference: https://heptapod.host/flowblok/shell-startup/-/blob/branch/default/.shell/env

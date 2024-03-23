@@ -2,10 +2,6 @@ if [ "${BASH_VERSINFO[0]}" -lt 5 ]; then
   >&2 echo "WARNING: You are running the version less than 5. The startup scripts might result in unexpected behavior."
 fi
 
-_iife() {
-
-local DOTFILES=:PH_DOTFILES:
-
 # This file gets run in two cases:
 # 1. non-login interactive shell
 # 2. remote shell (over ssh or similar)
@@ -15,10 +11,8 @@ local DOTFILES=:PH_DOTFILES:
 # however, we assume that #2 is a recovery mode, so we don't want to do much.
 # (also, my google-fu didn't find a way to distinguish them)
 
-source "$DOTFILES/bash/shenv"
+# shellcheck disable=SC1090
+source ~/.bashenv
 [[ $- == *i* ]] && source "$DOTFILES/bash/interactive"
 
 # Reference: https://heptapod.host/flowblok/shell-startup/-/blob/branch/default/.bashrc
-
-} && _iife
-unset _iife
