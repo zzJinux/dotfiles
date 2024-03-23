@@ -53,16 +53,23 @@ cobra_complete() {
 
 # [zsh-only] The compspec header of $f must have all names.
 staticfile_complete() {
-  local tag="$1" f="$2"; shift 2
-  if [ -n "$ZSH_NAME" ] && [ -n "$tag" ]; then
-    compfile=~/.local/share/zsh/completions/_"$tag"
-    set -- "$tag"
+  local groupname="$1" f="$2"; shift 2
+  local target="$target"
+
+  if [ -n "$BASH" ]; then
+    target="${target:-bash}"
+  elif [ -n "$ZSH_NAME" ]; then
+    target="${target:-zsh}"
+  fi
+
+  if [ "$target" = zsh ] && [ -n "$groupname" ]; then
+    set -- "$groupname"
   fi
 
   for cmd in "$@"; do
-    if [ -n "$BASH" ]; then
+    if [ "$target" = bash ]; then
       compfile=~/.local/share/bash-completion/completions/"$cmd"
-    elif [ -n "$ZSH_NAME" ]; then
+    elif [ "$target" = zsh ]; then
       compfile=~/.local/share/zsh/completions/_"$cmd"
     fi
     if [ ! -e "$compfile" ] || [ "$f" -nt "$compfile" ]; then
