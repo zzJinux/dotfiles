@@ -37,6 +37,8 @@ zmodule zsh-users/zsh-completions --fpath src
 # completion must be sourced after all modules that add completion definitions.
 zmodule completion
 
+zmodule Aloxaf/fzf-tab
+
 # TODO
 # https://github.com/marlonrichert/zsh-autocomplete
 

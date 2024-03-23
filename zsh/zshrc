@@ -179,6 +179,10 @@ unset key
 ZVM_TERM=xterm-256color
 # }}}
 
+# fzf-tab {{{
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+# }}}
+
 setopt INC_APPEND_HISTORY
 
 unalias run-help
