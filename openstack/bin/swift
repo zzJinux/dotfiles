@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+if [ "$OS_AUTH_TYPE" = v3token ]; then
+  OS_AUTH_TYPE=
+fi
+opts=()
+if [ "${OS_INSECURE:-false}" = true ] || [ "${OS_VERIFY:-true}" = false ]; then
+  opts+=(--insecure)
+fi
+exec ~/.local/pipx/venvs/python-openstackclient/bin/swift "${opts[@]}" "$@"

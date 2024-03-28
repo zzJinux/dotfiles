@@ -30,6 +30,8 @@ fields_l=[
     Field('application_credential_secret', True),
     Field('token', True),
     Field('trust_id', True),
+    Field('insecure', True),
+    Field('verify', True),
     Field('cert', True),
     Field('key', True),
     Field('cacert', True),
@@ -61,9 +63,9 @@ def from_cloudconfig_to_env(cloud):
     for k, v in cloud.items():
         if k == 'auth':
             for ak, av in v.items():
-                ents.append(env_key(ak) + '=' + av)
+                ents.append(env_key(ak) + '=' + str(av))
         else:
-            ents.append(env_key(k) + '=' + v)
+            ents.append(env_key(k) + '=' + str(v))
     ents.append('')
     return '\n'.join(ents)
 

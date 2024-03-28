@@ -1,5 +1,0 @@
-#!/bin/sh
-if [ "$OS_AUTH_TYPE" = v3token ]; then
-  OS_AUTH_TYPE=
-fi
-/opt/homebrew/opt/openstackclient/libexec/bin/swift "$@"

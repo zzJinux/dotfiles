@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+opts=()
+if [ "${OS_INSECURE:-false}" = true ] || [ "${OS_VERIFY:-true}" = false ]; then
+  opts+=(--insecure)
+fi
+exec ~/.local/pipx/venvs/python-openstackclient/bin/openstack "${opts[@]}" "$@"
