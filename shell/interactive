@@ -34,4 +34,10 @@ export CLICOLOR
 #   export CLICOLOR=1
 #   export LSCOLORS=ExFxBxDxCxegedabagacad
 
+export LESS="--mouse -iR"
+export PAGER="$HOMEBREW_PREFIX/opt/less/bin/less --mouse -iR"
+if nvim=$(command -v nvim); then
+  export MANPAGER="$nvim +Man!"
+fi
+
 source "$DOTFILES/shell/cmd"

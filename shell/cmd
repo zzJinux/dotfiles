@@ -190,6 +190,10 @@ expl() {
   gh copilot explain "$@"
 }
 
+lman() {
+  MANPAGER=less man "$@"
+}
+
 alias path='printf "${PATH//:/\n}"'              # path:         Echo all executable Paths
 alias fix_stty='stty sane'                       # fix_stty:     Restore terminal settings when screwed up
 alias cic='bind "set completion-ignore-case On"' # cic:          Make tab-completion case-insensitive

@@ -74,9 +74,3 @@ elif command -v vim >/dev/null; then
 else
   EDITOR=$(command -v vi)
 fi
-
-export LESS="--mouse -iR"
-export PAGER="$HOMEBREW_PREFIX/opt/less/bin/less --mouse -iR"
-if nvim=$(command -v nvim); then
-  export MANPAGER="$nvim +Man!"
-fi
