@@ -40,9 +40,17 @@ alias() {
   return $ret
 }
 
-# bash-completion@2
-# Maybe you don't need all pre-installed completions
+
+# bash-completion@2 {{{
+# shellcheck disable=SC1091,SC2034
+{
+  # https://github.com/orgs/Homebrew/discussions/4202#discussioncomment-8636880
+  BASH_COMPLETION_COMPAT_DIR=/dev/null
+  BASH_COMPLETION_USER_DIR="$HOME/.local/share/bash-completion:$HOME/.local/share/bash-completion-sys"
 [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]] && . "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+  [[ -r "${HOMEBREW_PREFIX}/etc/bash_completion.d/000_bash_completion_compat.bash" ]] && . "${HOMEBREW_PREFIX}/etc/bash_completion.d/000_bash_completion_compat.bash"
+}
+# }}}
 li=(
   zoxide
   docker
