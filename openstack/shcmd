@@ -85,7 +85,6 @@ _fzf_complete_osc() {
     return 1
   fi
 
-  echo asdfasdf
   stdin_fzf_completer cloud 2 "$@" < <(yq '.clouds|keys|.[]' "$cfg")
 }
 
