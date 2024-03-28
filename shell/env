@@ -55,6 +55,7 @@ cobra_complete() {
 staticfile_complete() {
   local groupname="$1" f="$2"; shift 2
   local target="$target"
+  local compfile
 
   if [ -n "$BASH" ]; then
     target="${target:-bash}"
