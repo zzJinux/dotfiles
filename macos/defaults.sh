@@ -38,7 +38,7 @@ defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 # Dragging windows from anywhere (Command+Control and drag)
 defaults write -g NSWindowShouldDragOnGesture -bool true
 
-# Disable window opening animations
+# Disable window animations
 defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
 
 
