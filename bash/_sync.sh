@@ -33,7 +33,7 @@ name_rename_list=(
   hub hub.bash_completion.sh
   ninja ninja-completion.sh
 )
-
+# }}}
 
 comp_src_dir="$HOMEBREW_PREFIX/etc/bash_completion.d"
 comp_dest_dir="$HOME/.local/share/bash-completion-sys"
