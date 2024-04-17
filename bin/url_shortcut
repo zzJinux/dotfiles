@@ -1,9 +1,23 @@
 #!/usr/bin/env bash
 
-url=$(sed 's/\&/\&amp;/g; s/\"/\&quot;/g' <<<"$1")
-outf="$2.html"
+if [ $# -ne 2 ]; then
+  echo "Usage: $0 <url> <output file>"
+  exit 1
+fi
 
-cat <<EOF >"$outf"
+url=$(sed 's/\&/\&amp;/g; s/\"/\&quot;/g' <<<"$1")
+
+if [[ $(uname -s) == Darwin* ]]; then
+  # macOS
+  outf="$2.url"
+  cat <<EOF >"$outf"
+[InternetShortcut]
+URL=$url
+IconIndex=0
+EOF
+else
+  outf="$2.html"
+  cat <<EOF >"$outf"
 <!DOCTYPE HTML>
 <html>
   <head>
@@ -16,3 +30,4 @@ cat <<EOF >"$outf"
   </body>
 </html>
 EOF
+fi
