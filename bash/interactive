@@ -25,6 +25,9 @@ shopt -s autocd cdspell
 # Why is this not the default?
 shopt -u sourcepath
 
+# `cd foo` may be assumed to be `cd $foo`
+shopt -s cdable_vars
+
 alias() {
   local ret=0 r
   for arg in "$@"; do
@@ -47,7 +50,7 @@ alias() {
   # https://github.com/orgs/Homebrew/discussions/4202#discussioncomment-8636880
   BASH_COMPLETION_COMPAT_DIR=/dev/null
   BASH_COMPLETION_USER_DIR="$HOME/.local/share/bash-completion:$HOME/.local/share/bash-completion-sys"
-[[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]] && . "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+  [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]] && . "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
   [[ -r "${HOMEBREW_PREFIX}/etc/bash_completion.d/000_bash_completion_compat.bash" ]] && . "${HOMEBREW_PREFIX}/etc/bash_completion.d/000_bash_completion_compat.bash"
 }
 # }}}
