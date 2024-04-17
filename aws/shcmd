@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
+
 awsp() {
+  case "$1" in
+    -h|--help)
+      cat <<EOF
+Usage: awsp [profile]
+  Print the current profile if no argument is given.
+  Switch to the specified profile if an argument is given.
+EOF
+      return
+      ;;
+  esac
   if [ -z "${1:-}" ]; then
     echo "${AWS_PROFILE:-<unset>}"
     return
