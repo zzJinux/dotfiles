@@ -8,7 +8,10 @@ ktx() {
   local config_path env_path
 
   if [ -z "$cluster" ]; then
-    echo "Usage: ktx CLUSTER [NAMESPACE]"
+    echo "ktx switches the current kubectl context to the specified cluster"
+    echo
+    echo "Usage: "
+    echo "  ktx CLUSTER [NAMESPACE]"
     return 1
   fi
 
@@ -46,7 +49,10 @@ _fzf_complete_ktx() {
 
 kns() {
   if [ -z "${1-}" ]; then
-    echo "Usage: kns NAMESPACE"
+    echo "kns switches the current kubectl namespace"
+    echo
+    echo "Usage: "
+    echo "  kns NAMESPACE"
     return 1
   fi
   if [ -z "${KUBECONFIG-}" ]; then
@@ -59,6 +65,14 @@ kns() {
 # TODO: namespaces completion
 
 kpf() {
+  if [ -z "${1-}" ]; then
+    echo "kpf forwards a local port to the TARGET as indefinitely as possible"
+    echo "A TARGET represensts a forwarding config file ~/.kube/portforwards/TARGET"
+    echo
+    echo "Usage: "
+    echo "  kpf TARGET"
+    return 1
+  fi
   eval "$(<~/.kube/portforwards/"$1" sed 's/^/local /')"
   portforward-forever "$cluster" "$namespace" "$listen_addr" "$listen_port" "$target" "$target_port"
 }
@@ -70,6 +84,14 @@ _fzf_complete_kpf() {
 
 
 kjmp() {
+  if [ -z "${1-}" ]; then
+    echo "kjmp forwards a local port to a remote host"
+    echo "A TARGET represensts a forwarding config file ~/.kube/jumpremotes/TARGET"
+    echo
+    echo "Usage: "
+    echo "  kjmp TARGET"
+    return 1
+  fi
   eval "$(<~/.kube/jumpremotes/"$1" sed 's/^/local /')"
   REGISTRY_MIRROR_PREFIX=$REGISTRY_MIRROR_PREFIX kubejump \
     "$cluster" "$namespace" "$local_addr" "$local_port" "$remote_host" "$remote_port"
