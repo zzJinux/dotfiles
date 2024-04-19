@@ -20,7 +20,7 @@ EOF
 
 _fzf_complete_awsp() {
   stdin_fzf_completer profile 2 "$@" \
-    < <(env -i PATH="$PATH" COMP_LINE='aws --profile ' COMP_POINT=14 aws_completer)
+    < <(COMP_LINE='aws --profile ' COMP_POINT=14 aws_completer)
 }
 
 staticfile_complete awscmds "$DOTFILES/aws/completion.bash" awsp
