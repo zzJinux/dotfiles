@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 if [ -n "$BASH" ]; then
-  : # noop
-elif [ -n "$ZSH_NAME" ]; then
-  # zsh natively supports openstack completion, but let's use the bash completion anyway.
-  ZSH_BASH_COMPLETIONS_FALLBACK_WHITELIST+=(openstack)
-fi
-source=bash target=bash bash_external_deps="$DOTFILES/openstack/completion_deps.bash" \
   cmd_complete openstack complete --shell
+elif [ -n "$ZSH_NAME" ]; then
+  # zsh natively supports openstack completion
+  :
+fi
 alias os=openstack
 
 _openstack_locate_config() {
