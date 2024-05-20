@@ -1,3 +1,0 @@
-path_appends+=(
-  "$HOMEBREW_PREFIX/opt/fzf/bin"
-)

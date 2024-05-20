@@ -15,7 +15,6 @@ if [ -z "${XDG_DATA_DIRS}" ]; then
 fi
 export XDG_DATA_DIRS="$HOMEBREW_PREFIX/share:$XDG_DATA_DIRS"
 
-source "$DOTFILES/fzf/shlogin"
 source "$DOTFILES/go/shlogin"
 source "$DOTFILES/rust/shlogin"
 source "$DOTFILES/java/shlogin"
