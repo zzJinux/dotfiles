@@ -64,6 +64,11 @@ if [ "$TERM_PROGRAM" = "vscode" ]; then
   TERM=vscode
 fi
 
+# If Neovim is launched from JediTerm, COLORTERM=truecolor breaks the GUI.
+if [ "$TERMINAL_EMULATOR" = "JetBrains-JediTerm" ]; then
+  export COLORTERM=
+fi
+
 # Default programs
 export EDITOR
 if command -v nvim >/dev/null; then

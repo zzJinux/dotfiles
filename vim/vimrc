@@ -91,6 +91,7 @@ if !has('gui_running')
   " enable true colors only if available
   let colorterm=$COLORTERM
   if colorterm =~# 'truecolor' || colorterm =~# '24bit'
+    " TODO: Is it necessary for neovim?
     set termguicolors
     " also set escape characters for true colors, if needed
     if &term =~# '^screen'
