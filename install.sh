@@ -80,6 +80,7 @@ _main() {
   execute_sudo chsh -s "$homebrew_zsh" "$USER"
 
   exeucte_sudo "${SCRIPTS_DIR}/zsh/_install.sh"
+  execute_sudo "${SCRIPTS_DIR}/jetbrains/_install.sh"
 
   ohai "Open a new terminal window to use the new shell."
 

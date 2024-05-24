@@ -80,9 +80,6 @@ ohai hammerspoon
 execute mkdir -p "${staging_dir}"/.hammerspoon
 execute cp "${MODULES_DIR}"/hammerspoon/init.lua "${staging_dir}"/.hammerspoon/
 
-ohai jetbrains
-execute cp "${MODULES_DIR}"/jetbrains/ideavimrc "${staging_dir}"/.ideavimrc
-
 ohai karabiner
 execute mkdir -p "${staging_dir}"/.config/karabiner/assets/complex_modifications
 execute cp "${MODULES_DIR}"/karabiner/complex_mods/* "${staging_dir}"/.config/karabiner/assets/complex_modifications
