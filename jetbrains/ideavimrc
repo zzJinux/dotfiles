@@ -1,5 +1,6 @@
-" Enables builtin vim-sneak integration
+" Enable IdeaVim builtin plugins
 Plug 'justinmk/vim-sneak'
+Plug 'tpope/vim-surround'
 
 nmap <leader><C-d> <Action>(Debug)
 nmap <leader><C-h> <Action>(TypeHierarchy)
