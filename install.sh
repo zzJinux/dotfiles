@@ -67,12 +67,19 @@ _main() {
   ohai 'DefaultKeyBinding.dict'
   execute sh -c "mkdir -p ~/Library/KeyBindings && cp $(quote "$MODULES_DIR")/macos/DefaultKeyBinding.dict ~/Library/KeyBindings/DefaultKeyBinding.dict"
 
-  ohai 'Change the default shell'
+  local homebrew_zsh=${HOMEBREW_PREFIX}/opt/zsh/bin/zsh
   local homebrew_bash=${HOMEBREW_PREFIX}/opt/bash/bin/bash
+  if ! grep -q "$homebrew_zsh" /etc/shells; then
+    execute_sudo sh -c "cat >> /etc/shells" <<<"$homebrew_zsh"$'\n'
+  fi
   if ! grep -q "$homebrew_bash" /etc/shells; then
     execute_sudo sh -c "cat >> /etc/shells" <<<"$homebrew_bash"$'\n'
   fi
-  execute_sudo chsh -s "$homebrew_bash"
+
+  ohai 'Set Homebrew zsh as the default'
+  execute_sudo chsh -s "$homebrew_zsh" "$USER"
+
+  exeucte_sudo "${SCRIPTS_DIR}/zsh/_install.sh"
 
   ohai "Open a new terminal window to use the new shell."
 
