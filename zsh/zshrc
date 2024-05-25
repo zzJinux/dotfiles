@@ -24,6 +24,8 @@ for b in "${li[@]}"; do
   source "$DOTFILES/$b/shcmd"
 done; unset li
 
+source "$DOTFILES/terminal/iterm2/shell_integration.zsh"
+
 fpath=(~/.local/share/zsh/completions $fpath)
 
 # Set editor default keymap to vi

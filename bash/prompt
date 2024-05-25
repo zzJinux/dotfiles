@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
 # TODO: terminal color adjustment
+# TODO: https://github.com/romkatv/gitstatus
 
 function prompt_command {
   local EXIT="$?"
+  if [[ -n $__bp_last_ret_value ]]; then
+    EXIT=$__bp_last_ret_value # iTerm2 integration overrides $?
+  fi
   builtin history -a;
 
   #shellcheck disable=SC2034
