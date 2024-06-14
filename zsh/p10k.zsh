@@ -1688,7 +1688,7 @@
     fi
   }
 
-  typeset -g POWERLEVEL9K_OPENSTACK_SHOW_ON_COMMAND='openstack|swift'
+  typeset -g POWERLEVEL9K_OPENSTACK_SHOW_ON_COMMAND='openstack|swift|os|osc|osce'
 
   # Transient prompt works similarly to the builtin transient_rprompt option. It trims down prompt
   # when accepting a command line. Supported values:
