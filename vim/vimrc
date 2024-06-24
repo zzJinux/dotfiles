@@ -275,6 +275,12 @@ let b:sleuth_automatic = 0
 let g:Hexokinase_highlighters = [ 'backgroundfull' ]
 
 
+" config:Copilot
+let g:copilot_filetypes = {
+      \ 'gitcommit': v:true,
+      \ }
+
+
 " Automatics
 augroup myautocmds
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
