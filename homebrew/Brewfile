@@ -25,11 +25,14 @@ brew "kube-ps1", args: ["ignore-dependencies"]
 brew "gum"
 brew "ncurses" # [macos,keg-only]
 brew "ptpython"
+brew "fd"
+brew "yazi"
 
 # Searching
 brew "ack"
 brew "fzf"
 brew "grep" # [macos]
+brew "ripgrep"
 
 # Viewing
 brew "bat"
@@ -52,6 +55,7 @@ brew "curl" # [macos,keg-only]
 brew "wget"
 brew "websocat"
 brew "grpcurl"
+brew "rsync"
 
 # Security tools
 brew "gnupg"
@@ -84,6 +88,8 @@ brew "diffutils" # [macos] g-prefixed
 brew "findutils" # [macos] g-prefixed
 brew "pipx"
 cask "nikitabobko/tap/aerospace"
+brew "unar"
+
 
 # Fonts
 cask "font-jetbrains-mono"
