@@ -39,3 +39,6 @@ link_man1 curl-config "$HOMEBREW_PREFIX/opt/curl"
 
 link_bin ls "$HOMEBREW_PREFIX" gls
 link_man1 ls "$HOMEBREW_PREFIX" gls
+
+link_bin date "$HOMEBREW_PREFIX" gdate
+link_man1 date "$HOMEBREW_PREFIX" gdate
