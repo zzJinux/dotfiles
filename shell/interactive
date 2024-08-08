@@ -40,4 +40,7 @@ if nvim=$(command -v nvim); then
   export MANPAGER="$nvim +Man!"
 fi
 
+# coreutils ls
+export TIME_STYLE=long-iso
+
 source "$DOTFILES/shell/cmd"
