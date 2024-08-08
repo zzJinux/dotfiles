@@ -4,6 +4,7 @@
 python3 venv ~/.local/pytoolkit
 source ~/.local/pytoolkit/bin/activate
 pip install -r requirements.txt
+python3 -m override_readline
 
 cat <<\EOF > ~/.local/bin/python
 #!/usr/bin/env bash
