@@ -1,0 +1,47 @@
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+
+Host 127.0.0.1 localhost
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
+  IdentityFile ~/.ssh/id_ed25519
+
+Host mygithub
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/personal
+
+# Example: bastion
+Host bastion
+  User example
+  HostName example
+  IdentityFile example
+  SetEnv TERM=xterm-256color
+  ControlMaster auto
+  ControlPath ~/.ssh/controlmasters/%r@%k:%p
+  ControlPersist 600
+  IdentitiesOnly yes
+
+# Example server behind bastion
+Host *.bastion
+  User example
+  IdentityFile example
+  ProxyCommand bash -c 'ip=$(echo -n %h | grep -oE '\''[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'\''); exec ssh -T -q gateway "nc $ip "%p'
+  ControlMaster auto
+  ControlPath ~/.ssh/controlmasters/%r@%k:%p
+  ControlPersist 600
+  IdentitiesOnly yes
+
+# Example: server behind Pod behind bastion
+Host *.k.bastion
+  User example
+  SetEnv TERM=xterm-256color
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no 
+  IdentityFile example
+  ProxyCommand bash -c 'ip=$(echo -n %h | grep -oE '\''[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'\''); exec ssh -T -q bastion exec \$HOME/.local/bin/kubectl exec -i ssh-proxy -- nc $ip %p'
+  ControlMaster auto
+  ControlPath ~/.ssh/controlmasters/%r@%k:%p
+  ControlPersist 600
+  IdentitiesOnly yes

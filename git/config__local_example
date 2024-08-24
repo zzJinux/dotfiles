@@ -1,0 +1,4 @@
+[url "ssh://git@git.workplace.in/"]
+  insteadOf = https://git.workplace.in/
+[includeIf "gitdir:~/workplacerepos/"]
+  path = ~/.config/git/config_workplace__local

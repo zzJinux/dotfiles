@@ -1,0 +1,15 @@
+clouds:
+  example-cloud:
+    auth_type: v3password
+    auth:
+      auth_url: https://iam.kakaocloud.com/identity/v3
+      project_domain_name: DOMAIN_NAME
+      project_name: PROJECT_NAME
+      user_domain_name: DOMAIN_NAME
+      username: USERNAME
+    # insecure: true
+    # verify: false
+    region_name: REGION_NAME
+    interface: public
+    # storage_url is not used by SDKs. It's only for my own scripts.
+    storage_url: https://example-swift.in/v1/7e2d90601e7f47129a6a011577f0cfc1

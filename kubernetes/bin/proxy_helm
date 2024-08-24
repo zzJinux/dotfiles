@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+if [ -z "$HELM_VERSION" ]; then
+  exec ~/.kube/bin/helm-default "$@"
+else
+  exec ~/.kube/bin/helm-${HELM_VERSION} "$@"
+fi

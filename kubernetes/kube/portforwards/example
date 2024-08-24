@@ -1,0 +1,6 @@
+cluster=cluster
+namespace=default
+listen_addr=127.0.0.2
+listen_port=5100
+target=service/server
+target_port=8080

@@ -3,16 +3,36 @@
 # source: https://stackoverflow.com/a/44269268
 # This script splits HEAD into multiple commits, one per file.
 
+# Usage
+#
+# If you want to split all commits in a range by file, use it like this:
+#
+#   git rebase --interactive --exec git-split <branch>
+#
+# If you want to split a single commit during an interactive rebase, use it like this:
+#
+#   p Commit to split
+#   x git-split
+
+# Issue: why does it hang...?
+
 set -e
 
+echo 'START' > ~/.git-split.debug.txt
+
 SHA=$(git rev-parse --short HEAD)
+echo "SHA: $SHA" >> ~/.git-split.debug.txt
 
 # Change to repo root directory
 cd "$(git rev-parse --show-toplevel)"
+echo "cd: $(pwd)" >> ~/.git-split.debug.txt
 
 git reset HEAD^
+echo "reset to $(git rev-parse HEAD)" >> ~/.git-split.debug.txt
 
 git diff-tree --no-commit-id --name-only -r $SHA | while read -r f; do
   git add "$f"
+  echo "add $f" >> ~/.git-split.debug.txt
   GIT_EDITOR="echo '0a\n$SHA $f\n\n.\nw' | ed -s" git commit -c $SHA
+  echo "commit $f" >> ~/.git-split.debug.txt
 done

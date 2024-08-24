@@ -18,6 +18,10 @@ logerror() { echo "${tty_yellow}$*${tty_reset}" >&2; }
 symlink_safe() {
   local source="$1"
   local target="$2"
+  if ! [ -e "$source" ]; then
+    logerror "symlink_safe: source does not exist: $source"
+    return 1
+  fi
   if [ -e "$target" ]; then
     if [ -L "$target" ]; then
       old_src=$(readlink "$target")

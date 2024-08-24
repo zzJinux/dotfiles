@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# get name of the file without extension
+out=$(basename "$1" .applescript).scpt
+osacompile -o "$out" "$1"

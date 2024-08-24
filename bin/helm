@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-if [ -z "$HELM_VERSION" ]; then
-  exec helm-default "$@"
-else
-  exec helm-${HELM_VERSION} "$@"
-fi

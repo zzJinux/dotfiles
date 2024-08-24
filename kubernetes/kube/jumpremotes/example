@@ -1,0 +1,7 @@
+REGISTRY_MIRROR_PREFIX=docker.io
+cluster=cluster
+namespace=default
+local_addr=127.0.0.3
+local_port=5000
+remote_host=farhost.in
+remote_port=30000

@@ -51,6 +51,16 @@ fd() {
   # _summarize_dirstack
 }
 
+cdp() {
+  :
+  # TODO: implement
+  # Example: PWD=/foo/bar/baz
+  #   cdp <tab>
+  #   /foo
+  #   /foo/bar
+  #   /foo/bar/baz
+}
+
 yy() {
 	local tmp
   tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
@@ -205,6 +215,10 @@ lman() {
   MANPAGER=less man "$@"
 }
 
+pgrleave() {
+  LESS="$LESS -XF" "$@"
+}
+
 alias path='printf "${PATH//:/\n}"'              # path:         Echo all executable Paths
 alias fix_stty='stty sane'                       # fix_stty:     Restore terminal settings when screwed up
 alias cic='bind "set completion-ignore-case On"' # cic:          Make tab-completion case-insensitive
@@ -319,4 +333,14 @@ ii() {
   myip
   #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
   echo
+}
+
+todo_git_clone() {
+  local repo="$1"
+  repo="${repo%.git}"
+  local workroot="${2:-$repo}"
+
+  mkdir -p "$workroot" && { cd "$workroot" || return 1; }
+  git clone https://"$repo".git --filter=blob:none --bare .bare
+  echo 'gitdir: ./.bare' > .git
 }

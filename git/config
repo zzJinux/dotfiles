@@ -21,6 +21,7 @@
   wtls = worktree list
   cho = checkout
   br = branch
+  rb = rebase
 [color]
   ui = auto
   diff = auto

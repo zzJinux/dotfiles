@@ -3,3 +3,7 @@ source "$HOMEBREW_PREFIX/opt/git/etc/bash_completion.d/git-prompt.sh"
 lazygit() {
   TERM=xterm-256color command lazygit "$@"
 }
+
+gitr() {
+  git --no-pager "$@"
+}

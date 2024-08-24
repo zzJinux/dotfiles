@@ -1,0 +1,1 @@
+mkdir ~/.ssh/controlmasters

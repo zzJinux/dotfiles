@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-if [ -z "$KUBECTL_VERSION" ]; then
-  exec kubectl-default "$@"
-else
-  exec kubectl-${KUBECTL_VERSION} "$@"
-fi

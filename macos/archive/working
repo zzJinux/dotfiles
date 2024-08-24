@@ -1,0 +1,256 @@
+#!/usr/bin/env bash
+set -eu
+
+### Utility functions
+
+catch()
+{
+eval "$({
+__2="$(
+  { __1="$("${@:3}")"; } 2>&1;
+  ret=$?;
+  printf '%q=%q\n' "$1" "$__1" >&2;
+  exit $ret
+  )";
+ret="$?";
+printf '%s=%q\n' "$2" "$__2" >&2;
+printf '( exit %q )' "$ret" >&2;
+} 2>&1 )";
+}
+
+
+_write() {
+  echo "WRITE $1 $2 $3 $4"
+
+  defaults write "$1" "$2" "$3" "$4" \
+    && echo '  -> written'
+}
+
+_delete() {
+  echo "DELETE $1 $2"
+
+  if catch _stdout _stderr defaults delete "$1" "$2"; then
+    echo '  -> deleted'
+  else
+    awk 'BEGIN {err=1} FNR == 2 && /not found/ {err=0} END {exit err}' - <<<$_stderr \
+      && echo '  -> unchanged (nonexistent)'
+  fi
+  
+}
+
+###
+
+
+
+
+###############################################################################
+# Misc (category not detrmined)                                               #
+###############################################################################
+
+misc_misc() {
+  # Save to disk (not to iCloud) by default
+  _write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool FALSE
+
+  # Remove duplicates in the “Open With” menu
+  /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
+}
+
+
+###############################################################################
+# System Preferences                                                          #
+###############################################################################
+
+# Preferences - General
+
+appearance_dark() {
+  _write NSGlobalDomain AppleInterfaceStyle -string Dark
+  _delete NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically
+}
+
+accent_and_highlight_multicolor() {
+  _delete NSGlobalDomain AppleAccentColor
+  _delete NSGlobalDomain AppleHighlightColor
+}
+
+wallpapertinting_disable() {
+  _write NSGlobalDomain AppleReduceDesktopTinting -bool TRUE
+}
+
+scrollbar_always() {
+  _write NSGlobalDomain AppleShowScrollBars -string "Always"
+}
+
+
+# Preferences - Dock & Menu Bar
+
+dock_n_menubar() {
+  _write com.apple.dock tilesize -int 48
+  _write com.apple.dock magnification -bool TRUE
+  _write com.apple.dock largesize -int 72
+  _write com.apple.dock orientation -string bottom
+  _write com.apple.dock mineffect -string scale
+  _write com.apple.dock autohide -bool TRUE
+
+  # See also Language & Region
+  _write com.apple.menuextra.clock ShowSeconds -bool TRUE
+
+  # Remove Spotlight item from Menu Bar
+  _delete com.apple.Spotlight "NSStatusItem Visible Item-0"
+
+  _write com.apple.Siri StatusMenuVisible -bool FALSE
+}
+
+
+# Preferences - Mission Control
+
+mission_control() {
+  # DISABLE - Automatically rearrange Spaces based on most recent use
+  _write com.apple.dock mru-spaces -bool FALSE
+
+  _write NSGlobalDomain AppleSpacesSwitchOnActivate -bool TRUE
+  _write com.apple.dock expose-group-by-app -bool FALSE
+
+  # DISABLE - Displays have separate Spaces
+  _write com.apple.spaces spans-displays -bool FALSE
+
+  # Hot corners
+  # Possible values:
+  #  0: no-op
+  #  2: Mission Control
+  #  3: Show application windows
+  #  4: Desktop
+  #  5: Start screen saver
+  #  6: Disable screen saver
+  #  7: Dashboard
+  # 10: Put display to sleep
+  # 11: Launchpad
+  # 12: Notification Center
+  # 13: Lock Screen
+  # Top right screen corner → Desktop
+  _write com.apple.dock wvous-tr-corner -int 4
+  _write com.apple.dock wvous-tr-modifier -int 0
+  # Bottom left screen corner → Mission Control
+  _write com.apple.dock wvous-bl-corner -int 2
+  _write com.apple.dock wvous-bl-modifier -int 0
+  # Bottom left screen corner → Application windows
+  _write com.apple.dock wvous-br-corner -int 3
+  _write com.apple.dock wvous-br-modifier -int 0
+}
+
+
+# Preferences - Language & Region
+
+time_format_24hour() {
+  _write NSGlobalDomain AppleICUForce24HourTime -bool TRUE
+}
+
+
+# Preferences - Accessibility
+
+a11y_zoom() {
+  # just examples
+  return 0
+
+  # Use scroll gesture with the Ctrl (^) modifier key to zoom
+  defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
+  defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
+  # Follow the keyboard focus while zoomed in
+  defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
+}
+
+
+# Preferences - Keyboard
+
+kb_keyboard() {
+  # Hidden option
+  # Disable press-and-hold for keys in favor of key repeat
+  _write NSGlobalDomain ApplePressAndHoldEnabled -bool FALSE
+
+  _write NSGlobalDomain KeyRepeat -int 2
+  _write NSGlobalDomain InitialKeyRepeat -int 20
+
+  # Hidden option
+  # Disable press-and-hold for keys in favor of key repeat (globally)
+  # https://superuser.com/a/1408278
+  defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+
+  # Press 🌐 to show Emoji & Symbols
+  _write com.apple.HIToolbox AppleFnUsageType -int 2
+
+  # ENABLE: Use F1, F2, etc. keys as standard function keys
+  _write NSGlobalDomain com.apple.keyboard.fnState -bool TRUE
+}
+
+kb_text() {
+  # Disable auto-correct
+  _write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool FALSE
+
+  # Disable automatic capitalization as it’s annoying when typing code
+  _write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool FALSE
+
+  # Disable automatic period substitution as it’s annoying when typing code
+  _write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool FALSE
+
+  # Disable smart dashes as they’re annoying when typing code
+  _write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool FALSE
+
+  # Disable smart quotes as they’re annoying when typing code
+  _write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool FALSE
+
+  _write NSGlobalDomain NSUserDictionaryReplacementItems -array
+}
+
+kb_shortcuts() {
+  # TODO: shortcuts
+  # TODO: DISABLE: Convert Text to Chinese
+  # TODO: DISABLE: Open man Page in Terminal
+  # TODO: DISABLE: Search man Page Index in Terminal
+
+  # Enable full keyboard access for all controls (hidden setting)
+  # (e.g. enable Tab in modal dialogs)
+  _write NSGlobalDomain AppleKeyboardUIMode -int 3
+}
+
+kb_etc() {
+  # DISABLE: Use the Caps Lock key to switch to and from ABC
+  _write NSGlobalDomain TISRomanSwitchState -int 0
+}
+
+
+# Preferences - Trackpad
+
+trackpad() {
+  _write com.apple.AppleMultitouchTrackpad ActuationStrength -int 0
+  _write com.apple.dock showAppExposeGestureEnabled -bool TRUE
+}
+
+
+
+###############################################################################
+# Finder                                                                      #
+###############################################################################
+
+finder() {
+  # Finder: show all filename extensions
+  _write NSGlobalDomain AppleShowAllExtensions -bool true
+
+  # Finder: show status bar
+  _write com.apple.finder ShowStatusBar -bool true
+
+  # Finder: show path bar
+  _write com.apple.finder ShowPathbar -bool true
+
+  # Disable the warning when changing a file extension
+  _write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
+  # Enable spring loading for directories
+  _write NSGlobalDomain com.apple.springing.enabled -bool true
+
+  # Remove the spring loading delay for directories
+  _write NSGlobalDomain com.apple.springing.delay -float 0.5
+}
+
+
+appearance_dark
+
+/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u

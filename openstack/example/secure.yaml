@@ -1,0 +1,4 @@
+clouds:
+  example-cloud:
+    auth:
+      password: PASSWORD

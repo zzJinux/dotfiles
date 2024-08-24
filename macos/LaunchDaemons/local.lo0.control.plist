@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>local.lo0.control</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/sh</string>
+      <string>-c</string>
+      <string>
+      /sbin/ifconfig lo0 alias 127.0.0.2 up
+      /sbin/ifconfig lo0 alias 127.0.0.3 up
+      /sbin/ifconfig lo0 alias 127.0.0.4 up
+      </string>
+    </array>
+    <key>StandardOutPath</key>
+    <string>/var/log/local.lo0.control.log</string>
+    <key>StandardErrorPath</key>
+    <string>/var/log/local.lo0.control.log</string>
+  </dict>
+</plist>
