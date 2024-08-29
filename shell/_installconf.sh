@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+set -eu
+
+source "$DOTFILES/util.bash"
+# SCRIPT_DIR="$(script_dir)"
+
+ohai 'shell:installconf Configure sudoers env_keep'
 if [ -f /etc/sudoers.d/env_keep ]; then
   echo "env_keep already configured"
   exit 0

@@ -5,7 +5,7 @@
 export LANG='en_US.UTF-8'
 export LC_ALL=$LANG
 
-path_prepends=("$HOME/bin" "$HOME/.local/bin")
+path_prepends=("$HOME/bin" "$HOME/.local/bin" "$DOTFILES/bin")
 path_appends=()
 
 source "$DOTFILES/homebrew/shlogin"

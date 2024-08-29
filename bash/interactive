@@ -46,8 +46,63 @@ alias() {
 
 # bash-completion@2 {{{
 # shellcheck disable=SC1091,SC2034
+repair_builtin_completions() {
+  local comp_src_dir="$HOMEBREW_PREFIX/etc/bash_completion.d"
+  local comp_dest_dir="$HOME/.local/share/bash-completion-sys"
+
+  if [[ $comp_dest_dir -nt $comp_src_dir ]]; then
+    return
+  fi
+
+  local name_skip_list=(
+    '000_bash_completion_compat.bash'
+    brew
+    brew-services
+    git-prompt.sh
+    python-argcomplete
+  )
+  local name_rename_list=(
+    aws aws_bash_completer
+    git git-completion.bash
+    hub hub.bash_completion.sh
+    ninja ninja-completion.sh
+  )
+  if [ -e "$comp_dest_dir" ]; then
+    rm -rf "$comp_dest_dir"
+  fi
+  mkdir -p "$comp_dest_dir"
+
+  local f 
+  for f in "$comp_src_dir"/*; do
+    name="${f##*/}"
+
+    for skip in "${name_skip_list[@]}"; do
+      if [[ "$name" == "$skip" ]]; then
+        continue 2
+      fi
+    done
+
+    for ((i = 0; i < ${#name_rename_list[@]}; i += 2)); do
+      cmd="${name_rename_list[i]}"
+      match="${name_rename_list[i + 1]}"
+      if [[ "$name" == "$match" ]]; then
+        name="$cmd"
+        break
+      fi
+    done
+
+    symlink_safe "$f" "$comp_dest_dir/$name"
+  done
+
+  write_safe "$comp_dest_dir/brew" <<EOF
+source "$comp_src_dir/brew"
+source "$comp_src_dir/brew-services"
+EOF
+}
+# shellcheck disable=SC2034
 {
   # https://github.com/orgs/Homebrew/discussions/4202#discussioncomment-8636880
+  repair_builtin_completions; unset -f repair_builtin_completions
   BASH_COMPLETION_COMPAT_DIR=/dev/null
   BASH_COMPLETION_USER_DIR="$HOME/.local/share/bash-completion:$HOME/.local/share/bash-completion-sys"
   [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]] && . "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
@@ -67,6 +122,7 @@ li=(
   local
 )
 for b in "${li[@]}"; do
+  # shellcheck disable=SC1090
   source "$DOTFILES/$b/shcmd"
 done; unset li
 

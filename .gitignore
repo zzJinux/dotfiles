@@ -1,5 +1,3 @@
 .vscode/
 *__local
-.staging
-.active
 .DS_store
