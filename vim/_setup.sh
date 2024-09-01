@@ -7,4 +7,5 @@ ohai 'vim:setup Install vim-plug plugins'
 if ! [ -e ~/.vim/autoload/plug.vim ]; then
   execute curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
-execute vim -c ':PlugInstall' -c ':qa!'
+execute vim -es -i NONE -c "PlugInstall" -c "qa"
+# execute nvim -es -i NONE -c "PlugInstall" -c "qa"
