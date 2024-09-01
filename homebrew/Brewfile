@@ -1,8 +1,4 @@
 tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
-tap "homebrew/core"
 tap "homebrew/services"
 
 # [macos]: macOS has own versions
@@ -19,7 +15,7 @@ brew "pstree"
 brew "neovim"
 brew "less" # [macos]
 brew "mandoc" # [macos]
-brew "mac-db" # [macos]
+brew "man-db" # [macos]
 brew "tldr"
 brew "kube-ps1", args: ["ignore-dependencies"]
 brew "gum"
@@ -43,7 +39,7 @@ brew "gawk" # [macos] g-prefixed
 brew "gnu-sed" # [macos] g-prefixed
 brew "jq"
 brew "jless"
-brew "yq",
+brew "yq"
 brew "gomplate"
 brew "pandoc"
 brew "groff"

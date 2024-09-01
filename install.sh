@@ -21,7 +21,7 @@ _main() {
   if ! [[ -e $HOMEBREW_PREFIX/bin/brew ]]; then
     # It will install Command Line Tools if not installed
     ohai 'Install Homebrew'
-    NONINTERACTIVE=1 execute /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+    execute /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   fi
   ohai 'Install Homebrew packages'
   "$HOMEBREW_PREFIX/bin/brew" bundle --verbose --file "$DOTFILES/homebrew/Brewfile"

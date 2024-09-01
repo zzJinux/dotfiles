@@ -6,7 +6,7 @@ source "$DOTFILES/util.bash"
 ohai 'etc:setup Tweak man.conf'
 manconf=/usr/local/etc/man.d/man.conf
 if ! [ -f "$manconf" ]; then
-  execute_sudo mkdir -p "$(basename "$manconf")"
+  execute_sudo mkdir -p "$(dirname "$manconf")"
   execute_sudo touch "$manconf"
 else
   ohai "⚠️ $manconf already exists. Continue to append."
