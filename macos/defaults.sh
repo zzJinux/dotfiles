@@ -141,8 +141,7 @@ for app in "Activity Monitor" \
   "Finder" \
   "Google Chrome" \
   "Safari" \
-  "SystemUIServer" \
-  "Terminal"; do
+  "SystemUIServer"; do
   killall "${app}" >/dev/null 2>/dev/null
 done
 
