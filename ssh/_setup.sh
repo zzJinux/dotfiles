@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-mkdir ~/.ssh/controlmasters
+mkdir -p ~/.ssh/controlmasters

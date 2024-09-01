@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
+set -eu
 
-python3 venv ~/.local/pytoolkit
+source "$DOTFILES/util.bash"
+SCRIPT_DIR="$(_script_dir)"
+
+ohai 'vim:setup Install local Python venv'
+python3 -m venv ~/.local/pytoolkit
 source ~/.local/pytoolkit/bin/activate
-pip install -r requirements.txt
+pip install -r "$SCRIPT_DIR/requirements.txt"
 python3 -m override_readline
 
 cat <<'EOF' > ~/.local/bin/python
