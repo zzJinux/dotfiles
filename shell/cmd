@@ -46,7 +46,7 @@ fd() {
     echo "No forward directory" >&2
     return 1
   fi
-  builtin pushd -- "${DIRFORWARD[0]}" >/dev/null || return
+  builtin pushd -- "${DIRFORWARD[@]:0:1}" >/dev/null || return
   DIRFORWARD=("${DIRFORWARD[@]:1}")
   # _summarize_dirstack
 }
