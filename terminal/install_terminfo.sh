@@ -24,6 +24,4 @@ gunzip "$filename"
 filename="${filename%.gz}"
 
 # Install the extracted file
-/usr/bin/tic -xe xterm-256color,iterm2,vscode,tmux-256color "$filename"
-
-# macOS ncurses may have problem compiling xterm-256color. Use older terminfo.src for it.
+/usr/bin/tic -xe iterm2,vscode "$filename"
