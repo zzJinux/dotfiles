@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[1]}")" &>/dev/null && pwd)
 
 # References
 # https://github.com/mathiasbynens/dotfiles/blob/ea68bda80a455e149d29156071d4c8472f6b93cb/.macos
@@ -140,6 +141,14 @@ defaults write TrackpadThreeFingerHorizSwipeGesture -int 2
 
 # App Expose = swipe down with three fingers
 defaults write com.apple.dock showAppExposeGestureEnabled -bool true
+
+# Shortcuts
+{
+  # Modify
+  "$SCRIPT_DIR"/defaults_shortcuts.py
+  # Flush
+  defaults read com.apple.symbolichotkeys >/dev/null
+}
 
 
 ###############################################################################
