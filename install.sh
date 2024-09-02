@@ -3,7 +3,15 @@ set -eu
 
 : "${DOTFILES:="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"}"
 export DOTFILES
-source "$DOTFILES/util.bash"
+
+if [[ -e "$DOTFILES/.git" ]]; then
+  source "$DOTFILES/util.bash"
+  source "$DOTFILES/homebrew/setvars.bash"
+else
+  eval "$(curl -fsSL https://raw.githubusercontent.com/zzJinux/dotfiles/master/util.bash)"
+  eval "$(curl -fsSL https://raw.githubusercontent.com/zzJinux/dotfiles/master/homebrew/setvars.bash)"
+fi
+export HOMEBREW_PREFIX
 
 # Some functions copied from https://github.com/Homebrew/install/blob/master/install.sh
 
@@ -16,13 +24,16 @@ _main() {
   # This script shall be idempotent.
 
   # Homebrew install
-  source "$DOTFILES/homebrew/setvars.bash"
-  export HOMEBREW_PREFIX
   if ! [[ -e $HOMEBREW_PREFIX/bin/brew ]]; then
     # It will install Command Line Tools if not installed
     ohai 'Install Homebrew'
     execute /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   fi
+  if ! [[ -e "$DOTFILES/.git" ]]; then
+    ohai 'Clone the DOTFILES repository'
+    git clone https://github.com/zzJinux/dotfiles.git "$DOTFILES"
+  fi
+
   ohai 'Install Homebrew packages'
   "$HOMEBREW_PREFIX/bin/brew" bundle --verbose --file "$DOTFILES/homebrew/Brewfile"
   PATH="$HOMEBREW_PREFIX/bin:$PATH"
