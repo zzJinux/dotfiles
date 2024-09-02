@@ -4,8 +4,6 @@
 # https://github.com/mathiasbynens/dotfiles/blob/ea68bda80a455e149d29156071d4c8472f6b93cb/.macos
 # https://macos-defaults.com/
 
-# TODO: keep up with Ventura
-
 # Close any open System Preferences panes, to prevent them from overriding
 # settings we’re about to change
 osascript -e 'tell application "System Preferences" to quit'
@@ -29,6 +27,12 @@ defaults write NSGlobalDomain "NSDocumentSaveNewDocumentsToCloud" -bool "false"
 # Remove duplicates in the “Open With” menu
 /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
 
+# Appearance: Light
+{
+  defaults delete -g AppleInterfaceStyle 2>/dev/null
+  defaults delete -g AppleInterfaceStyleSwitchesAutomatically 2>/dev/null
+}
+
 # Disable automatic period substitution as it’s annoying when typing code
 defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 
@@ -46,17 +50,20 @@ defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
 # Dock, Dashboard, and hot corners                                            #
 ###############################################################################
 
-# Put the Dock on the left
-defaults write com.apple.dock "orientation" -string "bottom"
+# Dock
+{
+  # Put the Dock on the bottom
+  defaults write com.apple.dock "orientation" -string "bottom"
 
-# Set the icon size of a Dock item
-defaults write com.apple.dock "tilesize" -int "36"
+  # Set the icon size of a Dock item
+  defaults write com.apple.dock "tilesize" -int 48
 
-# Turn on Dock autohide
-defaults write com.apple.dock "autohide" -bool "true"
+  # Turn on Dock autohide
+  defaults write com.apple.dock "autohide" -bool "true"
 
-# Change minimize/maximize window effect
-defaults write com.apple.dock "mineffect" -string "scale"
+  # Change minimize/maximize window effect (suck: hidden value)
+  defaults write com.apple.dock "mineffect" -string suck
+}
 
 # Don’t group windows by application in Mission Control
 # (i.e. use the old Exposé behavior instead)
@@ -107,9 +114,32 @@ defaults write com.apple.dock appswitcher-all-displays -bool true
 # (e.g. enable Tab in modal dialogs)
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
-# Set a blazingly fast keyboard repeat rate
-defaults write NSGlobalDomain KeyRepeat -int 2
-defaults write NSGlobalDomain InitialKeyRepeat -int 25
+# Key repeat
+{
+  # Disable press-and-hold for keys in favor of key repeat
+  defaults write -g ApplePressAndHoldEnabled -bool false
+
+  # Set a blazingly fast keyboard repeat rate
+  defaults write -g KeyRepeat -int 2
+  defaults write -g InitialKeyRepeat -int 25
+}
+
+# Press 🌐 to show Emoji & Symbols
+defaults write com.apple.HIToolbox AppleFnUsageType -int 2
+
+# Enable: Use F1, F2, etc. keys as standard function keys
+defaults write -g com.apple.keyboard.fnState -bool true
+
+# Enable "Silent clicking"
+defaults write com.apple.AppleMultitouchTrackpad ActuationStrength -int 0
+
+# Enable "Swipe between pages"
+defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool true
+defaults write TrackpadFourFingerHorizSwipeGesture -int 2
+defaults write TrackpadThreeFingerHorizSwipeGesture -int 2
+
+# App Expose = swipe down with three fingers
+defaults write com.apple.dock showAppExposeGestureEnabled -bool true
 
 
 ###############################################################################
@@ -139,10 +169,10 @@ for app in "Activity Monitor" \
   "cfprefsd" \
   "Dock" \
   "Finder" \
-  "Google Chrome" \
-  "Safari" \
   "SystemUIServer"; do
   killall "${app}" >/dev/null 2>/dev/null
 done
+
+/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
 echo "Done. Note that some of these changes require a logout/restart to take effect."
