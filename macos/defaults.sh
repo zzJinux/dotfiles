@@ -22,7 +22,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 ###############################################################################
 
 # Save to disk (not to iCloud) by default
-defaults write NSGlobalDomain "NSDocumentSaveNewDocumentsToCloud" -bool "false" 
+defaults write -g "NSDocumentSaveNewDocumentsToCloud" -bool false 
 
 # Remove duplicates in the “Open With” menu
 /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
@@ -34,10 +34,10 @@ defaults write NSGlobalDomain "NSDocumentSaveNewDocumentsToCloud" -bool "false"
 }
 
 # Disable automatic period substitution as it’s annoying when typing code
-defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false
 
 # Disable auto-correct
-defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
 
 # Dragging windows from anywhere (Command+Control and drag)
 defaults write -g NSWindowShouldDragOnGesture -bool true
@@ -53,16 +53,16 @@ defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
 # Dock
 {
   # Put the Dock on the bottom
-  defaults write com.apple.dock "orientation" -string "bottom"
+  defaults write com.apple.dock orientation -string bottom
 
   # Set the icon size of a Dock item
-  defaults write com.apple.dock "tilesize" -int 48
+  defaults write com.apple.dock tilesize -int 48
 
   # Turn on Dock autohide
-  defaults write com.apple.dock "autohide" -bool "true"
+  defaults write com.apple.dock autohide -bool true
 
   # Change minimize/maximize window effect (suck: hidden value)
-  defaults write com.apple.dock "mineffect" -string suck
+  defaults write com.apple.dock mineffect -string suck
 }
 
 # Don’t group windows by application in Mission Control
@@ -112,7 +112,7 @@ defaults write com.apple.dock appswitcher-all-displays -bool true
 
 # Enable full keyboard access for all controls
 # (e.g. enable Tab in modal dialogs)
-defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+defaults write -g AppleKeyboardUIMode -int 3
 
 # Key repeat
 {
@@ -134,7 +134,7 @@ defaults write -g com.apple.keyboard.fnState -bool true
 defaults write com.apple.AppleMultitouchTrackpad ActuationStrength -int 0
 
 # Enable "Swipe between pages"
-defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool true
+defaults write -g AppleEnableSwipeNavigateWithScrolls -bool true
 defaults write TrackpadFourFingerHorizSwipeGesture -int 2
 defaults write TrackpadThreeFingerHorizSwipeGesture -int 2
 
@@ -147,7 +147,7 @@ defaults write com.apple.dock showAppExposeGestureEnabled -bool true
 ###############################################################################
 
 # Finder: show all filename extensions
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+defaults write -g AppleShowAllExtensions -bool true
 
 # Finder: show status bar
 defaults write com.apple.finder ShowStatusBar -bool true
@@ -159,10 +159,10 @@ defaults write com.apple.finder ShowPathbar -bool true
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
 # Enable spring loading for directories
-defaults write NSGlobalDomain com.apple.springing.enabled -bool true
+defaults write -g com.apple.springing.enabled -bool true
 
 # Remove the spring loading delay for directories
-defaults write NSGlobalDomain com.apple.springing.delay -float 0.5
+defaults write -g com.apple.springing.delay -float 0.5
 
 
 for app in "Activity Monitor" \
