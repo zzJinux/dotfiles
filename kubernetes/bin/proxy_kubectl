@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 if [ -z "$KUBECTL_VERSION" ]; then
-  exec ~/.kube/bin/kubectl-default "$@"
+  exec ~/.kube/bin/kubectl__default "$@"
 else
-  exec ~/.kube/bin/kubectl-${KUBECTL_VERSION} "$@"
+  exec ~/.kube/bin/kubectl__${KUBECTL_VERSION} "$@"
 fi
