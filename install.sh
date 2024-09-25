@@ -5,7 +5,7 @@ set -eu
 if [[ -z ${DOTFILES:-} ]]; then
   if [[ ${#BASH_SOURCE[*]} -gt 0 ]]; then
     DOTFILES="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-  elif
+  else
     DOTFILES=$(pwd)
   fi
 fi
