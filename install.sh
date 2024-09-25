@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 set -eu
 
-: "${DOTFILES:="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"}"
+
+if [[ -z ${DOTFILES:-} ]]; then
+  if [[ ${#BASH_SOURCE[*]} -gt 0 ]]; then
+    DOTFILES="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+  elif
+    DOTFILES=$(pwd)
+  fi
+fi
 export DOTFILES
 
 if [[ -e "$DOTFILES/.git" ]]; then
