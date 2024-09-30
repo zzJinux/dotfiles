@@ -18,7 +18,7 @@ export XDG_DATA_DIRS="$HOMEBREW_PREFIX/share:$XDG_DATA_DIRS"
 source "$DOTFILES/go/shlogin"
 source "$DOTFILES/rust/shlogin"
 source "$DOTFILES/java/shlogin"
-source "$DOTFILES/volta/shlogin"
+source "$DOTFILES/fnm/shlogin"
 [ -r "$DOTFILES/local/shlogin" ] && source "$DOTFILES/local/shlogin"
 
 # python (Xcode Command Line Tools)

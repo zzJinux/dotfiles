@@ -1,0 +1,5 @@
+if [ -d "$FNM_PATH" ]; then
+  path_appends+=(
+    "$HOME/Library/Application Support/fnm:$PATH"
+  )
+fi

@@ -1,4 +1,0 @@
-export VOLTA_HOME=~/.volta
-path_appends+=(
-  "$HOME/.volta/bin"
-)

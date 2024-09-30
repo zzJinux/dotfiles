@@ -70,6 +70,7 @@ brew "jesseduffield/lazygit/lazygit"
 brew "helm"
 brew "tilt"
 brew "subversion"
+brew "fnm"
 
 # Language tools
 brew "ruby"
