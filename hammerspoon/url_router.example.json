@@ -21,7 +21,7 @@
   "rules": [
     {
       "processor": "work",
-      "domains": [
+      "prefixes": [
         "intranet.ai",
         "intranet.cc",
         "intranet.com"
@@ -29,7 +29,7 @@
     },
     {
       "processor": "picker",
-      "domains": [
+      "prefixes": [
         "meet.google.com",
         "drive.google.com",
         "docs.google.com"

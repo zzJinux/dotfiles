@@ -25,16 +25,16 @@ local function escape(s)
   return (s:gsub('[%-%.%+%[%]%(%)%$%^%%%?%*]', '%%%1'))
 end
 
-local function Rule(domains, processor)
+local function Rule(prefixes, processor)
   local rule = {
-    domains = domains,
+    prefixes = prefixes,
     processor = processor
   }
 
-  function rule:match(host)
-    for _, domain in ipairs(self.domains) do
-      if host == domain or string.match(host, '%.' .. escape(domain) .. '$') then
-        return domain
+  function rule:match(fullURL)
+    for _, prefix in ipairs(self.prefixes) do
+      if string.match(fullURL, '^https?://' .. escape(prefix)) then
+        return prefix
       end
     end
     return ''
@@ -99,23 +99,23 @@ function setupURLRouter(config)
 
   local rules = {}
   for _, ruleData in ipairs(config["rules"]) do
-    local rule = Rule(ruleData["domains"], ruleData["processor"])
+    local rule = Rule(ruleData["prefixes"], ruleData["processor"])
     table.insert(rules, rule)
   end
 
   local default = config["default"]
 
-  hs.urlevent.httpCallback = function(scheme, host, params, fullURL)
+  hs.urlevent.httpCallback = function(scheme, fullURL, params, fullURL)
     local procName
 
-    if host == nil then
+    if fullURL == nil then
       -- DO NOTHING
     elseif URLRouterPicky then
       procName = "picker"
     else
-      maxlen = 0
+      local maxlen = 0
       for _, rule in ipairs(rules) do
-        d = rule:match(host)
+        local d = rule:match(fullURL)
         if #d > maxlen then
           maxlen = #d
           procName = rule.processor
