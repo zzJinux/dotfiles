@@ -17,5 +17,5 @@ else
 fi
 
 # Resize and extend image to the square
-convert <(cat "$input") -resize ${square_size}x${square_size} -background none -gravity center -extent ${square_size}x${square_size} $output
+magick <(cat "$input") -resize ${square_size}x${square_size} -background none -gravity center -extent ${square_size}x${square_size} $output
 

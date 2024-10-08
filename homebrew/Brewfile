@@ -86,6 +86,7 @@ brew "findutils" # [macos] g-prefixed
 brew "pipx"
 brew "unar"
 brew "rename"
+brew "imagemagick"
 
 
 # Fonts
