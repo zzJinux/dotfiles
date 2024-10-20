@@ -19,6 +19,7 @@ li=(
   git
   fzf
   fnm
+  python
   local
 )
 for b in "${li[@]}"; do

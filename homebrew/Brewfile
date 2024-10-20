@@ -71,6 +71,7 @@ brew "helm"
 brew "tilt"
 brew "subversion"
 brew "fnm"
+brew "pyenv"
 
 # Language tools
 brew "ruby"
