@@ -9,6 +9,7 @@ python3 -m venv ~/.local/pytoolkit
 source ~/.local/pytoolkit/bin/activate
 pip install -r "$SCRIPT_DIR/requirements.txt"
 python3 -m override_readline
+deactivate
 
 ohai 'python:install pipx packages'
 while IFS= read -r package; do
