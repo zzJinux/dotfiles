@@ -15,3 +15,7 @@ while IFS= read -r package; do
   ohai 'python:pipx:install '"$package"
   pipx install "$package"
 done < "$SCRIPT_DIR/pipx_packages.txt"
+
+ohai 'python:link ipython config'
+mkdir -p ~/.ipython/profile_default
+symlink_safe "$SCRIPT_DIR/ipython_config.py" ~/.ipython/profile_default/ipython_config.py
