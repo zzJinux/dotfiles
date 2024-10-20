@@ -195,3 +195,5 @@ alias help=run-help
 
 source "$DOTFILES/zoxide/shcmd"
 source "$DOTFILES/shell/interactive"
+
+eval "$(direnv hook zsh)"

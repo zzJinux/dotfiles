@@ -131,3 +131,5 @@ source "$DOTFILES/terminal/iterm2/shell_integration.bash"
 # source "$DOTFILES/bash/color"
 source "$DOTFILES/shell/interactive"
 source "$DOTFILES/bash/prompt"
+
+eval "$(direnv hook bash)"

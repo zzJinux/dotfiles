@@ -92,6 +92,7 @@ brew "pipx"
 brew "unar"
 brew "rename"
 brew "imagemagick"
+brew "direnv"
 
 
 # Fonts
