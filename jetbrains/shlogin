@@ -1,0 +1,3 @@
+path_appends+=(
+  "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+)
