@@ -1,0 +1,5 @@
+mypy
+pip-tools
+pipdeptree
+pipenv
+poetry
