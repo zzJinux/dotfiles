@@ -2,3 +2,4 @@ path_prepends+=(
   "$HOME/.local/pytoolkit/bin"
 )
 
+export PIPENV_CACHE_DIR=~/Library/Caches/pip
