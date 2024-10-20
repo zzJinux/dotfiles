@@ -20,6 +20,7 @@ source "$DOTFILES/go/shlogin"
 source "$DOTFILES/rust/shlogin"
 source "$DOTFILES/java/shlogin"
 source "$DOTFILES/fnm/shlogin"
+source "$DOTFILES/python/shlogin"
 source "$DOTFILES/jetbrains/shlogin"
 
 source "$DOTFILES/homebrew/pathinit"

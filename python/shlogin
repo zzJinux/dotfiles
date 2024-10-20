@@ -1,0 +1,4 @@
+path_prepends+=(
+  "$HOME/.local/pytoolkit/bin"
+)
+
