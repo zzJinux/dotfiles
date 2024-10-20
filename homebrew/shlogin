@@ -26,12 +26,3 @@ if ! [ -e "$DOTFILES/local/shlogin_homebrew" ]; then
   )
 fi
 source "$DOTFILES/local/shlogin_homebrew"
-
-path_prepends+=(
-  # https://github.com/Homebrew/brew/blob/master/Library/Homebrew/cmd/shellenv.sh
-  "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin"
-)
-
-if [[ ! $INFOPATH ==  *"$HOMEBREW_PREFIX"/share/info* ]]; then
-  export INFOPATH="$HOMEBREW_PREFIX/share/info:${INFOPATH:-}"
-fi

@@ -15,11 +15,13 @@ if [ -z "${XDG_DATA_DIRS}" ]; then
 fi
 export XDG_DATA_DIRS="$HOMEBREW_PREFIX/share:$XDG_DATA_DIRS"
 
+[ -r "$DOTFILES/local/shlogin" ] && source "$DOTFILES/local/shlogin"
 source "$DOTFILES/go/shlogin"
 source "$DOTFILES/rust/shlogin"
 source "$DOTFILES/java/shlogin"
 source "$DOTFILES/fnm/shlogin"
-[ -r "$DOTFILES/local/shlogin" ] && source "$DOTFILES/local/shlogin"
+
+source "$DOTFILES/homebrew/pathinit"
 
 # python (Xcode Command Line Tools)
 # PATH="$(python3 -c 'import os,sysconfig;print(sysconfig.get_path("scripts",f"{os.name}_user"))'):$PATH"
