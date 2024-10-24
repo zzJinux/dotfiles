@@ -105,7 +105,7 @@ function setupURLRouter(config)
 
   local default = config["default"]
 
-  hs.urlevent.httpCallback = function(scheme, fullURL, params, fullURL)
+  hs.urlevent.httpCallback = function(scheme, host, params, fullURL)
     local procName
 
     if fullURL == nil then
