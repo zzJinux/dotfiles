@@ -33,7 +33,8 @@ local function Rule(prefixes, processor)
 
   function rule:match(fullURL)
     for _, prefix in ipairs(self.prefixes) do
-      if string.match(fullURL, '^https?://' .. escape(prefix)) then
+      if string.match(fullURL, '^https?://' .. escape(prefix)) or
+        string.match(fullURL, '^https?://[^/]+%.' .. escape(prefix)) then
         return prefix
       end
     end
