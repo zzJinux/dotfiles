@@ -25,9 +25,6 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 # Save to disk (not to iCloud) by default
 defaults write -g "NSDocumentSaveNewDocumentsToCloud" -bool false 
 
-# Remove duplicates in the “Open With” menu
-/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
-
 # Appearance: Light
 {
   defaults delete -g AppleInterfaceStyle 2>/dev/null
