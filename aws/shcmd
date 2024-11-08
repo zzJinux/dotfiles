@@ -24,3 +24,9 @@ _fzf_complete_awsp() {
 }
 
 staticfile_complete awscmds "$DOTFILES/aws/completion.bash" awsp
+
+if [ -n "$BASH" ]; then
+  target=bash staticfile_complete aws-vault "$DOTFILES/aws/aws-vault/completion.bash" aws-vault
+elif [ -n "$ZSH_NAME" ]; then
+  target=zsh staticfile_complete aws-vault "$DOTFILES/aws/aws-vault/completion.zsh" aws-vault
+fi

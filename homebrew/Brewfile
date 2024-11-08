@@ -75,6 +75,7 @@ brew "tilt"
 brew "subversion"
 brew "fnm"
 brew "awscli"
+cask "aws-vault"
 brew "pyenv"
 
 # Language tools
