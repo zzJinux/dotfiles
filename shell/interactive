@@ -44,3 +44,7 @@ fi
 export TIME_STYLE=long-iso
 
 source "$DOTFILES/shell/cmd"
+
+if [[ -r "$DOTFILES/shell/interactive__local" ]]; then
+  source "$DOTFILES/shell/interactive__local"
+fi
