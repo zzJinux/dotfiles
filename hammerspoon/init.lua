@@ -107,6 +107,7 @@ function setupURLRouter(config)
   local default = config["default"]
 
   hs.urlevent.httpCallback = function(scheme, host, params, fullURL)
+    logger.i("URL opened: " .. fullURL)
     local procName
 
     if fullURL == nil then
