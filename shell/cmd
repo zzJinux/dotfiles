@@ -135,19 +135,17 @@ if command -v nvim &>/dev/null; then
   alias nvimdiff='nvim -d'
 fi
 
-# TODO: make it universal
-utc() {
+now() {
   local e=$EPOCHSECONDS
-  date -r $e -u +"%Y-%m-%dT%H:%M:%SZ" && echo $e
+  date -ud @"$e" +"%Y-%m-%dT%H:%M:%SZ" && echo $e
 }
 
-# TODO: make it universal
 epoch() {
   if [ "${1-}" = "" ]; then
-    echo "Usage: epoch <seconds since epoch>" >&2
-    return 1
+    echo $EPOCHSECONDS
+  else
+    date -ud @"$1" +"%Y-%m-%dT%H:%M:%SZ"
   fi
-  gdate -d @"$1" --iso-8601=seconds
 }
 alias py=python3
 
@@ -335,12 +333,15 @@ ii() {
   echo
 }
 
-todo_git_clone() {
+git_multiworktreeclone() {
   local repo="$1"
-  repo="${repo%.git}"
-  local workroot="${2:-$repo}"
+  local workroot="$2"
+  if [[ -z "$repo" || -z "$workroot" ]]; then
+    echo "Usage: todo_git_clone <repo> <workroot>"
+    return 1
+  fi
 
   mkdir -p "$workroot" && { cd "$workroot" || return 1; }
-  git clone https://"$repo".git --filter=blob:none --bare .bare
+  git clone "$repo" --filter=blob:none --mirror .bare
   echo 'gitdir: ./.bare' > .git
 }
