@@ -25,6 +25,11 @@ entries = {
     '162': {'enabled': False},
     # Turn VoiceOver on or off = disable
     '59': {'enabled': False},
+
+    # Move left a space = disable
+    '79': {'enabled': False},
+    # Move right a space = disable
+    '81': {'enabled': False},
 }
 
 plist_path=os.path.expanduser('~/Library/Preferences/com.apple.symbolichotkeys.plist')
