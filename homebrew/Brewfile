@@ -43,6 +43,7 @@ brew "yq"
 brew "gomplate"
 brew "pandoc"
 brew "groff"
+brew "yamlfmt"
 
 # Network clients
 brew "bind" # [macos]
