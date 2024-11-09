@@ -2,3 +2,4 @@ eval "$(pyenv init -)"
 
 alias py_find_dist="python -c 'from importlib.metadata import packages_distributions;import sys,json;print(json.dumps(packages_distributions()[sys.argv[1]]))'"
 
+alias ptp=ptpython
