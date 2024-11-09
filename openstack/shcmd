@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+if ! command -v openstack &>/dev/null; then
+  return
+fi
+
 if [ -n "$BASH" ]; then
   cmd_complete openstack complete --shell
 elif [ -n "$ZSH_NAME" ]; then
