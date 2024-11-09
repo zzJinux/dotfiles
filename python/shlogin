@@ -3,3 +3,6 @@ path_prepends+=(
 )
 
 export PIPENV_CACHE_DIR=~/Library/Caches/pip
+
+# Revert to basic REPL for Python 3.13+ to enable vi mode
+export PYTHON_BASIC_REPL=1
