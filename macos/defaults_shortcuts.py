@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import plistlib
 import os
+import subprocess
 
 # com.apple.symbolichotkeys
 entries = {
@@ -35,3 +36,5 @@ with open(plist_path, 'rb') as f:
 
 with open(plist_path, 'wb') as f:
     plistlib.dump(data, f)
+
+subprocess.run(["defaults", "read", "com.apple.symbolichotkeys"], stdout=subprocess.DEVNULL)
