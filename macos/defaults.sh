@@ -179,7 +179,3 @@ done
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
 echo "Done. Note that some of these changes require a logout/restart to take effect."
-
-# TODO: Disable: Keyboard Shortcuts>Services>Text>Open man Page in Terminal
-# TODO: Disable: Keyboard Shortcuts>Spotlight>Show Spotlight search
-# TODO: Disable: Keyboard Shortcuts>Spotlight>Show Finder search window
