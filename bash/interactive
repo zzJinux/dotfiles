@@ -48,7 +48,7 @@ alias() {
 # shellcheck disable=SC1091,SC2034
 repair_builtin_completions() {
   local comp_src_dir="$HOMEBREW_PREFIX/etc/bash_completion.d"
-  local comp_dest_dir="$HOME/.local/share/bash-completion-sys"
+  local comp_dest_dir="$HOME/.local/share/bash-completion-sys/completions"
 
   if [[ $comp_dest_dir -nt $comp_src_dir ]]; then
     return
@@ -91,10 +91,10 @@ repair_builtin_completions() {
       fi
     done
 
-    symlink_safe "$f" "$comp_dest_dir/$name"
+    ln -sf "$f" "$comp_dest_dir/$name"
   done
 
-  write_safe "$comp_dest_dir/brew" <<EOF
+  cat >"$comp_dest_dir/brew" <<EOF
 source "$comp_src_dir/brew"
 source "$comp_src_dir/brew-services"
 EOF
