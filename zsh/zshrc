@@ -176,6 +176,10 @@ for key ('j') bindkey -M vicmd ${key} history-substring-search-down
 unset key
 # }}} End configuration added by Zim install
 
+# https://github.com/Aloxaf/fzf-tab/issues/24#issuecomment-574986122
+zstyle -d ':completion:*' format
+zstyle ':completion:*:descriptions' format '[%d]'
+
 # Powerlevel10k {{{
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
