@@ -8,20 +8,42 @@
 [alias]
   lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
   lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
-  lg = !"git lg1"
 
   # https://stackoverflow.com/a/33548037/3912693
   br-prrr = !"git fetch -p && git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == \"[gone]\" {sub(\"refs/heads/\", \"\", $1); print $1}' | xargs git branch -D"
 
-  # https://dev.to/committedsw/useful-git-alias-47in
-  cm = "!cm() { git commit -m \"$1\"; }; cm"
-  ca = commit --amend --no-edit
   root = rev-parse --show-toplevel
+
+  # Basic Snapshotting
+  ad = add
+  st = status
+  di = diff
+  cm = commit
+  re = restore
+  rs = reset
+  # Branching and Merging
+  br = branch
+  co = checkout
+  sw = switch
+  mg = merge
+  ss = stash
+  tg = tag
   wt = worktree
   wtls = worktree list
-  cho = checkout
-  br = branch
+  # Sharing and Updating Projects
+  fe = fetch
+  ll = pull
+  pu = push
+  rmt = remote
+  # Inspection and Comparison
+  so = show
+  lg = log
+  slg = shortlog
+  # Patching
+  ap = apply
+  cp = cherry-pick
   rb = rebase
+  rv = revert
 [color]
   ui = auto
   diff = auto
