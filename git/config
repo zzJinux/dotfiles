@@ -6,8 +6,8 @@
 [rebase]
   autosquash = true
 [alias]
-  lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
-  lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+  lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+  lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
 
   # https://stackoverflow.com/a/33548037/3912693
   br-prrr = !"git fetch -p && git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == \"[gone]\" {sub(\"refs/heads/\", \"\", $1); print $1}' | xargs git branch -D"
@@ -17,7 +17,7 @@
   # Basic Snapshotting
   ad = add
   st = status
-  di = diff
+  df = diff
   cm = commit
   re = restore
   rs = reset
@@ -32,8 +32,8 @@
   wtls = worktree list
   # Sharing and Updating Projects
   fe = fetch
-  ll = pull
-  pu = push
+  pl = pull
+  ps = push
   rmt = remote
   # Inspection and Comparison
   so = show
