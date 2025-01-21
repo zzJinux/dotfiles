@@ -146,6 +146,9 @@ write_safe() {
 dir_bin() {
   echo "$1/bin"
 }
+dir_sbin() {
+  echo "$1/bin"
+}
 dir_man1() {
   echo "$1/share/man/man1"
 }
@@ -154,9 +157,10 @@ dir_man5() {
 }
 
 LOCAL_BIN=$(dir_bin ~/.local)
+LOCAL_SBIN=$(dir_sbin ~/.local)
 LOCAL_MAN1=$(dir_man1 ~/.local)
 LOCAL_MAN5=$(dir_man5 ~/.local)
-mkdir -p "$LOCAL_BIN" "$LOCAL_MAN1" "$LOCAL_MAN5"
+mkdir -p "$LOCAL_BIN" "$LOCAL_SBIN" "$LOCAL_MAN1" "$LOCAL_MAN5"
 
 link_bin() {
   local name=$1
@@ -164,6 +168,24 @@ link_bin() {
   local src_name=${3:-$name}
 
   symlink_safe "$src_prefix/bin/$src_name" "$LOCAL_BIN/$name"
+}
+
+unlink_bin() {
+  local name=$1
+  rm -f "$LOCAL_BIN/$name"
+}
+
+link_sbin() {
+  local name=$1
+  local src_prefix=${2:-$HOMEBREW_PREFIX}
+  local src_name=${3:-$name}
+
+  symlink_safe "$src_prefix/sbin/$src_name" "$LOCAL_SBIN/$name"
+}
+
+unlink_sbin() {
+  local name=$1
+  rm -f "$LOCAL_SBIN/$name"
 }
 
 link_man1() {
@@ -174,10 +196,20 @@ link_man1() {
   symlink_safe "$src_prefix/share/man/man1/$src_name.1" "$LOCAL_MAN1/$name.1"
 }
 
+unlink_man1() {
+  local name=$1
+  rm -f "$LOCAL_MAN1/$name.1"
+}
+
 link_man5() {
   local name=$1
   local src_prefix=${2:-$HOMEBREW_PREFIX}
   local src_name=${3:-$name}
 
   symlink_safe "$src_prefix/share/man/man5/$src_name.5" "$LOCAL_MAN5/$name.5"
+}
+
+unlink_man5() {
+  local name=$1
+  rm -f "$LOCAL_MAN5/$name.5"
 }
