@@ -16,11 +16,7 @@ brew "neovim"
 brew "less" # [macos]
 brew "mandoc" # [macos]
 brew "man-db" # [macos]
-brew "tldr"
-brew "kube-ps1", args: ["ignore-dependencies"]
-brew "gum"
 brew "ncurses" # [macos,keg-only]
-brew "ptpython"
 brew "fd"
 brew "yazi"
 
@@ -40,8 +36,6 @@ brew "gnu-sed" # [macos] g-prefixed
 brew "jq"
 brew "jless"
 brew "yq"
-brew "gomplate"
-brew "pandoc"
 brew "groff"
 brew "yamlfmt"
 
@@ -51,16 +45,13 @@ brew "nmap"
 brew "curl" # [macos,keg-only]
 brew "wget"
 brew "websocat"
-brew "grpcurl"
 brew "rsync"
-brew "httpie"
 
 # Security tools
 brew "gnupg"
 brew "krb5" # [macos,keg-only]
 
 # Devtools
-brew "cmake"
 brew "make" # [macos]
 brew "gh"
 brew "git" # [macos]
@@ -72,11 +63,9 @@ tap "jesseduffield/lazygit"
 brew "jesseduffield/lazygit/lazygit"
 brew "helm"
 brew "tilt"
-brew "subversion"
 brew "fnm"
 brew "awscli"
 brew "docker-credential-helper-ecr"
-cask "aws-vault"
 brew "pyenv"
 
 # Language tools
