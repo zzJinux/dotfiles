@@ -1,5 +1,2 @@
-mypy
-pip-tools
+virtualenv
 pipdeptree
-pipenv
-poetry
