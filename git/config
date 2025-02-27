@@ -44,6 +44,11 @@
   cp = cherry-pick
   rb = rebase
   rv = revert
+  # Plumbing
+  rp = rev-parse
+  # More Git aliases to consider
+  # https://github.com/zimfw/git
+  # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
 [color]
   ui = auto
   diff = auto
@@ -59,3 +64,7 @@
   process = git-lfs filter-process
 [include]
   path = ~/.config/git/config__local
+[credential]
+	helper = /usr/local/share/gcm-core/git-credential-manager
+[credential "https://dev.azure.com"]
+	useHttpPath = true
