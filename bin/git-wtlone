@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+# https://git-scm.com/docs/git-clone
+options=()
+repo=""
+target_dir=""
+
+for arg in "$@"; do
+    if [[ $arg =~ ^- ]]; then
+        options+=("$arg")
+    else
+        if [[ -z $repo ]]; then
+            repo="$arg"
+        elif [[ -z $target_dir ]]; then
+            target_dir="$arg"
+            break
+        fi
+    fi
+done
+if [[ -z $repo ]]; then
+    echo "Error: No repository URL provided." >&2
+    exit 1
+fi
+# Infer target directory if not specified (as if `git clone` was used)
+if [[ -z $target_dir ]]; then
+    target_dir=$(basename "${repo%.git}")
+fi
+
+# If the target directory doesn't, create one
+# Otherwise, check if it's empty
+if [[ -e $target_dir ]]; then
+    if [[ ! -d $target_dir ]]; then
+        echo "Error: Target directory '$target_dir' is not a directory." >&2
+        exit 1
+    fi
+    if [[ -n $(ls -A "$target_dir") ]]; then
+        echo "Error: Target directory '$target_dir' is not empty." >&2
+        exit 1
+    fi
+fi
+mkdir -p "$target_dir"
+
+git clone "${options[@]}" --bare "$repo" "$target_dir/.bare"
+retval=$?
+if [[ $retval -ne 0 ]]; then
+    echo "Error: Bare clone failed." >&2
+    exit $retval
+fi
+GIT_DIR="$target_dir/.bare" git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+
+if ! echo "gitdir: ./.bare" > "$target_dir/.git"; then
+    echo "Error: Failed to create .git file." >&2
+    exit 1
+fi
