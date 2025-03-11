@@ -69,12 +69,16 @@ echo "Fetching all remotes..."
 git fetch --all
 
 # Get current branch
-CURRENT_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null)
+if [[ "$(git rev-parse --symbolic-full-name HEAD 2>/dev/null)" == refs/heads/* ]]; then
+  CURRENT_BRANCH=$(git symbolic-ref --short HEAD)
+else
+  CURRENT_BRANCH="(detached HEAD)"
+fi
 echo "Current branch: ${CURRENT_BRANCH}"
 
 # Get list of branches checked out in any worktree
 echo "Checking for branches checked out in worktrees..."
-CHECKED_OUT_BRANCHES=$(git worktree list --porcelain | grep "^branch" | sed 's/branch //' | sed 's/refs\/heads\///')
+CHECKED_OUT_BRANCHES=$(git worktree list --porcelain | { grep "^branch" || true; } | sed 's/branch //' | sed 's/refs\/heads\///')
 
 echo -e "\nAttempting to fast-forward branches with upstreams:\n"
 printf "%-30s %-30s %-20s\n" "BRANCH" "UPSTREAM" "RESULT"
