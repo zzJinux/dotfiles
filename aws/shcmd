@@ -16,6 +16,34 @@ EOF
     return
   fi
   export AWS_PROFILE="$1"
+  if [ -n "${AWS_ACCESS_KEY_ID:-}" ]; then
+    AWS_ACCESS_KEY_ID=
+  fi
+  if [ -n "${AWS_SECRET_ACCESS_KEY:-}" ]; then
+    AWS_SECRET_ACCESS_KEY=
+  fi
+  if [ -n "${AWS_SESSION_TOKEN:-}" ]; then
+    AWS_SESSION_TOKEN=
+  fi
+  if [ -n "${AWS_CREDENTIAL_EXPIRATION:-}" ]; then
+    AWS_CREDENTIAL_EXPIRATION=
+  fi
+}
+
+awse() {
+  local aws_profile
+  if [ -n "${1:-}" ]; then
+    aws_profile="$1"
+  elif [ -n "${AWS_PROFILE:-}" ]; then
+    aws_profile="$AWS_PROFILE"
+  else
+    echo "No AWS profile specified or set in environment" >&2
+    return 1
+  fi
+  eval "$(aws configure export-credentials --profile "$aws_profile" --format env)"
+  if [ -n "${AWS_PROFILE}" ]; then
+    AWS_PROFILE=
+  fi
 }
 
 _fzf_complete_awsp() {
