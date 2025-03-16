@@ -106,18 +106,14 @@ function setupURLRouter(config)
 
   local default = config["default"]
 
-  hs.urlevent.httpCallback = function(scheme, host, params, fullURL)
-    logger.i("URL opened: " .. fullURL)
+  local function processURL(url)
     local procName
-
-    if fullURL == nil then
-      -- DO NOTHING
-    elseif URLRouterPicky then
+    if URLRouterPicky then
       procName = "picker"
     else
       local maxlen = 0
       for _, rule in ipairs(rules) do
-        local d = rule:match(fullURL)
+        local d = rule:match(url)
         if #d > maxlen then
           maxlen = #d
           procName = rule.processor
@@ -127,12 +123,37 @@ function setupURLRouter(config)
 
     procName = procName or default
     local processor = processors[procName]
-
+    
     if processor then
-      processor(fullURL)
+      processor(url)
     else
       logger.e("Error: Processor not found for " .. tostring(procName))
     end
+  end
+
+  hs.urlevent.httpCallback = function(scheme, host, params, fullURL)
+    logger.i("URL opened: " .. fullURL)
+
+    if fullURL == nil then
+      -- DO NOTHING
+      return
+    end
+
+    -- Check if localhost/127.0.0.* and follow redirects
+    if host == "localhost" or string.match(host, "^127%.%d+%.%d+%.%d+$") then
+      hs.http.doAsyncRequest(fullURL, "GET", nil, nil, function(status, body, headers)
+        local finalURL = fullURL
+        if status and status >= 300 and status < 400 and headers["Location"] then
+          finalURL = headers["Location"]
+          logger.i("Following redirect to: " .. finalURL)
+        end
+        
+        processURL(finalURL)
+      end, false)
+      return
+    end
+
+    processURL(fullURL)
   end
 end
 
