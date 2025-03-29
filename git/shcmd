@@ -1,4 +1,6 @@
-source "$HOMEBREW_PREFIX/opt/git/etc/bash_completion.d/git-prompt.sh"
+[ -n "$BASH" ] && source "$HOMEBREW_PREFIX/opt/git/etc/bash_completion.d/git-prompt.sh"
+
+alias g=git
 
 gitr() {
   git --no-pager "$@"
