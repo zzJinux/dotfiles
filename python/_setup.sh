@@ -4,11 +4,11 @@ set -eu
 source "$DOTFILES/util.bash"
 SCRIPT_DIR="$(_script_dir)"
 
-ohai 'python:install pipx packages'
+ohai 'python:install tool packages'
 while IFS= read -r package; do
-  ohai 'python:pipx:install '"$package"
-  pipx install "$package"
-done < "$SCRIPT_DIR/pipx_packages.txt"
+  ohai 'python:install tool '"$package"
+  uv tool install "$package"
+done < "$SCRIPT_DIR/tool_packages.txt"
 
 ohai 'python:setup Install local Python venv'
 virtualenv ~/.local/pytoolkit

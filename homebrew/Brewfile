@@ -79,7 +79,6 @@ brew "expect" # [macos]
 brew "coreutils" # [macos] g-prefixed
 brew "diffutils" # [macos] g-prefixed
 brew "findutils" # [macos] g-prefixed
-brew "pipx"
 brew "unar"
 brew "rename"
 brew "imagemagick"

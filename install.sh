@@ -45,6 +45,9 @@ _main() {
   "$HOMEBREW_PREFIX/bin/brew" bundle --verbose --file "$DOTFILES/homebrew/Brewfile"
   PATH="$HOMEBREW_PREFIX/bin:$PATH"
 
+  ohai 'Install uv'
+  execute sh -c 'curl -LsSf https://astral.sh/uv/install.sh | sh'
+
   ohai 'Install config files'
   for file in */_installconf.sh; do "$file"; done
 
