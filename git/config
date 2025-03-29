@@ -32,6 +32,7 @@
   br-prrr = !"git fetch -p && git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == \"[gone]\" {sub(\"refs/heads/\", \"\", $1); print $1}' | xargs git branch -D"
 
   root = rev-parse --show-toplevel
+  fsy = ffsync
 
   # Basic Snapshotting
   ad = add
@@ -65,6 +66,8 @@
   rv = revert
   # Plumbing
   rp = rev-parse
+  # Internal helpers
+  hk = hook
   # More Git aliases to consider
   # https://github.com/zimfw/git
   # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git

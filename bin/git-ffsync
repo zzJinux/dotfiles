@@ -69,7 +69,9 @@ echo "Fetching all remotes..."
 git fetch --all
 
 # Get current branch
-if [[ "$(git rev-parse --symbolic-full-name HEAD 2>/dev/null)" == refs/heads/* ]]; then
+if [[ "$(git rev-parse --is-bare-repository)" == "true" ]]; then
+  CURRENT_BRANCH="(bare)"
+elif [[ "$(git rev-parse --symbolic-full-name HEAD 2>/dev/null)" == refs/heads/* ]]; then
   CURRENT_BRANCH=$(git symbolic-ref --short HEAD)
 else
   CURRENT_BRANCH="(detached HEAD)"
