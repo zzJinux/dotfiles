@@ -139,6 +139,17 @@ function setupURLRouter(config)
       return
     end
 
+    -- Handle non-HTTP/HTTPS schemes by passing to default processor
+    if scheme ~= "http" and scheme ~= "https" then
+      local processor = processors[default]
+      if processor then
+        processor(fullURL)
+      else
+        logger.e("Error: Default processor not found")
+      end
+      return
+    end
+
     -- Check if localhost/127.0.0.* and follow redirects
     if host == "localhost" or string.match(host, "^127%.%d+%.%d+%.%d+$") then
       hs.http.doAsyncRequest(fullURL, "GET", nil, nil, function(status, body, headers)
