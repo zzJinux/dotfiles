@@ -33,8 +33,8 @@ if [[ -e $target_dir ]]; then
         echo "Error: Target directory '$target_dir' is not a directory." >&2
         exit 1
     fi
-    if [[ -n $(ls -A "$target_dir") ]]; then
-        echo "Error: Target directory '$target_dir' is not empty." >&2
+    if [[ -e "$target_dir/.bare" ]]; then
+        echo "Error: '$target_dir/.bare' exists." >&2
         exit 1
     fi
 fi
