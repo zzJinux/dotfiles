@@ -5,5 +5,8 @@
 
 # Register this script to crontab!
 
-defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool true
-/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+current_value=$(defaults read NSGlobalDomain AppleEnableSwipeNavigateWithScrolls 2>/dev/null)
+if [ "$current_value" != "1" ]; then
+    defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool true
+    /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+fi

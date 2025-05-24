@@ -5,6 +5,6 @@
 	<key>Label</key>
 	<string>local.fight_logioptions</string>
 	<key>StartInterval</key>
-	<integer>180</integer>
+	<integer>5</integer>
 </dict>
 </plist>
