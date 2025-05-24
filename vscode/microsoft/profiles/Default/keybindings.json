@@ -1,0 +1,82 @@
+[
+    {
+        "key": "cmd+n",
+        "command": "workbench.action.files.newUntitledFile",
+        "when": "!(explorerViewletVisible && filesExplorerFocus) && !(auxiliaryBarFocus && auxiliaryBarVisible)"
+    },
+    {
+        "key": "cmd+n",
+        "command": "-workbench.action.files.newUntitledFile"
+    },
+    {
+        "key": "cmd+n n",
+        "command": "explorer.newFile",
+        "when": "explorerViewletVisible && filesExplorerFocus"
+    },
+    {
+        "key": "cmd+n m",
+        "command": "explorer.newFolder",
+        "when": "explorerViewletVisible && filesExplorerFocus"
+    },
+    {
+        "key": "shift+cmd+'",
+        "command": "workbench.action.toggleMaximizedPanel"
+    },
+    {
+        "key": "cmd+k a",
+        "command": "workbench.action.toggleCenteredLayout",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "cmd+k z",
+        "command": "workbench.action.toggleZenMode",
+        "when": "!isAuxiliaryWindowFocusedContext && !terminalFocus"
+    },
+    {
+        "key": "cmd+k z",
+        "command": "-workbench.action.toggleZenMode",
+        "when": "!isAuxiliaryWindowFocusedContext"
+    },
+    {
+        "key": "alt+cmd+;",
+        "command": "toggleVim"
+    },
+    {
+        "key": "cmd+d",
+        "command": "compareSelected",
+        "when": "explorerViewletFocus"
+    },
+    // {{{ VSCode-only
+    {
+        // Used by Cursor, Accept Partial Edit
+        "key": "shift+cmd+y",
+        "command": "-workbench.debug.action.toggleRepl",
+        "when": "workbench.panel.repl.view.active"
+    },
+    {
+        "key": "ctrl+shift+l",
+        "command": "expandLineSelection",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "cmd+l",
+        "command": "-expandLineSelection",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "cmd+l",
+        "command": "github.copilot.chat.attachSelection",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "cmd+l",
+        "command": "github.copilot.terminal.attachTerminalSelection",
+        "when": "terminalFocus"
+    },
+    {
+        "key": "cmd+l",
+        "command": "workbench.panel.chat.view.copilot.focus",
+        "when": "!textInputFocus && !terminalFocus"
+    }
+    // }}}
+]

@@ -1,0 +1,102 @@
+{
+    "workbench.settings.applyToAllProfiles": [
+        "window.newWindowProfile",
+        "files.autoSaveDelay",
+        "files.autoSave",
+        "editor.fontFamily",
+        "editor.fontSize",
+        "editor.inlineSuggest.enabled",
+        "editor.mouseWheelZoom",
+        "editor.find.seedSearchStringFromSelection",
+        "[shellscript]",
+        "[python]",
+        "files.associations",
+        "terminal.integrated.fontFamily",
+        "terminal.integrated.fontSize",
+        "terminal.integrated.scrollback",
+        "terminal.integrated.defaultProfile.osx",
+        "terminal.external.osxExec",
+        "git.autofetch",
+        "redhat.telemetry.enabled",
+        "vim.sneak",
+        "vim.smartRelativeLine",
+        "github.copilot.enable"
+    ],
+    "window.newWindowProfile": "Default",
+    "files.autoSaveDelay": 100,
+    "files.autoSave": "afterDelay",
+    "editor.fontFamily": "JetBrainsMono Nerd Font, JetBrains Mono, Hack, Monaco, Menlo, Courier New, monospace",
+    "editor.fontSize": 13,
+    "editor.inlineSuggest.enabled": true,
+    "editor.find.seedSearchStringFromSelection": "selection",
+    "editor.mouseWheelZoom": true,
+    "[shellscript]": {
+        "editor.tabSize": 2,
+        "editor.defaultFormatter": "mkhl.shfmt"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff"
+    },
+    "files.associations": {
+        "**/.git/info/exclude": "ignore",
+        ".env*": "dotenv",
+        "ssh_config": "ssh_config"
+    },
+    "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font, JetBrains Mono, Hack, Monaco, Menlo, Courier New, monospace",
+    "terminal.integrated.fontSize": 13,
+    "terminal.integrated.scrollback": 3000,
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.external.osxExec": "iTerm.app",
+    "git.autofetch": true,
+    "redhat.telemetry.enabled": false,
+    "vim.sneak": true,
+    "vim.smartRelativeLine": true,
+    "vim.normalModeKeyBindings": [
+        {
+            "before": [
+                "<leader>",
+                "<C-r>"
+            ],
+            "commands": [
+                "workbench.action.openRecent"
+            ],
+            "silent": true
+        }
+    ],
+    "editor.tokenColorCustomizations": {
+        "[*Light*]": {
+            "textMateRules": [
+                {
+                    "scope": "ref.matchtext",
+                    "settings": {
+                        "foreground": "#000"
+                    }
+                }
+            ]
+        },
+        "[*Dark*]": {
+            "textMateRules": [
+                {
+                    "scope": "ref.matchtext",
+                    "settings": {
+                        "foreground": "#fff"
+                    }
+                }
+            ]
+        },
+        "textMateRules": [
+            {
+                "scope": "keyword.other.dotenv",
+                "settings": {
+                    "foreground": "#FF000000"
+                }
+            }
+        ]
+    },
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": true,
+        "markdown": true,
+        "scminput": false
+    }
+}
