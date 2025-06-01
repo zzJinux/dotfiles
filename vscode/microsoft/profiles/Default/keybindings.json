@@ -2,7 +2,7 @@
     {
         "key": "cmd+n",
         "command": "workbench.action.files.newUntitledFile",
-        "when": "!(explorerViewletVisible && filesExplorerFocus) && !(auxiliaryBarFocus && auxiliaryBarVisible)"
+        "when": "!filesExplorerFocus && !auxiliaryBarFocus"
     },
     {
         "key": "cmd+n",
@@ -47,6 +47,11 @@
         "when": "explorerViewletFocus"
     },
     // {{{ VSCode-only
+    {
+        "key": "shift+alt+cmd+y",
+        "command": "workbench.debug.action.toggleRepl",
+        "when": "workbench.panel.repl.view.active"
+    },
     {
         // Used by Cursor, Accept Partial Edit
         "key": "shift+cmd+y",

@@ -2,7 +2,7 @@
     {
         "key": "cmd+n",
         "command": "workbench.action.files.newUntitledFile",
-        "when": "!(explorerViewletVisible && filesExplorerFocus) && !(auxiliaryBarFocus && auxiliaryBarVisible)"
+        "when": "!filesExplorerFocus && !auxiliaryBarFocus && !(@inlineDiffs.rejectPartialEdit.isActiveEditorWithDiffs)"
     },
     {
         "key": "cmd+n",
