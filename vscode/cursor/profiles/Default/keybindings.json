@@ -46,42 +46,12 @@
         "command": "compareSelected",
         "when": "explorerViewletFocus"
     },
-    // Assume vscode-kbd-for-cursor is installed
+    // Assume vscode-kbd-for-cursor 1.0.4
     // {{{ Cursor-only
-    {
-        "key": "cmd+k e",
-        "command": "aipopup.action.modal.generate",
-        "when": "editorFocus && !composerBarIsVisible"
-    },
-    {
-        "key": "cmd+k",
-        "command": "-aipopup.action.modal.generate",
-        "when": "editorFocus && !composerBarIsVisible"
-    },
     {
         "key": "shift+cmd+k",
         "command": "-aipopup.action.modal.generate",
         "when": "editorFocus && !composerBarIsVisible"
-    },
-    {
-        "key": "cmd+k e",
-        "command": "cursorai.action.generateInTerminal",
-        "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported || terminalHasBeenCreated && terminalPromptBarVisible || terminalProcessSupported && terminalPromptBarVisible"
-    },
-    {
-        "key": "cmd+k",
-        "command": "-cursorai.action.generateInTerminal",
-        "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported || terminalHasBeenCreated && terminalPromptBarVisible || terminalProcessSupported && terminalPromptBarVisible"
-    },
-    {
-        "key": "cmd+k k",
-        "command": "workbench.action.terminal.clear",
-        "when": "terminalFocus && terminalHasBeenCreated && !accessibilityModeEnabled || terminalFocus && terminalProcessSupported && !accessibilityModeEnabled || accessibilityModeEnabled && accessibleViewIsShown && terminalHasBeenCreated && accessibleViewCurrentProviderId == 'terminal' || accessibilityModeEnabled && accessibleViewIsShown && terminalProcessSupported && accessibleViewCurrentProviderId == 'terminal'"
-    },
-    {
-        "key": "cmd+k",
-        "command": "-workbench.action.terminal.clear",
-        "when": "terminalFocus && terminalHasBeenCreated && !accessibilityModeEnabled || terminalFocus && terminalProcessSupported && !accessibilityModeEnabled || accessibilityModeEnabled && accessibleViewIsShown && terminalHasBeenCreated && accessibleViewCurrentProviderId == 'terminal' || accessibilityModeEnabled && accessibleViewIsShown && terminalProcessSupported && accessibleViewCurrentProviderId == 'terminal'"
     },
     {
         "key": "cmd+k l",
@@ -90,6 +60,6 @@
     {
         "key": "shift+cmd+l",
         "command": "-aichat.insertselectionintochat"
-    },
+    }
     // }}}
 ]
