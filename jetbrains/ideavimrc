@@ -2,6 +2,8 @@
 Plug 'justinmk/vim-sneak'
 Plug 'tpope/vim-surround'
 
+set relativenumber
+
 nmap <leader><C-d> <Action>(Debug)
 nmap <leader><C-h> <Action>(TypeHierarchy)
 nmap <leader><C-i> <Action>(ImplementMethods)
