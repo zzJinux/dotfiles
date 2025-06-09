@@ -1,20 +1,55 @@
 #!/usr/bin/env bash
-set -eu
+# Script to list local branches that have no open PRs
 
-branches=()
-while read -r branch; do
-  branch=${branch#refs/heads/}
-  branches+=("$branch")
-done < <(git ls-remote --heads origin | awk -F'[[:space:]]+' '{print $2}')
+set -eo pipefail
 
-settled=()
-jsontext=
-for branch in "${branches[@]}"; do
-  o=$(gh pr list --state closed --json 'title,number,headRefName,state' --head "$branch")
-  if [ "$(echo "$o" | jq 'length')" = 1 ]; then
-    settled+=("$branch")
-    jsontext+="$o"
+debug() {
+  if [[ "${DEBUG:-0}" == "1" ]]; then
+    echo "$1" >&2
   fi
-done
+}
 
-<<<"$jsontext" jq -s '[add|.[]|{number,title,headRefName,state}]|sort_by(.number)|reverse'
+# Get all local branches
+local_branches=$(git for-each-ref --format='%(refname:short)' refs/heads/)
+
+if [[ -z "$local_branches" ]]; then
+  debug "No local branches found."
+  exit 0
+fi
+
+search_query=$(echo "$local_branches" | sed 's/^/head:/g' | tr '\n' ' ')
+
+all_prs_json=$(gh pr list --json headRefName,number,url,state --state all --search "$search_query" 2>/dev/null)
+# Filter out PRs where the branch name doesn't exactly match our search query
+all_prs_json=$(echo "$all_prs_json" | jq -r --arg branches "$local_branches" '
+  ($branches | split("\n")) as $branch_list |
+  [.[] | select(.headRefName as $ref | $branch_list | index($ref) != null)]
+')
+
+# Create a list of branches with open PRs
+branches_with_open_prs=$(echo "$all_prs_json" | jq -r '.[] | select(.state=="OPEN") | .headRefName' | sort | uniq)
+
+# Create a mapping of branch to closed PR info
+closed_prs_mapping=$(echo "$all_prs_json" | jq -r '.[] | select(.state=="CLOSED" or .state=="MERGED") | [.headRefName, .number, .url] | @tsv')
+
+# Get unique list of branches with closed PRs
+closed_pr_branches=$(echo "$closed_prs_mapping" | cut -f1 | sort | uniq)
+
+while read -r branch; do
+  debug "Checking branch: $branch"
+  if echo "$branches_with_open_prs" | grep -q "^$branch$"; then
+    continue
+  fi
+
+  debug "Branch $branch has no open PRs"
+
+  # Get closed PR info
+  pr_info=$(echo "$closed_prs_mapping" | grep "^$branch" | head -1)
+  pr_number=$(echo "$pr_info" | cut -f2)
+  pr_url=$(echo "$pr_info" | cut -f3)
+
+  # Output the branch and PR info
+  echo "$branch $pr_number $pr_url"
+done <<<"$closed_pr_branches"
+
+debug "Done."

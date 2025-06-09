@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+# Script to delete local branches that have no open PRs
+
+set -eo pipefail
+
+# Get the list of branches without open PRs
+echo "Finding branches without open PRs..." >&2
+branches_info=$(gh-branch-list-pr-closed | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+
+while read -r branch; do
+  branches_info=$(echo "$branches_info" | grep -Ev "^${branch}[[:space:]]+")
+done < <(git config --get-all customBranchPruning.ignore)
+
+if [[ -z "$branches_info" ]]; then
+  echo "No branches found without open PRs." >&2
+  exit 0
+fi
+
+# Count how many branches will be deleted
+branch_count=$(echo "$branches_info" | wc -l | tr -d ' ')
+
+echo "Found $branch_count branches without open PRs:" >&2
+
+# List all branches that would be deleted with their PR info
+echo "-----------------------------------------------------" >&2
+echo "Branch | PR Number | PR URL" >&2
+echo "-----------------------------------------------------" >&2
+echo "$branches_info" | while read -r branch pr_number pr_url; do
+  echo "$branch | $pr_number | $pr_url" >&2
+done
+echo "-----------------------------------------------------" >&2
+
+# Ask for confirmation to proceed
+echo -n "Do you want to proceed with deleting these branches? [y/N] " >&2
+read -r proceed_response
+
+if [[ ! "$proceed_response" =~ ^[Yy] ]]; then
+  echo "Operation cancelled." >&2
+  exit 0
+fi
+
+# Get the current branch
+current_branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "")
+detach_head=""
+
+# Create an array to store branches to delete
+mapfile -t branches_to_delete < <(echo "$branches_info" | cut -d' ' -f1)
+
+# Check if current branch is in the list to delete
+for i in "${!branches_to_delete[@]}"; do
+  if [[ "${branches_to_delete[$i]}" == "$current_branch" ]]; then
+    echo "Current branch ($current_branch) is in the list to delete" >&2
+    echo -n "Checkout to detached HEAD and include this branch for deletion? [y/N] " >&2
+    read -r detach_response
+    
+    if [[ "$detach_response" =~ ^[Yy] ]]; then
+      detach_head="$current_branch"
+    else
+      # Remove the current branch from branches to delete
+      echo "Will skip deleting the current branch" >&2
+      unset "branches_to_delete[$i]"
+    fi
+    break
+  fi
+done
+
+# Check if we have any branches left to delete
+if [[ ${#branches_to_delete[@]} -eq 0 ]]; then
+  echo "No branches left to delete." >&2
+  exit 0
+fi
+
+# Detach HEAD if necessary
+if [[ -n "$detach_head" ]]; then
+  current_commit=$(git rev-parse HEAD)
+  echo "Checking out detached HEAD at $current_commit..." >&2
+  if ! git checkout --detach; then
+    echo "Failed to detach HEAD, canceling operation" >&2
+    exit 1
+  fi
+  echo "Successfully detached HEAD" >&2
+fi
+
+# Delete all branches in a single command
+echo "Deleting branches..." >&2
+git branch -D "${branches_to_delete[@]}"
+
+echo "Branch cleanup completed." >&2
