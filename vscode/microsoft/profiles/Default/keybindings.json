@@ -1,51 +1,4 @@
 [
-    {
-        "key": "cmd+n",
-        "command": "workbench.action.files.newUntitledFile",
-        "when": "!filesExplorerFocus && !auxiliaryBarFocus"
-    },
-    {
-        "key": "cmd+n",
-        "command": "-workbench.action.files.newUntitledFile"
-    },
-    {
-        "key": "cmd+n n",
-        "command": "explorer.newFile",
-        "when": "explorerViewletVisible && filesExplorerFocus"
-    },
-    {
-        "key": "cmd+n m",
-        "command": "explorer.newFolder",
-        "when": "explorerViewletVisible && filesExplorerFocus"
-    },
-    {
-        "key": "shift+cmd+'",
-        "command": "workbench.action.toggleMaximizedPanel"
-    },
-    {
-        "key": "cmd+k a",
-        "command": "workbench.action.toggleCenteredLayout",
-        "when": "!terminalFocus"
-    },
-    {
-        "key": "cmd+k z",
-        "command": "workbench.action.toggleZenMode",
-        "when": "!isAuxiliaryWindowFocusedContext && !terminalFocus"
-    },
-    {
-        "key": "cmd+k z",
-        "command": "-workbench.action.toggleZenMode",
-        "when": "!isAuxiliaryWindowFocusedContext"
-    },
-    {
-        "key": "alt+cmd+;",
-        "command": "toggleVim"
-    },
-    {
-        "key": "cmd+d",
-        "command": "compareSelected",
-        "when": "explorerViewletFocus"
-    },
     // {{{ VSCode-only
     {
         "key": "shift+alt+cmd+y",
@@ -121,6 +74,53 @@
         "key": "shift+alt+f7",
         "command": "go-to-next-change.go-to-previous-scm-change",
         "when": "editorTextFocus && !textCompareEditorActive && quickDiffDecorationCount != '0'"
-    }
+    },
     /// }}}
+    {
+        "key": "cmd+n",
+        "command": "workbench.action.files.newUntitledFile",
+        "when": "!filesExplorerFocus && !auxiliaryBarFocus"
+    },
+    {
+        "key": "cmd+n",
+        "command": "-workbench.action.files.newUntitledFile"
+    },
+    {
+        "key": "cmd+n n",
+        "command": "explorer.newFile",
+        "when": "explorerViewletVisible && filesExplorerFocus"
+    },
+    {
+        "key": "cmd+n m",
+        "command": "explorer.newFolder",
+        "when": "explorerViewletVisible && filesExplorerFocus"
+    },
+    {
+        "key": "shift+cmd+'",
+        "command": "workbench.action.toggleMaximizedPanel"
+    },
+    {
+        "key": "cmd+k a",
+        "command": "workbench.action.toggleCenteredLayout",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "cmd+k z",
+        "command": "workbench.action.toggleZenMode",
+        "when": "!isAuxiliaryWindowFocusedContext && !terminalFocus"
+    },
+    {
+        "key": "cmd+k z",
+        "command": "-workbench.action.toggleZenMode",
+        "when": "!isAuxiliaryWindowFocusedContext"
+    },
+    {
+        "key": "alt+cmd+;",
+        "command": "toggleVim"
+    },
+    {
+        "key": "cmd+d",
+        "command": "compareSelected",
+        "when": "explorerViewletFocus"
+    }
 ]

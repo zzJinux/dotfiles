@@ -1,4 +1,50 @@
 [
+    // Assume vscode-kbd-for-cursor 1.0.4
+    // {{{ Cursor-only
+    {
+        "key": "shift+cmd+k",
+        "command": "-aipopup.action.modal.generate",
+        "when": "editorFocus && !composerBarIsVisible"
+    },
+    {
+        "key": "cmd+k l",
+        "command": "aichat.insertselectionintochat"
+    },
+    {
+        "key": "shift+cmd+l",
+        "command": "-aichat.insertselectionintochat"
+    },
+    // }}}
+    // {{{ go-to-next-change customization
+    {
+        "key": "alt+z",
+        "command": "-go-to-next-change.go-to-next-scm-change"
+    },
+    {
+        "key": "alt+f7",
+        "command": "go-to-next-change.go-to-next-scm-change",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "alt+f7",
+        "command": "go-to-next-change.go-to-next-scm-change",
+        "when": "editorTextFocus && !textCompareEditorActive && quickDiffDecorationCount != '0'"
+    },
+    {
+        "key": "alt+a",
+        "command": "-go-to-next-change.go-to-previous-scm-change"
+    },
+    {
+        "key": "shift+alt+f7",
+        "command": "go-to-next-change.go-to-previous-scm-change",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "shift+alt+f7",
+        "command": "go-to-next-change.go-to-previous-scm-change",
+        "when": "editorTextFocus && !textCompareEditorActive && quickDiffDecorationCount != '0'"
+    },
+    /// }}}
     {
         "key": "cmd+n",
         "command": "workbench.action.files.newUntitledFile",
@@ -46,50 +92,4 @@
         "command": "compareSelected",
         "when": "explorerViewletFocus"
     },
-    // Assume vscode-kbd-for-cursor 1.0.4
-    // {{{ Cursor-only
-    {
-        "key": "shift+cmd+k",
-        "command": "-aipopup.action.modal.generate",
-        "when": "editorFocus && !composerBarIsVisible"
-    },
-    {
-        "key": "cmd+k l",
-        "command": "aichat.insertselectionintochat"
-    },
-    {
-        "key": "shift+cmd+l",
-        "command": "-aichat.insertselectionintochat"
-    },
-    // }}}
-    // {{{ go-to-next-change customization
-    {
-        "key": "alt+z",
-        "command": "-go-to-next-change.go-to-next-scm-change"
-    },
-    {
-        "key": "alt+f7",
-        "command": "go-to-next-change.go-to-next-scm-change",
-        "when": "textCompareEditorVisible"
-    },
-    {
-        "key": "alt+f7",
-        "command": "go-to-next-change.go-to-next-scm-change",
-        "when": "editorTextFocus && !textCompareEditorActive && quickDiffDecorationCount != '0'"
-    },
-    {
-        "key": "alt+a",
-        "command": "-go-to-next-change.go-to-previous-scm-change"
-    },
-    {
-        "key": "shift+alt+f7",
-        "command": "go-to-next-change.go-to-previous-scm-change",
-        "when": "textCompareEditorVisible"
-    },
-    {
-        "key": "shift+alt+f7",
-        "command": "go-to-next-change.go-to-previous-scm-change",
-        "when": "editorTextFocus && !textCompareEditorActive && quickDiffDecorationCount != '0'"
-    }
-    /// }}}
 ]
