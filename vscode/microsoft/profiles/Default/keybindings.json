@@ -82,6 +82,45 @@
         "key": "cmd+l",
         "command": "workbench.panel.chat.view.copilot.focus",
         "when": "!textInputFocus && !terminalFocus"
+    },
+    // {{{ go-to-next-change customization
+    {
+        "key": "alt+z",
+        "command": "-go-to-next-change.go-to-next-scm-change"
+    },
+    {
+        "key": "alt+f7",
+        "command": "go-to-next-change.go-to-next-scm-change",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "alt+f7",
+        "command": "go-to-next-change.go-to-next-scm-change",
+        "when": "editorTextFocus && !textCompareEditorActive && quickDiffDecorationCount != '0'"
+    },
+    {
+        "key": "alt+cmd+f7",
+        "command": "chatEditor.action.toggleDiff",
+        "when": "chatEdits.hasEditorModifications && editorFocus"
+    },
+    {
+        "key": "shift+alt+f7",
+        "command": "-chatEditor.action.toggleDiff",
+        "when": "chatEdits.hasEditorModifications && editorFocus"
+    },
+    {
+        "key": "alt+a",
+        "command": "-go-to-next-change.go-to-previous-scm-change"
+    },
+    {
+        "key": "shift+alt+f7",
+        "command": "go-to-next-change.go-to-previous-scm-change",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "shift+alt+f7",
+        "command": "go-to-next-change.go-to-previous-scm-change",
+        "when": "editorTextFocus && !textCompareEditorActive && quickDiffDecorationCount != '0'"
     }
-    // }}}
+    /// }}}
 ]
