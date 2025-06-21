@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+
+import argparse
+import sys
+
+import rncryptor
+
+
+def encrypt_file(input_file: str, password: str, output_file: str):
+    with open(input_file, "rb") as f:
+        data = f.read()
+    cryptor = rncryptor.RNCryptor()
+    encrypted_data = cryptor.encrypt(data, password)
+    with open(output_file, "wb") as f:
+        f.write(encrypted_data)
+    print(f"File encrypted successfully: {output_file}", file=sys.stderr)
+
+
+def decrypt_file(input_file: str, password: str, output_file: str | None = None):
+    with open(input_file, "rb") as f:
+        encrypted_data = f.read()
+    cryptor = rncryptor.RNCryptor()
+    decrypted_data = cryptor.decrypt(encrypted_data, password)
+    assert decrypted_data is not None
+    if output_file:
+        with open(output_file, "w") as f:
+            f.write(decrypted_data)
+        print(f"File decrypted successfully: {output_file}", file=sys.stderr)
+    else:
+        print(decrypted_data)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="TablePlus configuration encryption/decryption tool")
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+
+    enc_parser = subparsers.add_parser("enc", help="Encrypt a file")
+    enc_parser.add_argument("filepath", help="Input file to encrypt")
+    enc_parser.add_argument("-P", "--password", required=True, help="Password for encryption")
+    enc_parser.add_argument("-o", "--output", required=True, help="Output encrypted file (example.tableplusconnection)")
+
+    dec_parser = subparsers.add_parser("dec", help="Decrypt a file")
+    dec_parser.add_argument("filepath", help="Input file to decrypt")
+    dec_parser.add_argument("-P", "--password", required=True, help="Password for decryption")
+    dec_parser.add_argument("-o", "--output", help="Output decrypted file (prints to stdout if not specified)")
+
+    args = parser.parse_args()
+
+    if not hasattr(args, "command"):
+        parser.print_help()
+        sys.exit(1)
+    if args.command == "enc":
+        encrypt_file(args.filepath, args.password, args.output)
+    elif args.command == "dec":
+        decrypt_file(args.filepath, args.password, args.output)
+
+
+if __name__ == "__main__":
+    main()

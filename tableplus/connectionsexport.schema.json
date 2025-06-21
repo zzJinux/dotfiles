@@ -1,0 +1,156 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "array",
+  "items": {
+    "oneOf": [
+      {
+        "$ref": "#/definitions/Connection"
+      },
+      {
+        "$ref": "#/definitions/Group"
+      }
+    ]
+  },
+  "definitions": {
+    "Connection": {
+      "type": "object",
+      "properties": {
+        "ConnectionName": {"type": "string"},
+        "DatabaseType": {"type": "string"},
+        "Driver": {"type": "string"},
+        "DriverVersion": {"type": "integer"},
+        "Enviroment": {
+          "type": "string",
+          "enum": ["local", "testing", "development", "staging", "production"]
+        },
+        "statusColor": {"type": "string"},
+        "DatabaseHost": {"type": "string"},
+        "DatabasePort": {"type": "string"},
+        "DatabaseName": {"type": "string"},
+        "DatabasePath": {"type": "string"},
+        "DatabaseSocket": {"type": "string"},
+        "DatabaseUser": {"type": "string"},
+        "DatabasePassword": {"type": "string"},
+        "DatabasePasswordMode": {"type": "integer"},
+        "DatabaseUserRole": {"type": "string"},
+        "DatabaseEncoding": {"type": "string"},
+        "DatabaseWarehouse": {"type": "string"},
+        "ServerAddress": {"type": "string"},
+        "ServerPort": {"type": "string"},
+        "ServerUser": {"type": "string"},
+        "ServerPassword": {"type": "string"},
+        "ServerPasswordMode": {"type": "integer"},
+        "Authenticator": {"type": "string"},
+        "isUseSocket": {"type": "boolean"},
+        "isUsePrivateKey": {"type": "boolean"},
+        "isOverSSH": {"type": "boolean"},
+        "tLSMode": {"type": "integer"},
+        "TlsKeyName": {"type": "string", "description": "Comma-separated names of the Key, Cert, and CA Cert files"},
+        "TlsKeyPaths": {
+          "type": "array",
+          "description": "Key, Cert, and CA Cert file paths. Must be in order.",
+          "items": {"type": "string"},
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "ServerNameIndication": {"type": "string", "default": ""},
+        "SafeModeLevel": {"type": "integer"},
+        "AdvancedSafeModeLevel": {"type": "integer"},
+        "LimitRowsReturned": {"type": "integer"},
+        "LimitQueryRowsReturned": {"type": "integer"},
+        "LazyLoadSchemaItems": {"type": "boolean"},
+        "ShowSystemSchemas": {"type": "boolean"},
+        "ShowRecentlySection": {"type": "boolean"},
+        "ShowUserDefineSection": {"type": "boolean"},
+        "ShowSequenceSection": {"type": "boolean"},
+        "HideFunctionSection": {"type": "boolean"},
+        "SectionStates": {"type": "object"},
+        "RecentlyOpened": {"type": "array"},
+        "RecentlySchema": {"type": "array"},
+        "Favorites": {"type": "object"},
+        "ItemGroups": {"type": "array"},
+        "StartupCommands": {"type": "string"},
+        "StartupBashScript": {"type": "string"},
+        "OtherOptions": {"type": "array"},
+        "RecentUsedBackupDriverName": {"type": "string"},
+        "RecentUsedBackupGzip": {"type": "boolean"},
+        "RecentUsedBackupOptions": {"type": "array"},
+        "RecentUsedRestoreOptions": {"type": "array"}
+      },
+      "required": [
+        "AdvancedSafeModeLevel",
+        "Authenticator",
+        "ConnectionName",
+        "DatabaseEncoding",
+        "DatabaseHost",
+        "DatabaseName",
+        "DatabasePassword",
+        "DatabasePasswordMode",
+        "DatabasePath",
+        "DatabasePort",
+        "DatabaseSocket",
+        "DatabaseType",
+        "DatabaseUser",
+        "DatabaseUserRole",
+        "DatabaseWarehouse",
+        "Driver",
+        "DriverVersion",
+        "Enviroment",
+        "Favorites",
+        "HideFunctionSection",
+        "ItemGroups",
+        "LazyLoadSchemaItems",
+        "LimitQueryRowsReturned",
+        "LimitRowsReturned",
+        "OtherOptions",
+        "RecentUsedBackupDriverName",
+        "RecentUsedBackupGzip",
+        "RecentUsedBackupOptions",
+        "RecentUsedRestoreOptions",
+        "RecentlyOpened",
+        "RecentlySchema",
+        "SafeModeLevel",
+        "SectionStates",
+        "ServerAddress",
+        "ServerNameIndication",
+        "ServerPassword",
+        "ServerPasswordMode",
+        "ServerPort",
+        "ServerUser",
+        "ShowRecentlySection",
+        "ShowSequenceSection",
+        "ShowSystemSchemas",
+        "ShowUserDefineSection",
+        "StartupBashScript",
+        "StartupCommands",
+        "TlsKeyName",
+        "TlsKeyPaths",
+        "isOverSSH",
+        "isUsePrivateKey",
+        "isUseSocket",
+        "statusColor",
+        "tLSMode"
+      ]
+    },
+    "Group": {
+      "type": "object",
+      "properties": {
+        "Name": {"type": "string"},
+        "IsExpaned": {"type": "boolean"},
+        "connections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Connection"
+          }
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Group"
+          }
+        }
+      },
+      "required": ["Name", "IsExpaned", "connections", "groups"]
+    }
+  }
+} 
