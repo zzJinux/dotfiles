@@ -202,4 +202,6 @@ alias help=run-help
 source "$DOTFILES/zoxide/shcmd"
 source "$DOTFILES/shell/interactive"
 
+[ -f "$DOTFILES/zsh/__local/completion.zsh" ] && source "$DOTFILES/zsh/__local/completion.zsh"
+
 (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
