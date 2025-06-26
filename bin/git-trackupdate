@@ -1,0 +1,182 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ALL_BRANCHES=
+POSITIONAL=()
+while [[ $# -gt 0 ]]; do
+  case $1 in
+  --all)
+    ALL_BRANCHES=1
+    shift
+    ;;
+  -*)
+    echo "Unknown option $1"
+    exit 1
+    ;;
+  *)
+    POSITIONAL+=("$1")
+    shift
+    ;;
+  esac
+done
+set -- "${POSITIONAL[@]}"
+BRANCH_NAMES=("$@")
+
+# Validation
+if [ -n "$ALL_BRANCHES" ] && [ ${#BRANCH_NAMES[@]} -gt 0 ]; then
+  echo "Error: Cannot specify both --all and branch names"
+  exit 1
+fi
+
+if [ -n "$ALL_BRANCHES" ]; then
+  mapfile -t BRANCH_NAMES < <(git for-each-ref --format='%(refname:short)' refs/heads/)
+elif [ ${#BRANCH_NAMES[@]} -eq 0 ]; then
+  if [[ "$(git rev-parse --is-bare-repository)" == "true" ]]; then
+    echo "Error: Cannot determine current branch in bare repository. Use --all or specify branch names."
+    exit 1
+  elif [[ "$(git rev-parse --symbolic-full-name HEAD 2>/dev/null)" == refs/heads/* ]]; then
+    CURRENT_BRANCH=$(git symbolic-ref --short HEAD)
+    echo "No branches specified. Operating on current branch: $CURRENT_BRANCH"
+    BRANCH_NAMES=("$CURRENT_BRANCH")
+  else
+    echo "Error: HEAD is detached. Use --all or specify branch names."
+    exit 1
+  fi
+fi
+
+echo "Fetching branches from origin..."
+refspecs=()
+failed_branches=()
+for branch in "${BRANCH_NAMES[@]}"; do
+  refspecs+=("refs/heads/${branch}:refs/remotes/origin/${branch}")
+done
+
+if git fetch origin "${refspecs[@]}" 2>/dev/null; then
+  echo "✓ Successfully fetched all ${#BRANCH_NAMES[@]} branches"
+else
+  echo "✗ Fetch operation failed for some branches"
+
+  for branch in "${BRANCH_NAMES[@]}"; do
+    if ! git show-ref --verify --quiet "refs/remotes/origin/${branch}"; then
+      failed_branches+=("$branch")
+    fi
+  done
+  if [ ${#failed_branches[@]} -gt 0 ]; then
+    echo "Failed to fetch: ${failed_branches[*]}"
+  fi
+fi
+tmp=()
+for branch in "${BRANCH_NAMES[@]}"; do
+  for failed_branch in "${failed_branches[@]}"; do
+    if [[ "$branch" == "$failed_branch" ]]; then
+      continue 2
+    fi
+  done
+  tmp+=("$branch")
+done
+BRANCH_NAMES=("${tmp[@]}")
+
+# Create tracking branches if missing
+for branch in "${BRANCH_NAMES[@]}"; do
+  if ! git show-ref --verify --quiet "refs/heads/${branch}"; then
+    echo "Creating local branch '${branch}' tracking 'origin/${branch}'..."
+    git branch --track "${branch}" "origin/${branch}"
+  fi
+done
+
+# Helpers
+get_branch_status() {
+  local_branch=$1
+  upstream_branch=$2
+  local_hash=$3
+  upstream_hash=$4
+  merge_base=$5
+
+  if [ "$local_hash" = "$upstream_hash" ]; then
+    echo "UP-TO-DATE"
+  elif [ "$merge_base" = "$local_hash" ]; then
+    echo "CAN_FF"
+  elif [ "$merge_base" = "$upstream_hash" ]; then
+    echo "NEEDS_PUSH"
+  else
+    echo "DIVERGED"
+  fi
+}
+
+update_branch() {
+  local_branch=$1
+  upstream_branch=$2
+  upstream_hash=$3
+  is_current=$4
+  is_worktree=$5
+
+  if [ -n "$is_current" ]; then
+    git merge --ff-only "$upstream_branch" >/dev/null 2>&1 && echo "UPDATED" || echo "MERGE_CONFLICT"
+  elif [ -n "$is_worktree" ]; then
+    echo "SKIPPED (worktree)"
+  else
+    git update-ref "refs/heads/$local_branch" "$upstream_hash"
+    echo "UPDATED"
+  fi
+}
+
+colorize_status() {
+  case $1 in
+  "UPDATED") echo -e "\033[32m$1\033[0m" ;;            # Green
+  "UP-TO-DATE") echo -e "\033[36m$1\033[0m" ;;         # Cyan
+  "CAN_FF") echo -e "\033[33m$1\033[0m" ;;             # Yellow
+  "NEEDS_PUSH") echo -e "\033[35m$1\033[0m" ;;         # Magenta
+  "DIVERGED") echo -e "\033[31m$1\033[0m" ;;           # Red
+  "SKIPPED (worktree)") echo -e "\033[90m$1\033[0m" ;; # Gray
+  *) echo "$1" ;;
+  esac
+}
+
+# Track checked out branches
+CHECKED_OUT_BRANCHES=$(git worktree list --porcelain | grep '^branch ' | awk '{print $2}')
+if [[ "$(git rev-parse --is-bare-repository)" == "true" ]]; then
+  CURRENT_BRANCH="(bare)"
+elif [[ "$(git rev-parse --symbolic-full-name HEAD 2>/dev/null)" == refs/heads/* ]]; then
+  CURRENT_BRANCH=$(git symbolic-ref --short HEAD)
+else
+  CURRENT_BRANCH="(detached HEAD)"
+fi
+
+# Process and report
+printf "\n%-30s %-30s %-20s\n" "Local Branch" "Upstream" "Status"
+printf "%-30s %-30s %-20s\n" "-------------" "--------" "------"
+
+for branch_name in "${BRANCH_NAMES[@]}"; do
+  local_branch="$branch_name"
+
+  # Check if branch has upstream tracking
+  upstream_branch=$(git rev-parse --abbrev-ref "${local_branch}@{upstream}" 2>/dev/null || echo "")
+  [ -z "$upstream_branch" ] && continue
+
+  if [ "$local_branch" = "$CURRENT_BRANCH" ]; then
+    is_current=1
+    is_worktree=
+  elif echo "$CHECKED_OUT_BRANCHES" | grep -q "^$local_branch$"; then
+    is_current=
+    is_worktree=1
+  else
+    is_current=
+    is_worktree=
+  fi
+
+  LOCAL_HASH=$(git rev-parse "$local_branch")
+  UPSTREAM_HASH=$(git rev-parse "$upstream_branch")
+  MERGE_BASE=$(git merge-base "$local_branch" "$upstream_branch")
+
+  STATUS=$(get_branch_status "$local_branch" "$upstream_branch" "$LOCAL_HASH" "$UPSTREAM_HASH" "$MERGE_BASE")
+  if [ "$STATUS" = "CAN_FF" ]; then
+    STATUS=$(update_branch "$local_branch" "$upstream_branch" "$UPSTREAM_HASH" "$is_current" "$is_worktree")
+  fi
+
+  branch_text="$local_branch"
+  [ -n "$is_current" ] && branch_text+=" (current)"
+  [ -n "$is_worktree" ] && branch_text+=" (worktree)"
+
+  printf "%-30s %-30s %-20s\n" "$branch_text" "$upstream_branch" "$(colorize_status "$STATUS")"
+done
