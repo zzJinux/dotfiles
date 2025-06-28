@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+shopt -s nullglob
+
+delete_empty_folders() {
+  local folder="$1"
+
+  [ -d "$folder" ] || return
+  [ "$(basename "$folder")" != "__pycache__" ] || return
+
+  for dir in "$folder"/*; do
+    delete_empty_folders "$dir"
+
+  done
+  # Check if the directory contains only __pycache__ or is empty
+  count=$(find "$folder" -mindepth 1 -maxdepth 1 ! -name "__pycache__" | wc -l)
+
+  if [[ "$count" -eq 0 ]]; then
+    echo "Deleting empty folder: $folder" >&2
+    rm -rf "$folder" # This will remove __pycache__ if it's the only content
+  fi
+}
+
+delete_empty_folders "$1"

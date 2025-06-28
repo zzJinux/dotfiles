@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Script to list local branches that have no open PRs
 
+# TODO: Add an option to exclude branches updated after the PR was closed or merged.
+
 set -eo pipefail
 
 debug() {

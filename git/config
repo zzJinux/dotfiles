@@ -34,6 +34,8 @@
   root = rev-parse --show-toplevel
   fsy = ffsync
 
+  # Extra commands
+  tu = trackupdate
   # Basic Snapshotting
   ad = add
   st = status

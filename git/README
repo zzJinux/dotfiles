@@ -2,3 +2,7 @@ gitconfig
 
 core.excludesFile defaults to $XDG_CONFIG_HOME/git/ignore. If $XDG_CONFIG/git/ignore is either not set or empty, $HOME/.config/git/ignore is used instead.
 Place config entries local to the current environment in config__local. The global config will include it.
+
+
+`git --list-cmds=main,others` list almost all subcommands excluding aliases.
+Use this to decide alises.
