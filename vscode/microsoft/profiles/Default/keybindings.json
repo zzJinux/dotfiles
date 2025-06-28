@@ -75,7 +75,19 @@
         "command": "go-to-next-change.go-to-previous-scm-change",
         "when": "editorTextFocus && !textCompareEditorActive && quickDiffDecorationCount != '0'"
     },
-    /// }}}
+    // }}}
+    // {{{
+    {
+        "key": "cmd+down",
+        "command": "gitlens.openWorkingFile",
+        "when": "gitlens:enabled"
+    },
+    {
+        "key": "f4",
+        "command": "gitlens.openWorkingFile",
+        "when": "gitlens:enabled"
+    },
+    // }}}
     {
         "key": "cmd+n",
         "command": "workbench.action.files.newUntitledFile",

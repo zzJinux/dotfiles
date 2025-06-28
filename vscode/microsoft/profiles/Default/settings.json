@@ -10,6 +10,10 @@
         "editor.find.seedSearchStringFromSelection",
         "[shellscript]",
         "[python]",
+        "python.testing.pytestEnabled",
+        "python.analysis.autoImportCompletions",
+        "python.analysis.fixAll",
+        "python.analysis.typeCheckingMode",
         "files.associations",
         "terminal.integrated.fontFamily",
         "terminal.integrated.fontSize",
@@ -17,9 +21,13 @@
         "terminal.integrated.defaultProfile.osx",
         "terminal.external.osxExec",
         "git.autofetch",
+        "gitlens.ai.model",
+        "gitlens.ai.gitkraken.model",
         "redhat.telemetry.enabled",
         "vim.sneak",
         "vim.smartRelativeLine",
+        "workbench.iconTheme",
+        "editor.tokenColorCustomizations",
         "github.copilot.enable"
     ],
     "window.newWindowProfile": "Default",
@@ -35,8 +43,18 @@
         "editor.defaultFormatter": "mkhl.shfmt"
     },
     "[python]": {
-        "editor.defaultFormatter": "charliermarsh.ruff"
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": "always"
+        }
     },
+    "python.testing.pytestEnabled": true,
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.fixAll": [
+        "source.unusedImports"
+    ],
+    "python.analysis.typeCheckingMode": "standard",
     "files.associations": {
         "**/.git/info/exclude": "ignore",
         ".env*": "dotenv",
@@ -48,6 +66,8 @@
     "terminal.integrated.defaultProfile.osx": "zsh",
     "terminal.external.osxExec": "iTerm.app",
     "git.autofetch": true,
+    "gitlens.ai.model": "gitkraken",
+    "gitlens.ai.gitkraken.model": "gemini:gemini-2.0-flash",
     "redhat.telemetry.enabled": false,
     "vim.sneak": true,
     "vim.smartRelativeLine": true,
@@ -63,6 +83,7 @@
             "silent": true
         }
     ],
+    "workbench.iconTheme": "vscode-icons",
     "editor.tokenColorCustomizations": {
         "[*Light*]": {
             "textMateRules": [
