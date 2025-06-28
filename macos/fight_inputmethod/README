@@ -1,0 +1,47 @@
+https://reply.tistory.com/151
+
+> [!NOTE]
+> AI Summary
+
+> [!NOTE]
+> Not working as intended???
+
+해당 블로그 글에서는 macOS에서 한영 전환 키가 간헐적으로 작동하지 않는 문제를 다루고 있습니다. 사용자는 M1 기반의 MacBook Air를 사용하면서 한영 전환 키가 때때로 반응하지 않는 현상을 경험하였고, 이를 해결하기 위한 과정을 상세히 기록하였습니다.
+
+### 문제 요약
+
+-   **현상**: 한영 전환 키(예: Command + Space)를 눌러도 간헐적으로 전환이 되지 않음.
+
+-   **빈도**: 하루에 수차례 발생하며, 전환이 지연되거나 무반응 상태가 지속됨.
+
+### 원인 분석
+
+1.  **초기 추측**: 한영 전환을 담당하는 프로세스가 비활성화되었다가 다시 활성화되면서 지연이 발생한다고 판단.
+
+2.  **프로세스 확인**: Activity Monitor를 통해 TextInputSwitcher와 TextInputMenuAgent 프로세스가 한영 전환 시 CPU 사용량이 증가하는 것을 확인.
+
+3.  **우선순위 조정 시도**: renice 명령어를 사용하여 프로세스의 우선순위를 높였으나, 일정 시간 후 우선순위가 초기화됨.
+
+4.  **프로세스 종료 원인 파악**: 시스템 로그를 확인한 결과, TextInputSwitcher 프로세스가 메모리 압박으로 인해 시스템에 의해 종료(JETSAM_REASON_MEMORY_IDLE_EXIT)되는 것을 확인.
+
+5.  **설정 파일 확인**: /System/Library/LaunchAgents/com.apple.TextInputSwitcher.plist 파일에서 <key>EnablePressuredExit</key><true/> 설정이 되어 있어, 메모리 압박 시 프로세스가 종료되도록 설정되어 있음을 발견.
+
+6.  **설정 변경 시도**: 해당 설정을 false로 변경하려 했으나, macOS의 SIP(System Integrity Protection)로 인해 시스템 파일의 수정이 불가능함을 확인.
+
+### 해결 방안
+
+-   **프로세스 주기적 재시작**: launchctl kickstart 명령어를 사용하여 TextInputSwitcher 프로세스를 주기적으로 재시작함으로써 문제를 완화.
+
+```
+watch -n 1 launchctl kickstart -p gui/501/com.apple.TextInputSwitcher
+```
+
+-   -   위 명령어는 1초마다 해당 프로세스를 재시작하여, 시스템에 의해 종료되더라도 즉시 다시 활성화되도록 함.
+
+    -   이 방법을 통해 한영 전환 지연 문제가 대부분 해결되었으며, 드물게 발생하는 경우를 제외하고는 안정적인 전환이 가능해짐.
+
+### 결론
+
+macOS에서 한영 전환 키의 간헐적 작동 문제는 TextInputSwitcher 프로세스가 메모리 압박으로 인해 시스템에 의해 종료되면서 발생하는 것으로 확인되었습니다. 시스템 설정 파일을 직접 수정하는 것은 SIP로 인해 제한되므로, launchctl kickstart 명령어를 사용하여 해당 프로세스를 주기적으로 재시작하는 방법이 효과적인 해결책으로 제시되었습니다.
+
+이러한 문제는 macOS의 메모리 관리 정책과 관련이 있으므로, 향후 시스템 업데이트에서 개선되기를 기대합니다.
