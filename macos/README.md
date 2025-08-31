@@ -1,4 +1,13 @@
 ## Manual things
+
+### Start
+
+Before installing the dotfiles, it's highly recommended to install the following:
+- Go
+- Docker Desktop
+- Raycast
+- or else?
+
 ### SSH
 
 https://apple.stackexchange.com/a/250572

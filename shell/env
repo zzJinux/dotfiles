@@ -104,3 +104,8 @@ stdin_fzf_completer() {
     stdin_completer "$@"
   fi
 }
+
+if [ "$COMPOSER_NO_INTERACTION" = 1 ]; then
+	# shellcheck disable=SC2034
+  AGENT_SESSION=1
+fi

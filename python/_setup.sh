@@ -11,10 +11,8 @@ while IFS= read -r package; do
 done < "$SCRIPT_DIR/tool_packages.txt"
 
 ohai 'python:setup Install local Python venv'
-virtualenv ~/.local/pytoolkit
-source ~/.local/pytoolkit/bin/activate
-pip install -r "$SCRIPT_DIR/requirements.txt"
-python3 -m override_readline
+uv venv ~/.local/pytoolkit
+VIRTUAL_ENV=~/.local/pytoolkit uv pip install -r "$SCRIPT_DIR/requirements.txt"
 deactivate
 
 ohai 'python:link ipython config'

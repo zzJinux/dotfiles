@@ -1,7 +1,3 @@
-path_prepends+=(
-  "$HOME/.local/pytoolkit/bin"
-)
-
 export PIPENV_CACHE_DIR=~/Library/Caches/pip
 
 # Revert to basic REPL for Python 3.13+ to enable vi mode

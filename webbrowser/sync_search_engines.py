@@ -65,9 +65,9 @@ def sync_search_engines(
         print("Error: Use --confirm to ensure the database is not in use and confirm modifications.", file=sys.stderr)
         sys.exit(1)
     TABLE_NAME = "keywords"
-    conn = None
+    conn = sqlite3.connect(db_path)
+    conn.autocommit = False
     try:
-        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         current_wktime = to_webkittime(datetime.now(timezone.utc))
@@ -78,13 +78,26 @@ def sync_search_engines(
             grouped_items[item.short_name].append(item)
 
         updated_count = 0
+        unchanged_count = 0
         inserted_count = 0
         deleted_count = 0
         skipped_count = 0  # For inserts that are skipped due to missing URL
 
         for short_name, items in grouped_items.items():
+            # 1. If there are more than one prepopulate_id >= 10000, prepopulate_id < 10000 shouldn't exist.
+            # 2. Otherwise, prepopulate_id < 10000 should exist at most once.
+            cursor.execute(f"SELECT id, prepopulate_id FROM {TABLE_NAME} WHERE short_name = ?", (short_name,))
+            rows = [{'id': e[0], 'prepopulate_id': e[1]} for e in cursor.fetchall()]
+            if len([row for row in rows if row['prepopulate_id'] >= 10000]) > 1:
+                if any(row['prepopulate_id'] < 10000 for row in rows):
+                    raise Exception(f"Data integrity error for {short_name}: multiple prepopulate_id >= 10000 and some < 10000")
+            else:
+                if len([row for row in rows if row['prepopulate_id'] < 10000]) > 1:
+                    raise Exception(f"Data integrity error for {short_name}: multiple prepopulate_id < 10000")
+
             # Get keywords from config for this short_name
             config_keywords = {item.keyword for item in items}
+            assert len(config_keywords) > 0
             config_items_by_keyword = {item.keyword: item for item in items}
 
             # Get keywords from database for this short_name
@@ -99,15 +112,30 @@ def sync_search_engines(
             # 1. Update existing records (present in both config and DB)
             for keyword in to_update:
                 item = config_items_by_keyword[keyword]
-                if not dry_run:
-                    cursor.execute(
-                        f"UPDATE {TABLE_NAME} SET url = ?, favicon_url = ?, prepopulate_id = ?, last_modified = ? WHERE short_name = ? AND keyword = ?",
-                        (item.url, item.favicon_url, item.prepopulate_id, current_wktime, short_name, keyword),
-                    )
-                updated_count += 1
-                print(
-                    f"UPDATE: {short_name} (keyword: {keyword}, url: {item.url}, favicon_url: {item.favicon_url}, prepopulate_id: {item.prepopulate_id})"
+                # Fetch current prepopulate_id from DB
+                cursor.execute(
+                    f"SELECT prepopulate_id FROM {TABLE_NAME} WHERE short_name = ? AND keyword = ?",
+                    (short_name, keyword),
                 )
+                row = cursor.fetchone()
+                db_prepopulate_id = row[0] if row else None
+                if db_prepopulate_id >= 10000:
+                    # Build update statement dynamically to skip favicon_url if empty
+                    update_fields = ["url = ?", "prepopulate_id = ?", "last_modified = ?"]
+                    update_values = [item.url, item.prepopulate_id, current_wktime]
+                    if item.favicon_url:
+                        update_fields.append("favicon_url = ?")
+                        update_values.append(item.favicon_url)
+                    update_fields_str = ", ".join(update_fields)
+                    if not dry_run:
+                        cursor.execute(
+                            f"UPDATE {TABLE_NAME} SET {update_fields_str} WHERE short_name = ? AND keyword = ?",
+                            (*update_values, short_name, keyword),
+                        )
+                    updated_count += 1
+                    print(
+                        f"UPDATE: {short_name} (keyword: {keyword}, prepopulate_id: {item.prepopulate_id})"
+                    )
 
             # 2. Reuse records: update deleted ones to become inserted ones
             reuse_count = min(len(to_insert), len(to_delete))
@@ -119,23 +147,44 @@ def sync_search_engines(
                     skipped_count += 1
                     print(f"SKIP: {short_name} (keyword: {new_keyword}, no URL provided)")
                     continue
-                if not dry_run:
-                    cursor.execute(
-                        f"UPDATE {TABLE_NAME} SET keyword = ?, url = ?, favicon_url = ?, prepopulate_id = ?, last_modified = ? WHERE short_name = ? AND keyword = ?",
-                        (
-                            new_keyword,
-                            item.url,
-                            item.favicon_url,
-                            item.prepopulate_id,
-                            current_wktime,
-                            short_name,
-                            old_keyword,
-                        ),
-                    )
-                updated_count += 1
-                print(
-                    f"RENAME+UPDATE: {short_name} (from keyword: {old_keyword} to {new_keyword}, url: {item.url}, favicon_url: {item.favicon_url}, prepopulate_id: {item.prepopulate_id})"
+                # Fetch current prepopulate_id from DB for the old_keyword
+                cursor.execute(
+                    f"SELECT prepopulate_id FROM {TABLE_NAME} WHERE short_name = ? AND keyword = ?",
+                    (short_name, old_keyword),
                 )
+                row = cursor.fetchone()
+                db_prepopulate_id = row[0] if row else None
+                if db_prepopulate_id is not None and db_prepopulate_id < 10000:
+                    # Only update keyword and last_modified
+                    update_fields = ["keyword = ?", "last_modified = ?"]
+                    update_values = [new_keyword, current_wktime]
+                    update_fields_str = ", ".join(update_fields)
+                    if not dry_run:
+                        cursor.execute(
+                            f"UPDATE {TABLE_NAME} SET {update_fields_str} WHERE short_name = ? AND keyword = ?",
+                            (*update_values, short_name, old_keyword),
+                        )
+                    updated_count += 1
+                    print(
+                        f"RENAME: {short_name} (from keyword: {old_keyword} to {new_keyword}, prepopulate_id: {db_prepopulate_id})"
+                    )
+                else:
+                    # Build update statement dynamically to skip favicon_url if empty
+                    update_fields = ["keyword = ?", "url = ?", "prepopulate_id = ?", "last_modified = ?"]
+                    update_values = [new_keyword, item.url, item.prepopulate_id, current_wktime]
+                    if item.favicon_url:
+                        update_fields.append("favicon_url = ?")
+                        update_values.append(item.favicon_url)
+                    update_fields_str = ", ".join(update_fields)
+                    if not dry_run:
+                        cursor.execute(
+                            f"UPDATE {TABLE_NAME} SET {update_fields_str} WHERE short_name = ? AND keyword = ?",
+                            (*update_values, short_name, old_keyword),
+                        )
+                    updated_count += 1
+                    print(
+                        f"RENAME+UPDATE: {short_name} (from keyword: {old_keyword} to {new_keyword}, prepopulate_id: {item.prepopulate_id})"
+                    )
 
             # 3. Insert any remaining new keywords
             for keyword in to_insert[reuse_count:]:
@@ -177,7 +226,7 @@ def sync_search_engines(
                         ),
                     )
                 inserted_count += 1
-                print(f"INSERT: {short_name} (keyword: {keyword}, url: {item.url})")
+                print(f"INSERT: {short_name} (keyword: {keyword})")
 
             # 4. Delete any remaining old keywords
             for keyword in to_delete[reuse_count:]:
@@ -205,12 +254,10 @@ def sync_search_engines(
 
     except sqlite3.Error as e:
         print(f"Database error: {e}", file=sys.stderr)
-        if conn:
-            conn.rollback()
-        sys.exit(1)
+        conn.rollback()
+        raise
     finally:
-        if conn:
-            conn.close()
+        conn.close()
 
 
 def main():

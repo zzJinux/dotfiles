@@ -1,0 +1,30 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# dependencies = ["iterm2"]
+# ///
+
+#!/usr/bin/env python3
+import os
+import iterm2
+
+
+async def main(connection):
+    wd = os.getcwd()
+
+    change = iterm2.LocalWriteOnlyProfile()
+    change.set_initial_directory_mode(iterm2.profile.InitialWorkingDirectory.INITIAL_WORKING_DIRECTORY_CUSTOM)
+    change.set_custom_directory(wd)
+
+    app = await iterm2.async_get_app(connection)
+    window = app.current_terminal_window
+    if window is None:
+        window = await iterm2.Window.async_create(connection, profile_customizations=change)
+        tab = window.current_tab
+    else:
+        tab = await window.async_create_tab(profile_customizations=change)
+    assert tab is not None
+
+    await app.async_activate(False, False)
+    await tab.async_activate()
+
+iterm2.run_until_complete(main)

@@ -1,6 +1,5 @@
 let g:python3_host_prog = expand('/opt/homebrew/bin/python3')
 
-so ~/.vim/normalize.vim
 if !exists("g:os")
     if has("win64") || has("win32") || has("win16")
         let g:os = "Windows"

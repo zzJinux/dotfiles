@@ -112,7 +112,18 @@ update_branch() {
   is_worktree=$5
 
   if [ -n "$is_current" ]; then
-    git merge --ff-only "$upstream_branch" >/dev/null 2>&1 && echo "UPDATED" || echo "MERGE_CONFLICT"
+    # Capture the actual error to distinguish between merge conflicts and other errors
+    merge_output=$(git merge --ff-only "$upstream_branch" 2>&1)
+    if [ $? -eq 0 ]; then
+      echo "UPDATED"
+    else
+      # Check if the error is due to a merge conflict vs other issues
+      if echo "$merge_output" | grep -q "fatal: Not possible to fast-forward"; then
+        echo "MERGE_CONFLICT"
+      else
+        echo "NETWORK_ERROR"
+      fi
+    fi
   elif [ -n "$is_worktree" ]; then
     echo "SKIPPED (worktree)"
   else
@@ -129,6 +140,8 @@ colorize_status() {
   "NEEDS_PUSH") echo -e "\033[35m$1\033[0m" ;;         # Magenta
   "DIVERGED") echo -e "\033[31m$1\033[0m" ;;           # Red
   "SKIPPED (worktree)") echo -e "\033[90m$1\033[0m" ;; # Gray
+  "MERGE_CONFLICT") echo -e "\033[31m$1\033[0m" ;;     # Red
+  "NETWORK_ERROR") echo -e "\033[33m$1\033[0m" ;;      # Yellow/Orange
   *) echo "$1" ;;
   esac
 }

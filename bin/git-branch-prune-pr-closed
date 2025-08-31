@@ -6,9 +6,17 @@ set -eo pipefail
 # Get the list of branches without open PRs
 echo "Finding branches without open PRs..." >&2
 branches_info=$(gh-branch-list-pr-closed | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+# TODO: Does it properly handle branches with multiple PRs?
 
 while read -r branch; do
-  branches_info=$(echo "$branches_info" | grep -Ev "^${branch}[[:space:]]+")
+  branches_info=$(echo "$branches_info" | {
+    if grep -Ev "^${branch}[[:space:]]+"; then
+      :
+    elif exit_code=$?; [[ $exit_code -ne 1 ]]; then
+      echo "Error: grep failed" >&2
+      (exit $exit_code)
+    fi
+  })
 done < <(git config --get-all customBranchPruning.ignore)
 
 if [[ -z "$branches_info" ]]; then

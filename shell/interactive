@@ -39,6 +39,11 @@ export PAGER="$HOMEBREW_PREFIX/opt/less/bin/less --mouse -iR"
 if nvim=$(command -v nvim); then
   export MANPAGER="$nvim +Man!"
 fi
+if [ -n "${AGENT_SESSION:-}" ]; then
+  # export LESS=-FRX
+  export PAGER=cat
+  export MANPAGER=cat
+fi
 
 # coreutils ls
 export TIME_STYLE=long-iso

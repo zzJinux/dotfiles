@@ -1,5 +1,6 @@
 {
     "workbench.settings.applyToAllProfiles": [
+        "workbench.list.horizontalScrolling",
         "window.newWindowProfile",
         "files.autoSaveDelay",
         "files.autoSave",
@@ -27,8 +28,13 @@
         "vim.sneak",
         "vim.smartRelativeLine",
         "workbench.iconTheme",
-        "editor.tokenColorCustomizations"
+        "workbench.colorCustomizations",
+        "editor.tokenColorCustomizations",
+        "workbench.colorTheme",
+        "cursor.composer.shouldAllowCustomModes",
+        "cursor.composer.shouldChimeAfterChatFinishes",
     ],
+    "workbench.list.horizontalScrolling": true,
     "window.newWindowProfile": "Default",
     "files.autoSaveDelay": 100,
     "files.autoSave": "afterDelay",
@@ -80,9 +86,25 @@
                 "workbench.action.openRecent"
             ],
             "silent": true
+        },
+        {
+            "before": [
+                "<leader>",
+                "<C-w>"
+            ],
+            "commands": [
+                "workbench.action.switchWindow"
+            ],
+            "silent": true
         }
     ],
     "workbench.iconTheme": "vscode-icons",
+    "workbench.colorCustomizations": {
+        "[Dracula Theme Soft]": {
+            "button.background": "#009dd1",
+            "editor.selectionBackground": "#ffb8f996"
+        }
+    },
     "editor.tokenColorCustomizations": {
         "[*Light*]": {
             "textMateRules": [
@@ -112,5 +134,8 @@
                 }
             }
         ]
-    }
+    },
+    "workbench.colorTheme": "Dracula Theme Soft",
+    "cursor.composer.shouldAllowCustomModes": true,
+    "cursor.composer.shouldChimeAfterChatFinishes": true,
 }

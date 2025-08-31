@@ -103,9 +103,3 @@ _fzf_complete_kjmp() {
 }
 
 staticfile_complete k8scmds "$DOTFILES/kubernetes/completion.bash" ktx kns kpf kjmp
-
-if [ -n "$BASH" ]; then
-  source "${HOMEBREW_PREFIX}/opt/kube-ps1/share/kube-ps1.sh"
-  #shellcheck disable=SC2034
-  KUBE_PS1_SYMBOL_ENABLE=false
-fi

@@ -88,12 +88,12 @@
     {
         "key": "cmd+k z",
         "command": "workbench.action.toggleZenMode",
-        "when": "!isAuxiliaryWindowFocusedContext && !terminalFocus"
+        "when": "!isAuxiliaryWindowFocusedContext && !isInBackgroundComposerWindow && !terminalFocus"
     },
     {
         "key": "cmd+k z",
         "command": "-workbench.action.toggleZenMode",
-        "when": "!isAuxiliaryWindowFocusedContext"
+        "when": "!isAuxiliaryWindowFocusedContext && !isInBackgroundComposerWindow"
     },
     {
         "key": "alt+cmd+;",
@@ -103,5 +103,9 @@
         "key": "cmd+d",
         "command": "compareSelected",
         "when": "explorerViewletFocus"
+    },
+    {
+        "key": "cmd+e",
+        "command": "composerMode.background"
     },
 ]

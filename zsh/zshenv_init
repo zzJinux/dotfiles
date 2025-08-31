@@ -1,0 +1,2 @@
+DOTFILES=:PH_DOTFILES:
+source "$DOTFILES/zsh/zshenv"

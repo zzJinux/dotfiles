@@ -98,6 +98,28 @@ function setupURLRouter(config)
     end
   end
 
+  processors["follow-redirect"] = function(fullURL)
+    -- Not working for Slack file URLs
+    local statusCode, _, headers = hs.http.doRequest(fullURL, "GET", nil, {["user-agent"]="curl/8.0.0"})
+    local normalizedHeaders = {}
+    for k, v in pairs(headers) do
+      normalizedHeaders[string.lower(k)] = v
+    end
+    if normalizedHeaders["location"] then
+      local finalURL = normalizedHeaders["location"]
+      logger.i("Following redirect to: " .. finalURL)
+      return finalURL
+    end
+    -- Debug
+    logger.i("Status code: " .. statusCode)
+    logger.i("Headers:")
+    for k, v in pairs(normalizedHeaders) do
+      logger.i(k .. ": " .. v)
+    end
+    logger.i("No redirect found for: " .. fullURL)
+    return fullURL
+  end
+
   local rules = {}
   for _, ruleData in ipairs(config["rules"]) do
     local rule = Rule(ruleData["prefixes"], ruleData["processor"])
@@ -132,12 +154,13 @@ function setupURLRouter(config)
   end
 
   hs.urlevent.httpCallback = function(scheme, host, params, fullURL)
-    logger.i("URL opened: " .. fullURL)
-
     if fullURL == nil then
       -- DO NOTHING
       return
     end
+    logger.i("URL incoming: " .. fullURL)
+    fullURL = remove_params(fullURL, {"utm_source"})
+    logger.i("URL normalized: " .. fullURL)
 
     -- Handle non-HTTP/HTTPS schemes by passing to default processor
     if scheme ~= "http" and scheme ~= "https" then
@@ -154,8 +177,12 @@ function setupURLRouter(config)
     if host == "localhost" or string.match(host, "^127%.%d+%.%d+%.%d+$") then
       hs.http.doAsyncRequest(fullURL, "GET", nil, nil, function(status, body, headers)
         local finalURL = fullURL
-        if status and status >= 300 and status < 400 and headers["Location"] then
-          finalURL = headers["Location"]
+        local normalizedHeaders = {}
+        for k, v in pairs(headers) do
+          normalizedHeaders[string.lower(k)] = v
+        end
+        if status and status >= 300 and status < 400 and normalizedHeaders["location"] then
+          finalURL = normalizedHeaders["location"]
           logger.i("Following redirect to: " .. finalURL)
         end
         
@@ -181,4 +208,47 @@ end
 
 if hs.fs.attributes(hs.configdir .. "/" .. "init_private.lua") then
   require("init_private")
+end
+
+
+-- Utility: split string by pattern
+function split(str, sep)
+  local t = {}
+  local start = 1
+  local sep_len = #sep
+  while true do
+    local i, j = string.find(str, sep, start, true)  -- true = plain find, no patterns
+    if not i then
+      table.insert(t, string.sub(str, start))
+      break
+    end
+    table.insert(t, string.sub(str, start, i - 1))
+    start = j + 1
+  end
+  return t
+end
+
+-- Function to remove some query params
+function remove_params(url, params_to_remove)
+  local base, query = url:match("([^?]+)%??(.*)")
+  if not query or query == "" then return url end
+
+  local new_params = {}
+  local to_remove = {}
+  for _, p in ipairs(params_to_remove) do
+    to_remove[p] = true
+  end
+
+  for _, pair in ipairs(split(query, "&")) do
+    local k, v = pair:match("([^=]+)=?(.*)")
+    if k and not to_remove[k] then
+      table.insert(new_params, k .. (v ~= "" and "="..v or ""))
+    end
+  end
+
+  if #new_params > 0 then
+    return base .. "?" .. table.concat(new_params, "&")
+  else
+    return base
+  end
 end

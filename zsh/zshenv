@@ -1,4 +1,2 @@
 zmodload zsh/datetime
-
-DOTFILES=:PH_DOTFILES:
 source "$DOTFILES/shell/env"

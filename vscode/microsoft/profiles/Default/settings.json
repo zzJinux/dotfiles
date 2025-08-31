@@ -1,5 +1,6 @@
 {
     "workbench.settings.applyToAllProfiles": [
+        "workbench.list.horizontalScrolling",
         "window.newWindowProfile",
         "files.autoSaveDelay",
         "files.autoSave",
@@ -28,8 +29,11 @@
         "vim.smartRelativeLine",
         "workbench.iconTheme",
         "editor.tokenColorCustomizations",
-        "github.copilot.enable"
+        "github.copilot.enable",
+        "github.copilot.nextEditSuggestions.enabled",
+        "github.copilot.chat.codesearch.enabled",
     ],
+    "workbench.list.horizontalScrolling": true,
     "window.newWindowProfile": "Default",
     "files.autoSaveDelay": 100,
     "files.autoSave": "afterDelay",
@@ -119,5 +123,7 @@
         "plaintext": true,
         "markdown": true,
         "scminput": false
-    }
+    },
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "github.copilot.chat.codesearch.enabled": true,
 }

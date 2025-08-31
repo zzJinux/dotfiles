@@ -1,9 +1,16 @@
 {
   items: [
     {
-      // Most-likely builtin
       short_name: "Google",
       keyword: "gg",
+      url: "{google:baseURL}search?q={searchTerms}&{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:language}{google:prefetchSource}{google:searchClient}{google:sourceId}{google:contextualSearchVersion}ie={inputEncoding}",
+      prepopulate_id: 10012,
+    },
+    {
+      short_name: "Google AI mode",
+      keyword: "gai",
+      url: "{google:baseURL}search?udm=50&aep=48&q={searchTerms}{google:sourceId}",
+      prepopulate_id: 10011,
     },
     {
       short_name: "Google (en)",
@@ -20,18 +27,20 @@
     {
       short_name: "Perplexity",
       keyword: "pp",
-      url: "https://www.perplexity.ai/search?q={searchTerms}&copilot=false&s=d",
+      url: "https://www.perplexity.ai/search/new?q={searchTerms}&s=d&erp=tab",
       prepopulate_id: 10008,
     },
     {
-      // Most-likely builtin
       short_name: "Bing",
       keyword: "bi",
+      url: "https://www.bing.com/search?q={searchTerms}&{google:assistedQueryStats}",
+      prepopulate_id: 10013,
     },
     {
-      // Most-likely builtin
       short_name: "네이버",
       keyword: "nv",
+      url: "https://search.naver.com/search.naver?ie={inputEncoding}&query={searchTerms}&sm=chr_hty",
+      prepopulate_id: 10014,
     },
     {
       short_name: "YouTube",
@@ -58,9 +67,9 @@
       prepopulate_id: 10004,
     },
     {
-      short_name: "dictionary.com",
+      short_name: "Oxford Learner's Dictionaries",
       keyword: "l",
-      url: "https://www.dictionary.com/browse/{searchTerms}",
+      url: "https://www.oxfordlearnersdictionaries.com/search/english/?q={searchTerms}",
       prepopulate_id: 10010,
     },
     {

@@ -1,0 +1,3 @@
+https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/configuration.md#available-settings-in-settingsjson
+
+gemini-cli can be configured to detect other context file names besides "GEMINI.md"

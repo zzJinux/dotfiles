@@ -34,18 +34,13 @@ brew "awk" # [macos] nawk
 brew "gawk" # [macos] g-prefixed
 brew "gnu-sed" # [macos] g-prefixed
 brew "jq"
-brew "jless"
 brew "yq"
 brew "groff"
-brew "yamlfmt"
 
 # Network clients
 brew "bind" # [macos]
 brew "nmap"
 brew "curl" # [macos,keg-only]
-brew "wget"
-brew "websocat"
-brew "rsync"
 
 # Security tools
 brew "gnupg"
@@ -55,22 +50,13 @@ brew "krb5" # [macos,keg-only]
 brew "make" # [macos]
 brew "gh"
 brew "git" # [macos]
-brew "git-delete-merged-branches"
 brew "git-delta"
 brew "git-lfs"
 cask "git-credential-manager"
 tap "jesseduffield/lazygit"
 brew "jesseduffield/lazygit/lazygit"
-brew "helm"
-brew "tilt"
 brew "fnm"
-brew "awscli"
 brew "docker-credential-helper-ecr"
-
-# Language tools
-brew "ruby"
-brew "shellcheck"
-brew "shfmt"
 
 # Etc
 brew "gnu-tar" # [macos] g-prefixed
@@ -79,8 +65,6 @@ brew "coreutils" # [macos] g-prefixed
 brew "diffutils" # [macos] g-prefixed
 brew "findutils" # [macos] g-prefixed
 brew "unar"
-brew "rename"
-brew "imagemagick"
 brew "direnv"
 
 
@@ -88,3 +72,18 @@ brew "direnv"
 cask "font-jetbrains-mono"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-meslo-lg-nerd-font"
+
+
+# You might want these
+# brew "dasel"
+# brew "trurl"
+# brew "jless"
+# brew "yamlfmt"
+# brew "wget"
+# brew "websocat"
+# brew "rsync"
+# brew "tilt"
+# brew "awscli"
+# brew "shellcheck"
+# brew "shfmt"
+# brew "imagemagick"

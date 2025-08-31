@@ -3,6 +3,11 @@
   autocrlf = input
   fsmonitor = true
   untrackedCache = true
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only
+[delta]  # https://github.com/dandavison/delta
+  navigate = true
 [init]
   defaultBranch = master
 [rebase]
@@ -56,6 +61,7 @@
   fe = fetch
   pl = pull
   ps = push
+  pss = push --force-with-lease --force-if-includes
   rmt = remote
   # Inspection and Comparison
   so = show

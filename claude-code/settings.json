@@ -1,0 +1,6 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "input=$(cat); echo \"Model: $(echo \"$input\" | jq -r '.model.display_name') | Session: $(echo \"$input\" | jq -r '.session_id')\""
+  }
+}

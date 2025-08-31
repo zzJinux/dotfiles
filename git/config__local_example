@@ -3,4 +3,4 @@
 [includeIf "gitdir:~/workplacerepos/"]
   path = ~/.config/git/config_workplace__local
 [alias]
-  devtag = "!f(){ tagname=dev-${1:+$1-}$(date +%y%m%d%H%M)-kst;git tag -a $tagname -m 'Created by Edgar Jeong' && echo $tagname;};f"
+  devtag = "!f(){ tagname=dev-${1:+$1-}$(date +%y%m%d%H%M)-kst-$(git rev-parse --short HEAD);git tag -a $tagname -m \"Creator: $(git config user.name)\" && echo $tagname;};f"
